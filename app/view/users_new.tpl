@@ -25,7 +25,7 @@
 
 			// ajax GET request to see if username is available
 			$.get(
-				'<?php echo BASE_URL ?>/users/check',
+				'<?php echo BASE_URL ?>/users/create/check',
 				{ "username": $(textbox).val() } )
 				.done(function(data){
 					if(data.success == 'success') {
@@ -35,16 +35,14 @@
 						} else {
 							$(textbox).addClass('unavailable');
 						}
-					} else if(data.error != '') {
-						alert("Please provide a valid username.");
-					} })
-				.fail(function(){
+					}
+				 }).fail(function(){
 						alert("Ajax error: could not reach server.");
 				});
 		});
 
 	});
-	</script>
+</script>
 
 
 </head>
@@ -100,7 +98,19 @@
 
 		<div id="content">
 			<div id="main_content">
-				<form id="register" method="POST" action="<?= BASE_URL ?>/users/create">
+
+				<span class="error">
+			    <?php
+			      if(isset($_SESSION['register_error'])) {
+			        if($_SESSION['register_error'] != '') {
+			          echo $_SESSION['register_error'];
+			        $_SESSION['register_error'] = '';
+			        }
+			      }
+			    ?>
+			  </span>
+
+				<form id="register" method="POST" action="<?php echo BASE_URL.'/users/create'; ?>">
 					<div class="meal_content">
 						<div class="first_name">
 							<label>First Name: <input type="text" name="first_name"></label>
