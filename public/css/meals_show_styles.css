@@ -1,0 +1,15 @@
+div#main_heading {
+	text-align: center;
+	margin-top: 0;
+}
+div#main_heading h1 {
+	font-family: 'Quicksand';
+	font-size: 54px;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+div#main_decision {
+	height: 50px;
+	margin-bottom: 0;
+}

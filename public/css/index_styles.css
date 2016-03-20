@@ -1,0 +1,43 @@
+div#main_heading {
+	text-align: center;
+	margin-top: 0;
+}
+div#main_heading h1 {
+	font-family: 'Quicksand';
+	font-size: 54px;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+div#main_heading h2 {
+	font-family: 'Quicksand';
+	font-size: 20px;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+div#meal_content {
+	min-height: 400px;
+	height: auto;
+	overflow: auto;
+	padding: 2% 2% 2% 2%;
+	background-color: rgba(56,56,56, 0.6);
+	border: 2px solid black;
+	border-radius: 8px;
+}
+div#meal_content > * {
+	display: inline;
+	width: 24.5%;
+	height: 50%;
+	float: left;
+	background-color: #00FFFF;
+	border: 1px solid #383838;
+}
+
+div#main_submission {
+	height: 50px;
+	text-align: center;
+	margin-bottom: 0;
+}
+div#main_submission button {
+	width: 100px;
+}
