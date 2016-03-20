@@ -118,6 +118,14 @@ div#content > * {
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
+form#register input.available {
+	background-color: lightgreen;
+}
+
+form#register input.unavailable {
+	background-color: pink;
+}
+
 footer {
 	height: 20px;
 	width: 100%;

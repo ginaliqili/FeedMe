@@ -24,6 +24,7 @@ class site_controller {
 			case 'logout':
 				$this->logout();
 				break;
+
 		}
 	}
 
@@ -63,4 +64,6 @@ class site_controller {
 		// redirect to home page
 		header('Location: '.BASE_URL);
 	}
+
+
 }

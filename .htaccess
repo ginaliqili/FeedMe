@@ -1,0 +1,24 @@
+Options -Indexes
+
+RewriteEngine on
+
+# ErrorDocument 404 /app/controller/error.php
+
+# Site
+RewriteRule ^$ app/controller/site_controller.php?action=home [QSA,L]
+RewriteRule ^login/?$ app/controller/site_controller.php?action=login [QSA,L]
+RewriteRule ^logout/?$ app/controller/site_controller.php?action=logout [QSA,L]
+
+# User
+RewriteRule ^signup/?$ app/controller/user_controller.php?action=new [QSA,L]
+RewriteRule ^users/create/?$ app/controller/user_controller.php?action=create [QSA,L]
+RewriteRule ^users/check/?$ app/controller/user_controller.php?action=createCheck [QSA,L]
+
+# Meal
+RewriteRule ^meals/?$ app/controller/meal_controller.php?action=index [QSA,L]
+RewriteRule ^meals/new/?$ app/controller/meal_controller.php?action=new [QSA,L]
+RewriteRule ^meals/create/?$ app/controller/meal_controller.php?action=create [QSA,L]
+RewriteRule ^meals/(\d+)/?$ app/controller/meal_controller.php?action=show&meal_id=$1 [QSA,L]
+RewriteRule ^meals/(\d+)/edit/?$ app/controller/meal_controller.php?action=edit&meal_id=$1 [QSA,L]
+RewriteRule ^meals/(\d+)/update/?$ app/controller/meal_controller.php?action=update&meal_id=$1 [QSA,L]
+RewriteRule ^meals/(\d+)/destroy/?$ app/controller/meal_controller.php?action=destroy&meal_id=$1 [QSA,L]
