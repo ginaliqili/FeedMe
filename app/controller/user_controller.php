@@ -14,7 +14,7 @@ class user_controller {
 	public function route($action) {
 		switch($action) {
 			case 'new':
-				$this->new();
+				$this->newUser();
 				break;
 
 			case 'create':
@@ -26,10 +26,18 @@ class user_controller {
 					'last_name' => $_POST['last_name']);
 				$this->create($attributes);
 				break;
+
+			case 'createCheck':
+				$this->createCheck();
+				break;
+
+			case 'createSubmit':
+				$this->createSubmit();
+				break;
 		}
 	}
 
-	public function new() {
+	public function newUser() {
 		include_once SYSTEM_PATH.'/view/users_new.tpl';
 	}
 
@@ -47,4 +55,37 @@ class user_controller {
 		// redirect to home page
 		header('Location: '.BASE_URL);
 	}
+
+
+	public function createCheck() {
+
+		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
+
+		$username = $_GET['username']; // get the username data
+
+
+
+		// make sure it's a real username
+		if(is_null($username) || $username == '') {
+			echo json_encode(array('error' => 'Invalid username.'));
+		} else {
+			// okay, it's a real username. Is it available?
+			$user = user::loadByUsername($username);
+			if(is_null($user)) {
+				// $user is null, so username is available!
+				echo json_encode(array(
+					'success' => 'success',
+					'check' => 'available'
+				));
+			} else {
+				echo json_encode(array(
+					'success' => 'success',
+					'check' => 'unavailable'
+				));
+			}
+		}
+
+	}
+
+
 }
