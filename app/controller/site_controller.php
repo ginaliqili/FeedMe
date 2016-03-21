@@ -24,13 +24,12 @@ class site_controller {
 			case 'logout':
 				$this->logout();
 				break;
-
 		}
 	}
 
-    public function home() {
+  public function home() {
 		include_once SYSTEM_PATH.'/view/index.tpl';
-    }
+  }
 
 	public function login() {
 		$username = $_POST['username'];
@@ -64,6 +63,4 @@ class site_controller {
 		// redirect to home page
 		header('Location: '.BASE_URL);
 	}
-
-
 }

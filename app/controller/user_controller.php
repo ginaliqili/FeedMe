@@ -14,7 +14,7 @@ class user_controller {
 	public function route($action) {
 		switch($action) {
 			case 'new':
-				$this->newUser();
+				$this->new();
 				break;
 
 			case 'create':
@@ -27,17 +27,13 @@ class user_controller {
 				$this->create($attributes);
 				break;
 
-			case 'createCheck':
-				$this->createCheck();
-				break;
-
-			case 'createSubmit':
-				$this->createSubmit();
+			case 'create_check':
+				$this->create_check();
 				break;
 		}
 	}
 
-	public function newUser() {
+	public function new() {
 		include_once SYSTEM_PATH.'/view/users_new.tpl';
 	}
 
@@ -50,42 +46,39 @@ class user_controller {
 
 		// log the user in
 		$_SESSION['username'] = $user->get('username');
-		$_SESSION['error'] = "You are logged in as ".$user->get('username').".";
+		$_SESSION['error'] = "You successfully registered as ".$_SESSION['username'].".";
 
 		// redirect to home page
 		header('Location: '.BASE_URL);
 	}
 
+	public function create_check() {
+		// set the header to hint the response type (JSON) for JQuery's Ajax method
+		header('Content-Type: application/json');
 
-	public function createCheck() {
-
-		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
-
-		$username = $_GET['username']; // get the username data
-
-
+		// get the username data
+		$username = $_GET['username'];
 
 		// make sure it's a real username
 		if(is_null($username) || $username == '') {
 			echo json_encode(array('error' => 'Invalid username.'));
-		} else {
+		}
+		else {
 			// okay, it's a real username. Is it available?
-			$user = user::loadByUsername($username);
+			$user = user::load_by_username($username);
 			if(is_null($user)) {
 				// $user is null, so username is available!
 				echo json_encode(array(
 					'success' => 'success',
 					'check' => 'available'
 				));
-			} else {
+			}
+			else {
 				echo json_encode(array(
 					'success' => 'success',
 					'check' => 'unavailable'
 				));
 			}
 		}
-
 	}
-
-
 }

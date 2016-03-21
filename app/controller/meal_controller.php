@@ -23,7 +23,7 @@ class meal_controller {
 				break;
 
 			case 'new':
-				$this->newMeal();
+				$this->new();
 				break;
 
 			case 'create':
@@ -86,8 +86,7 @@ class meal_controller {
 		include_once SYSTEM_PATH.'/view/meals_show.tpl';
     }
 
-	public function newMeal() {
-
+	public function new() {
 		include_once SYSTEM_PATH.'/view/meals_new.tpl';
 	}
 

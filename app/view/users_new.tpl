@@ -11,42 +11,34 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
-
-
 	<script type="text/javascript">
-	$(document).ready(function(){
+		$(document).ready(function(){
 
-		// event handler for username textbox on Register page
-		$('#register #uname').blur(function(){
-			var textbox = $(this); // remember our trigger textbox
+			// event handler for username textbox on Register page
+			$('#register #uname').blur(function(){
+				var textbox = $(this); // remember our trigger textbox
 
-			// first, remove any status classes attached to this textbox
-			$(textbox).removeClass('unavailable').removeClass('available');
+				// first, remove any status classes attached to this textbox
+				$(textbox).removeClass('unavailable').removeClass('available');
 
-			// ajax GET request to see if username is available
-			$.get(
-				'<?php echo BASE_URL ?>/users/check',
-				{ "username": $(textbox).val() } )
-				.done(function(data){
-					if(data.success == 'success') {
-						// successfully reached the server
-						if(data.check == 'available') {
-							$(textbox).addClass('available');
-						} else {
-							$(textbox).addClass('unavailable');
+				// ajax GET request to see if username is available
+				$.get('<?= BASE_URL ?>/users/create/check', { "username": $(textbox).val() })
+					.done(function(data){
+						if(data.success == 'success') {
+							// successfully reached the server
+							if(data.check == 'available') {
+								$(textbox).addClass('available');
+							} else {
+								$(textbox).addClass('unavailable');
+							}
 						}
-					} else if(data.error != '') {
-						alert("Please provide a valid username.");
-					} })
-				.fail(function(){
-						alert("Ajax error: could not reach server.");
-				});
+					})
+					.fail(function(){
+							alert("Ajax error: could not reach server.");
+					});
+			});
 		});
-
-	});
 	</script>
-
-
 </head>
 
 <body>
