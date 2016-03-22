@@ -11,9 +11,8 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
-
-
 	<script type="text/javascript">
+
 	$(document).ready(function(){
 
 		// event handler for username textbox on Register page
@@ -43,7 +42,6 @@
 
 	});
 </script>
-
 
 </head>
 
@@ -99,16 +97,6 @@
 		<div id="content">
 			<div id="main_content">
 
-				<span class="error">
-			    <?php
-			      if(isset($_SESSION['register_error'])) {
-			        if($_SESSION['register_error'] != '') {
-			          echo $_SESSION['register_error'];
-			        $_SESSION['register_error'] = '';
-			        }
-			      }
-			    ?>
-			  </span>
 
 				<form id="register" method="POST" action="<?php echo BASE_URL.'/users/create'; ?>">
 					<div class="meal_content">

@@ -39,15 +39,6 @@ class user_controller {
 	}
 
 	public function create($attributes) {
-		// are all the required fields filled?
-
-		if ($_POST['username'] == '' || $_POST['password'] == '' || $_POST['email'] == ''
-			|| $_POST['first_name'] == '' || $_POST['last_name'] == '') {
-			// missing form data; send us back
-			$_SESSION['register_error'] = 'Please complete all registration fields.';
-			header('Location: '.BASE_URL.'/signup');
-			exit();
-		}
 
 		// create a new user with the appropriate attributes
 		$user = new user($attributes);
@@ -56,7 +47,7 @@ class user_controller {
 		$user->save();
 
 		// log the user in
-		$_SESSION['username'] = $_POST['username'];
+		$_SESSION['username'] = $user->get('username');
 		$_SESSION['error'] = "You successfully registered as ".$_SESSION['username'].".";
 
 
@@ -66,35 +57,31 @@ class user_controller {
 
 	}
 
-
 	public function create_check() {
-
-		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
-
-		$username = $_GET['username']; // get the username data
-
+		// set the header to hint the response type (JSON) for JQuery's Ajax method
+		header('Content-Type: application/json');
+		// get the username data
+		$username = $_GET['username'];
 		// make sure it's a real username
 		if(is_null($username) || $username == '') {
 			echo json_encode(array('error' => 'Invalid username.'));
-		} else {
+		}
+		else {
 			// okay, it's a real username. Is it available?
 			$user = user::load_by_username($username);
 			if(is_null($user)) {
-
 				// $user is null, so username is available!
 				echo json_encode(array(
 					'success' => 'success',
 					'check' => 'available'
 				));
-			} else {
+			}
+			else {
 				echo json_encode(array(
 					'success' => 'success',
 					'check' => 'unavailable'
 				));
 			}
 		}
-
 	}
-
-
 }
