@@ -12,33 +12,37 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function(){
 
-			// event handler for username textbox on Register page
-			$('#register #uname').blur(function(){
-				var textbox = $(this); // remember our trigger textbox
+	$(document).ready(function(){
 
-				// first, remove any status classes attached to this textbox
-				$(textbox).removeClass('unavailable').removeClass('available');
+		// event handler for username textbox on Register page
+		$('#register #uname').blur(function(){
+			var textbox = $(this); // remember our trigger textbox
 
-				// ajax GET request to see if username is available
-				$.get('<?= BASE_URL ?>/users/create/check', { "username": $(textbox).val() })
-					.done(function(data){
-						if(data.success == 'success') {
-							// successfully reached the server
-							if(data.check == 'available') {
-								$(textbox).addClass('available');
-							} else {
-								$(textbox).addClass('unavailable');
-							}
+			// first, remove any status classes attached to this textbox
+			$(textbox).removeClass('unavailable').removeClass('available');
+
+			// ajax GET request to see if username is available
+			$.get(
+				'<?php echo BASE_URL ?>/users/create/check',
+				{ "username": $(textbox).val() } )
+				.done(function(data){
+					if(data.success == 'success') {
+						// successfully reached the server
+						if(data.check == 'available') {
+							$(textbox).addClass('available');
+						} else {
+							$(textbox).addClass('unavailable');
 						}
-					})
-					.fail(function(){
-							alert("Ajax error: could not reach server.");
-					});
-			});
+					}
+				 }).fail(function(){
+						alert("Ajax error: could not reach server.");
+				});
 		});
-	</script>
+
+	});
+</script>
+
 </head>
 
 <body>
@@ -92,7 +96,19 @@
 
 		<div id="content">
 			<div id="main_content">
-				<form id="register" method="POST" action="<?= BASE_URL ?>/users/create">
+
+				<span class="error">
+			    <?php
+			      if(isset($_SESSION['register_error'])) {
+			        if($_SESSION['register_error'] != '') {
+			          echo $_SESSION['register_error'];
+			        $_SESSION['register_error'] = '';
+			        }
+			      }
+			    ?>
+			  </span>
+
+				<form id="register" method="POST" action="<?php echo BASE_URL.'/users/create'; ?>">
 					<div class="meal_content">
 						<div class="first_name">
 							<label>First Name: <input type="text" name="first_name"></label>

@@ -30,6 +30,7 @@ class user_controller {
 			case 'create_check':
 				$this->create_check();
 				break;
+
 		}
 	}
 
@@ -38,6 +39,17 @@ class user_controller {
 	}
 
 	public function create($attributes) {
+
+		// do not create if username is not available
+		$user = user::load_by_username($_POST['username']);
+		if($user) {
+			// $user is not null, so username is not available
+			$_SESSION['register_error'] = 'Sorry, username '.$_POST['username'].' is already taken. Please choose another one';
+
+			header('Location: '.BASE_URL.'/signup');
+			exit();
+		}
+
 		// create a new user with the appropriate attributes
 		$user = new user($attributes);
 
@@ -48,17 +60,18 @@ class user_controller {
 		$_SESSION['username'] = $user->get('username');
 		$_SESSION['error'] = "You successfully registered as ".$_SESSION['username'].".";
 
+
 		// redirect to home page
 		header('Location: '.BASE_URL);
+		exit();
+
 	}
 
 	public function create_check() {
 		// set the header to hint the response type (JSON) for JQuery's Ajax method
 		header('Content-Type: application/json');
-
 		// get the username data
 		$username = $_GET['username'];
-
 		// make sure it's a real username
 		if(is_null($username) || $username == '') {
 			echo json_encode(array('error' => 'Invalid username.'));
