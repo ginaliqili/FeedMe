@@ -40,6 +40,16 @@ class user_controller {
 
 	public function create($attributes) {
 
+		// do not create if username is not available
+		$user = user::load_by_username($_POST['username']);
+		if($user) {
+			// $user is not null, so username is not available
+			$_SESSION['register_error'] = 'Sorry, username '.$_POST['username'].' is already taken. Please choose another one';
+
+			header('Location: '.BASE_URL.'/signup');
+			exit();
+		}
+
 		// create a new user with the appropriate attributes
 		$user = new user($attributes);
 
