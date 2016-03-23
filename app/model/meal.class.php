@@ -76,21 +76,26 @@ class meal extends db_object {
         $meal = $db->fetchById($id, __CLASS__, self::DB_TABLE);
 
 
-        $query = sprintf("SELECT meal_type_id FROM %s WHERE meal_id = '%s'",
-            self::MEAL_MEAL_TYPE_TABLE,
-            $id);
-        $result = $db->lookup($query);
-        if(mysqli_num_rows($result)) {
-          $objects = array();
-          while ($row = mysqli_fetch_assoc($result)) {
-            $objects[] = self::load_by_id($row['id']);
-          }
+        // $query = sprintf("SELECT meal_type_id FROM %s WHERE meal_id = '%s'",
+        //     self::MEAL_MEAL_TYPE_TABLE,
+        //     $id);
+        // $result = $db->lookup($query);
+        // if(mysqli_num_rows($result)) {
+        //   $objects = array();
+        //   while ($row = mysqli_fetch_assoc($result)) {
+        //     $objects[] = self::load_by_id($row['id']);
+        //   }
+        //
+        //   $meal_types = array();
+        //   foreach($objects as $relationship) {
+        //     $meal_types[] = $db->fetchById($relationship['meal_type_id'], __CLASS__, self::MEAL_TYPE_TABLE);
+        //   }
+        // }
+        // $meal->set('meal_type', $meal_types);
 
-          $meal_types = array();
-          foreach($objects as $relationship) {
-            $meal_types[] = $db->fetchById($relationship['meal_type_id'], __CLASS__, self::MEAL_TYPE_TABLE);
-          }
-        }
+        $relationships = $db->fetchByIdWithName($id, 'meal_id', __CLASS__, self::MEAL_MEAL_TYPE_TABLE);
+
+        echo $relationships;
 
         // return the meal
         return $meal;

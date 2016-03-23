@@ -59,9 +59,11 @@ class db {
       return null;
     }
     else {
-      $row = mysqli_fetch_assoc($result);
-      $obj = new $class_name($row);
-      return $obj;
+      $objects = array();
+      while ($row = mysqli_fetch_assoc($result)) {
+          $objects[] = new $class_name($row);
+      }
+      return $objects;
     }
   }
 
