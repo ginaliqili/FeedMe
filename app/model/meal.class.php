@@ -5,7 +5,10 @@ class meal extends db_object {
     const DB_TABLE = 'meal';
 
     // relationship tables
-    const MEAL_TYPE_TABLE = 'meal_meal_type';
+    const MEAL_MEAL_TYPE_TABLE = 'meal_meal_type';
+
+    // related tables
+    const MEAL_TYPE_TABLE = 'meal_type';
 
     // database fields
     protected $id;
@@ -72,8 +75,22 @@ class meal extends db_object {
         // fetch the meal's basic attributes from database
         $meal = $db->fetchById($id, __CLASS__, self::DB_TABLE);
 
-        // fetch the meal's attributes from relationship tables
-        //$meal_meal_type = $db->fetchByIdWithName($id, 'meal_id', __CLASS__, self::MEAL_TYPE_TABLE);
+
+        $query = sprintf("SELECT meal_type_id FROM %s WHERE meal_id = '%s'",
+            self::MEAL_MEAL_TYPE_TABLE,
+            $id);
+        $result = $db->lookup($query);
+        if(mysqli_num_rows($result)) {
+          $objects = array();
+          while ($row = mysqli_fetch_assoc($result)) {
+            $objects[] = self::load_by_id($row['id']);
+          }
+
+          $meal_types = array();
+          foreach($objects as $relationship) {
+            $meal_types[] = $db->fetchById($relationship['meal_type_id'], __CLASS__, self::MEAL_TYPE_TABLE);
+          }
+        }
 
         // return the meal
         return $meal;

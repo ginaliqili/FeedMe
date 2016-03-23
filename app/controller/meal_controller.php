@@ -167,8 +167,7 @@ class meal_controller {
 		// decode JSON into php associative array
 		$arr = json_decode($json, true);
 
-		foreach($arr['photos']['photo'] as $photo) {
-			return $photo['url_n']; // just return the first one
-		}
+		// return the picture
+		return $arr['photos']['photo'][0]['url_n'];
 	}
 }
