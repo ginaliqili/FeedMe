@@ -22,10 +22,10 @@ class db {
 		return self::$_instance;
 	}
 
-    public function fetchById($id, $class_name, $db_table) {
-        if ($id === null) {
-             return null;
-        }
+  public function fetchById($id, $class_name, $db_table) {
+    if ($id === null) {
+         return null;
+    }
 
 		$query = sprintf("SELECT * FROM `%s` WHERE id = '%s';",
 				$db_table,
@@ -36,12 +36,34 @@ class db {
 		if(!mysqli_num_rows($result)) {
 			return null;
 		}
-        else {
+    else {
 			$row = mysqli_fetch_assoc($result);
 			$obj = new $class_name($row);
 			return $obj;
 		}
+  }
+
+  public function fetchByIdWithName($id, $id_name, $class_name, $db_table) {
+    if ($id === null) {
+         return null;
     }
+
+    $query = sprintf("SELECT * FROM `%s` WHERE %s = '%s';",
+        $db_table,
+        $id_name,
+        $id);
+    //echo $query;
+    $result = $this->lookup($query);
+
+    if(!mysqli_num_rows($result)) {
+      return null;
+    }
+    else {
+      $row = mysqli_fetch_assoc($result);
+      $obj = new $class_name($row);
+      return $obj;
+    }
+  }
 
 	public function store(&$obj, $class_name, $db_table, $data) {
 		// find out if this item already exists so we know to use INSERT or UPDATE

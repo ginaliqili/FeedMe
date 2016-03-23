@@ -156,6 +156,8 @@ class meal_controller {
 					"extras=url_n&". // return URL to small image (320 px longest side)
 					"sort=relevance&". // sort by relevance
 					"safe_search=1&".
+					"page=1&".
+					"per_page=1&".
 					"format=json&".
 					"nojsoncallback=1";
 

@@ -4,16 +4,21 @@ class meal extends db_object {
     // name of database table
     const DB_TABLE = 'meal';
 
+    // relationship tables
+    const MEAL_TYPE_TABLE = 'meal_meal_type';
+
     // database fields
     protected $id;
     protected $title;
     protected $description;
-    protected $meal_type;
-    protected $food_type;
     protected $time_to_prepare;
     protected $instructions;
     protected $creator_id;
     protected $date_created;
+    // advanced fields
+    protected $meal_type;
+    protected $food_type;
+    protected $ingredients;
 
     // constructor
     public function __construct($args = array()) {
@@ -22,24 +27,27 @@ class meal extends db_object {
             'id' => null,
             'title' => '',
             'description' => '',
-            'meal_type' => '',
-            'food_type' => '',
             'time_to_prepare' => '',
             'instructions' => '',
             'creator_id' => 0,
-            'date_created' => null);
+            'date_created' => null,
+            'meal_type' => '',
+            'food_type' => '',
+            'ingredients' => '');
 
         $args += $default_args;
 
         $this->id = $args['id'];
         $this->title = $args['title'];
         $this->description = $args['description'];
-        $this->meal_type = $args['meal_type'];
-        $this->food_type = $args['food_type'];
         $this->time_to_prepare = $args['time_to_prepare'];
         $this->instructions = $args['instructions'];
         $this->creator_id = $args['creator_id'];
         $this->date_created = $args['date_created'];
+
+        $this->meal_type = $args['meal_type'];
+        $this->food_type = $args['food_type'];
+        $this->ingredients = $args['ingredients'];
     }
 
     // save changes to a meal
@@ -60,8 +68,15 @@ class meal extends db_object {
     // load meal by ID
     public static function load_by_id($id) {
         $db = db::instance();
-        $obj = $db->fetchById($id, __CLASS__, self::DB_TABLE);
-        return $obj;
+
+        // fetch the meal's basic attributes from database
+        $meal = $db->fetchById($id, __CLASS__, self::DB_TABLE);
+
+        // fetch the meal's attributes from relationship tables
+        //$meal_meal_type = $db->fetchByIdWithName($id, 'meal_id', __CLASS__, self::MEAL_TYPE_TABLE);
+
+        // return the meal
+        return $meal;
     }
 
     // load all meals
