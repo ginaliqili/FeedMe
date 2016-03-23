@@ -76,7 +76,7 @@
 
 					<div class="meal_info">
 						<div class="meal_image">
-							<img id="meal_image" src="<?= BASE_URL ?>/public/img/meal.jpg" alt="Meal Image"/>
+							<img id="meal_image" src="<?= $meal_image_url ?>" alt="<?= $meal->get('title') ?>"/>
 						</div>
 
 						<div class="meal_description">
@@ -98,7 +98,7 @@
 							<h4>Time to Prepare:</h4>
 							<p><?= $meal->get('time_to_prepare') ?></p>
 						</div>
-						
+
 						<?php
 						if (isset($_SESSION['username']) && $creator_username == $_SESSION['username']) {
 						echo '

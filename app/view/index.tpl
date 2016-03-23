@@ -71,9 +71,7 @@
 					<div id="meal_type">
 						<h3>Meal Type:</h3>
 						<form>
-							<input type="checkbox" name="meal_type" value="Breakfast">Breakfast<br>
-							<input type="checkbox" name="meal_type" value="Lunch">Lunch<br>
-							<input type="checkbox" name="meal_type" value="Dinner">Dinner<br>
+							<input type="checkbox" name="meal_type" value="Example Type">Example Type<br>
 						</form>
 					</div>
 
@@ -81,9 +79,6 @@
 						<h3>Food Type:</h3>
 						<select>
 							<option selected="selected">No Preference</option>
-							<option value="mediterranean">Mediterranean</option>
-							<option value="italian">Italian</option>
-							<option value="american">American</option>
 						</select>
 					</div>
 
@@ -91,11 +86,6 @@
 						<h3>Time to Prepare:</h3>
 						<select>
 							<option selected="selected">No Preference</option>
-							<option value="15_minutes">15 Minutes</option>
-							<option value="30_minutes">30 Minutes</option>
-							<option value="45_minutes">45 Minutes</option>
-							<option value="1_hour">1 Hour</option>
-							<option value="greater_1_hour">> 1 Hour</option>
 						</select>
 					</div>
 
@@ -108,8 +98,6 @@
 							</div>
 							<div id="select_allergies">
 								<select id="allergies_listbox" multiple="multiple">
-									<option>Peanuts</option>
-									<option>Dairy</option>
 								</select>
 							</div>
 						</form>
