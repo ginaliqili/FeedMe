@@ -27,14 +27,7 @@ class meal_controller {
 				break;
 
 			case 'create':
-				$attributes = array(
-					'title' => $_POST['title'],
-					'description' => $_POST['description'],
-					'meal_type' => $_POST['meal_type'],
-					'food_type' => $_POST['food_type'],
-					'time_to_prepare' => $_POST['time_to_prepare'],
-					'instructions' => $_POST['instructions']);
-				$this->create($attributes);
+				$this->create();
 				break;
 
 			case 'edit':
@@ -44,31 +37,28 @@ class meal_controller {
 
 			case 'update':
 				$meal_id = $_GET['meal_id'];
-				$attributes = array(
-					'title' => $_POST['title'],
-					'description' => $_POST['description'],
-					'meal_type' => $_POST['meal_type'],
-					'food_type' => $_POST['food_type'],
-					'time_to_prepare' => $_POST['time_to_prepare'],
-					'instructions' => $_POST['instructions']);
-				$this->update($meal_id, $attributes);
+				$this->update($meal_id);
 				break;
 
 			case 'destroy':
 				$meal_id = $_GET['meal_id'];
 				$this->destroy($meal_id);
 				break;
+
+			case 'search':
+				$this->search();
+				break;
 		}
 	}
 
-    public function index() {
+  public function index() {
 		// get all meals
 		$meals = meal::load_all();
 
 		include_once SYSTEM_PATH.'/view/meals_index.tpl';
-    }
+  }
 
-    public function show($id) {
+  public function show($id) {
 		// get data for this meal
 		$meal = meal::load_by_id($id);
 
@@ -83,14 +73,26 @@ class meal_controller {
 			$creator_username = null;
 		}
 
+		// get a random meal image from flickr
+		$meal_image_url = self::get_meal_image($meal->get('title'));
+
 		include_once SYSTEM_PATH.'/view/meals_show.tpl';
-    }
+  }
 
 	public function new() {
 		include_once SYSTEM_PATH.'/view/meals_new.tpl';
 	}
 
-	public function create($attributes) {
+	public function create() {
+		// create array of attributes
+		$attributes = array(
+			'title' => $_POST['title'],
+			'description' => $_POST['description'],
+			'meal_type' => $_POST['meal_type'],
+			'food_type' => $_POST['food_type'],
+			'time_to_prepare' => $_POST['time_to_prepare'],
+			'instructions' => $_POST['instructions']);
+
 		// create a new meal with the appropriate attributes
 		$meal = new meal($attributes);
 
@@ -112,7 +114,16 @@ class meal_controller {
 		include_once SYSTEM_PATH.'/view/meals_edit.tpl';
 	}
 
-	public function update($id, $attributes) {
+	public function update($id) {
+		// create array of attributes
+		$attributes = array(
+			'title' => $_POST['title'],
+			'description' => $_POST['description'],
+			'meal_type' => $_POST['meal_type'],
+			'food_type' => $_POST['food_type'],
+			'time_to_prepare' => $_POST['time_to_prepare'],
+			'instructions' => $_POST['instructions']);
+
 		// get data for this meal
 		$meal = meal::load_by_id($id);
 
@@ -140,5 +151,45 @@ class meal_controller {
 
 		// redirect to index page
 		header('Location: ' . BASE_URL . '/meals/');
+	}
+
+	public function search() {
+		// Generate the search parameters
+		$parameters = array(
+			'meal_type' => array_key_exists('meal_type', $_POST) ? $_POST['meal_type'] : null,
+			'food_type' => $_POST['food_type'],
+			'time_to_prepare' => $_POST['time_to_prepare']);
+
+		// Execute the search
+		$meals = meal::search($parameters);
+
+		// Render the search results
+		include_once SYSTEM_PATH.'/view/meals_index.tpl';
+	}
+
+	private static function get_meal_image($meal_title){
+		$endpoint = "https://api.flickr.com/services/rest/?";
+
+		// here's the full API call
+		$url = $endpoint.
+					"method=flickr.photos.search&".
+					"api_key=5eb81d061626db798d0aa6aae242c8e1&".
+					"text=".urlencode($meal_title)."&".
+					"extras=url_n&". // return URL to small image (320 px longest side)
+					"sort=relevance&". // sort by relevance
+					"safe_search=1&".
+					"page=1&".
+					"per_page=1&".
+					"format=json&".
+					"nojsoncallback=1";
+
+		// download results from Flickr API
+		$json = file_get_contents($url);
+
+		// decode JSON into php associative array
+		$arr = json_decode($json, true);
+
+		// return the picture
+		return $arr['photos']['photo'][0]['url_n'];
 	}
 }
