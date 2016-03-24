@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2016 at 07:05 PM
+-- Generation Time: Mar 24, 2016 at 07:44 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -35,16 +35,9 @@ CREATE TABLE `meal` (
   `time_to_prepare` varchar(50) NOT NULL,
   `instructions` text NOT NULL,
   `creator_id` int(11) UNSIGNED NOT NULL,
+  `image_url` varchar(200) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `meal`
---
-
-INSERT INTO `meal` (`id`, `title`, `description`, `meal_type`, `food_type`, `time_to_prepare`, `instructions`, `creator_id`, `date_created`) VALUES
-(1, 'Meal 1', 'test', 'test', 'test', 'test', 'test', 1, '2016-03-08 17:44:44'),
-(2, 'Meal 2', 'test', 'test', 'test', 'test', 'test', 2, '2016-03-08 17:45:07');
 
 -- --------------------------------------------------------
 
@@ -60,14 +53,6 @@ CREATE TABLE `user` (
   `last_name` varchar(50) DEFAULT NULL,
   `email` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `username`, `password`, `first_name`, `last_name`, `email`) VALUES
-(1, 'User 1', 'password', 'User', 'User', 'User@feedme.com'),
-(2, 'User 2', 'password', 'User', 'User', 'User@feedme.com');
 
 --
 -- Indexes for dumped tables
@@ -95,15 +80,12 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `meal`
 --
 ALTER TABLE `meal`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- Constraints for dumped tables
---
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for table `meal`

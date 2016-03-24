@@ -76,7 +76,7 @@
 
 					<div class="meal_info">
 						<div class="meal_image">
-							<img id="meal_image" src="<?= $meal_image_url ?>" alt="<?= $meal->get('title') ?>"/>
+							<img id="meal_image" src="<?= $meal->get('image_url') ?>" alt="<?= $meal->get('title') ?>"/>
 						</div>
 
 						<div class="meal_description">

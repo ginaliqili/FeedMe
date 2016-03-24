@@ -1,31 +1,26 @@
 <?php
 
 class meal extends db_object {
-  // name of database table
+  // Meals table
   const DB_TABLE = 'meal';
 
-  // relationship tables
-  const MEAL_MEAL_TYPE_TABLE = 'meal_meal_type';
-
-  // related tables
-  const MEAL_TYPE_TABLE = 'meal_type';
-
-  // database fields
+  // Table attributes
   protected $id;
   protected $title;
   protected $description;
   protected $time_to_prepare;
   protected $instructions;
   protected $creator_id;
+  protected $image_url;
   protected $date_created;
-  // advanced fields
+
+  // Advanced attributes (can have multiple values: need relational tables)
   protected $meal_type;
   protected $food_type;
   protected $ingredients;
 
-  // constructor
+  // Constructor
   public function __construct($args = array()) {
-    // TODO: Ingredients (many-to-many)
     $default_args = array(
         'id' => null,
         'title' => '',
@@ -33,6 +28,7 @@ class meal extends db_object {
         'time_to_prepare' => '',
         'instructions' => '',
         'creator_id' => 0,
+        'image_url' => '',
         'date_created' => null,
         'meal_type' => '',
         'food_type' => '',
@@ -40,23 +36,26 @@ class meal extends db_object {
 
     $args += $default_args;
 
+    // Set table attributes
     $this->id = $args['id'];
     $this->title = $args['title'];
     $this->description = $args['description'];
     $this->time_to_prepare = $args['time_to_prepare'];
     $this->instructions = $args['instructions'];
     $this->creator_id = $args['creator_id'];
+    $this->image_url = $args['image_url'];
     $this->date_created = $args['date_created'];
 
+    // Set advanced attributes
     $this->meal_type = $args['meal_type'];
     $this->food_type = $args['food_type'];
     $this->ingredients = $args['ingredients'];
   }
 
-  // save changes to a meal
+  // Save changes to a meal
   public function save() {
     $db = db::instance();
-    // omit id and any timestamps
+    // Omit id and any timestamps
     $db_properties = array(
         'title' => $this->title,
         'description' => $this->description,
@@ -64,32 +63,38 @@ class meal extends db_object {
         'food_type' => $this->food_type,
         'time_to_prepare' => $this->time_to_prepare,
         'instructions' => $this->instructions,
-        'creator_id' => $this->creator_id);
+        'creator_id' => $this->creator_id,
+        'image_url' => $this->image_url);
     $db->store($this, __CLASS__, self::DB_TABLE, $db_properties);
   }
 
-  // delete a meal
+  // Delete a meal
   public function delete() {
+    // Generate deletion query
     $query = sprintf(" DELETE FROM %s WHERE id = '%s' ",
     self::DB_TABLE,
     $this->id);
     $db = db::instance();
+
+    // Execute the deletion
     $result = $db->lookup($query);
+
+    // Return deletion result
     return $result;
   }
 
-  // load meal by ID
+  // Load meal by ID
   public static function load_by_id($id) {
     $db = db::instance();
 
-    // fetch the meal's basic attributes from database
+    // Fetch the meal's basic attributes from database
     $meal = $db->fetchById($id, __CLASS__, self::DB_TABLE);
 
-    // return the meal
+    // Return the meal
     return $meal;
   }
 
-  // load all meals
+  // Load all meals
   public static function load_all($limit=null) {
     $query = sprintf(" SELECT id FROM %s ORDER BY date_created DESC ",
         self::DB_TABLE);
