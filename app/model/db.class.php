@@ -43,16 +43,16 @@ class db {
 		}
   }
 
-  public function fetchByIdWithName($id, $id_name, $class_name, $db_table) {
+  public function fetchByAttribute($attr_name, $attr_value, $class_name, $db_table) {
     if ($id === null) {
          return null;
     }
 
     $query = sprintf("SELECT * FROM `%s` WHERE %s = '%s';",
         $db_table,
-        $id_name,
-        $id);
-    //echo $query;
+        $attr_name,
+        $attr_value);
+
     $result = $this->lookup($query);
 
     if(!mysqli_num_rows($result)) {
@@ -100,21 +100,21 @@ class db {
 		return date("'Y-m-d H:i:s'", $d);
 	}
 
-	//Query the database for information
+	// Query the database for information
 	public function lookup($query) {
 		$result = mysqli_query($this->conn, $query);
 		if(!$result) {
 			die('Invalid query: ' . $query);
-        }
+    }
 		return ($result);
 	}
 
-	//Execute operations like UPDATE or INSERT
+	// Execute operations like UPDATE or INSERT
 	public function execute($query) {
 		$ex = mysqli_query($this->conn, $query);
 		if(!$ex) {
 			die ('Query failed:' . mysqli_error($this->conn));
-        }
+    }
 	}
 
 	//Build an INSERT query.  Mostly here to make things neater elsewhere.

@@ -66,55 +66,62 @@
 				<h2>Fill out the following fields to be fed!</h2>
 			</div>
 
-			<div id="main_content">
-				<div id="meal_content">
-					<div id="meal_type">
-						<h3>Meal Type:</h3>
-						<form>
-							<input type="checkbox" name="meal_type" value="Example Type">Example Type<br>
-						</form>
-					</div>
+			<form method="POST" action="<?= BASE_URL ?>/meals/search">
 
-					<div id="food_type">
-						<h3>Food Type:</h3>
-						<select>
-							<option selected="selected">No Preference</option>
-						</select>
-					</div>
-
-					<div id="prepare_time">
-						<h3>Time to Prepare:</h3>
-						<select>
-							<option selected="selected">No Preference</option>
-						</select>
-					</div>
-
-					<div id="food_allergies">
-						<h3>Food Allergies:</h3>
-						<form>
-							<div id="new_allergy">
-								<input type="text" value="enter a food allergy" />
-								<button type="submit">+</button>
+				<div id="main_content">
+					<div id="meal_content">
+						<div id="meal_type">
+							<h3>Meal Type:</h3>
+							<div>
+								<input type="checkbox" name="meal_type[]" value="Breakfast">Breakfast<br>
+								<input type="checkbox" name="meal_type[]" value="Lunch">Lunch<br>
+								<input type="checkbox" name="meal_type[]" value="Dinner">Dinner<br>
 							</div>
-							<div id="select_allergies">
-								<select id="allergies_listbox" multiple="multiple">
-								</select>
-							</div>
-						</form>
-					</div>
+						</div>
 
-					<div id="advanced_settings">
-						<h3>Advanced Meal Settings:</h3>
-						<button type="button">Display</button>
+						<div id="food_type">
+							<h3>Food Type:</h3>
+							<select name='food_type'>
+								<option selected="selected"></option>
+								<option value="American">American</option>
+							</select>
+						</div>
+
+						<div id="time_to_prepare">
+							<h3>Time to Prepare:</h3>
+							<select name='time_to_prepare'>
+								<option selected="selected"></option>
+								<option value = "1 Hour">1 Hour</option>
+							</select>
+						</div>
+
+						<div id="food_allergies">
+							<h3>Food Allergies:</h3>
+							<div>
+								<div id="new_allergy">
+									<input type="text" value="enter a food allergy" />
+									<button type="button">+</button>
+								</div>
+								<div id="select_allergies">
+									<select id="allergies_listbox" multiple="multiple">
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div id="advanced_settings">
+							<h3>Advanced Meal Settings:</h3>
+							<button type="button">Display</button>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<div id="main_submission">
-				<form method="GET" action="<?= BASE_URL ?>/meals">
+				<div id="main_submission">
 					<button class="red_button shadow_button" type="submit">Feed Me</button>
-				</form>
-			</div>
+				</div>
+
+			</form>
+
 		</div>
 
 		<footer>

@@ -22,3 +22,4 @@ RewriteRule ^meals/(\d+)/?$ app/controller/meal_controller.php?action=show&meal_
 RewriteRule ^meals/(\d+)/edit/?$ app/controller/meal_controller.php?action=edit&meal_id=$1 [QSA,L]
 RewriteRule ^meals/(\d+)/update/?$ app/controller/meal_controller.php?action=update&meal_id=$1 [QSA,L]
 RewriteRule ^meals/(\d+)/destroy/?$ app/controller/meal_controller.php?action=destroy&meal_id=$1 [QSA,L]
+RewriteRule ^meals/search/?$ app/controller/meal_controller.php?action=search [QSA,L]

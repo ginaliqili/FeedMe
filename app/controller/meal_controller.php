@@ -27,14 +27,7 @@ class meal_controller {
 				break;
 
 			case 'create':
-				$attributes = array(
-					'title' => $_POST['title'],
-					'description' => $_POST['description'],
-					'meal_type' => $_POST['meal_type'],
-					'food_type' => $_POST['food_type'],
-					'time_to_prepare' => $_POST['time_to_prepare'],
-					'instructions' => $_POST['instructions']);
-				$this->create($attributes);
+				$this->create();
 				break;
 
 			case 'edit':
@@ -44,19 +37,16 @@ class meal_controller {
 
 			case 'update':
 				$meal_id = $_GET['meal_id'];
-				$attributes = array(
-					'title' => $_POST['title'],
-					'description' => $_POST['description'],
-					'meal_type' => $_POST['meal_type'],
-					'food_type' => $_POST['food_type'],
-					'time_to_prepare' => $_POST['time_to_prepare'],
-					'instructions' => $_POST['instructions']);
-				$this->update($meal_id, $attributes);
+				$this->update($meal_id);
 				break;
 
 			case 'destroy':
 				$meal_id = $_GET['meal_id'];
 				$this->destroy($meal_id);
+				break;
+
+			case 'search':
+				$this->search();
 				break;
 		}
 	}
@@ -93,7 +83,16 @@ class meal_controller {
 		include_once SYSTEM_PATH.'/view/meals_new.tpl';
 	}
 
-	public function create($attributes) {
+	public function create() {
+		// create array of attributes
+		$attributes = array(
+			'title' => $_POST['title'],
+			'description' => $_POST['description'],
+			'meal_type' => $_POST['meal_type'],
+			'food_type' => $_POST['food_type'],
+			'time_to_prepare' => $_POST['time_to_prepare'],
+			'instructions' => $_POST['instructions']);
+
 		// create a new meal with the appropriate attributes
 		$meal = new meal($attributes);
 
@@ -115,7 +114,16 @@ class meal_controller {
 		include_once SYSTEM_PATH.'/view/meals_edit.tpl';
 	}
 
-	public function update($id, $attributes) {
+	public function update($id) {
+		// create array of attributes
+		$attributes = array(
+			'title' => $_POST['title'],
+			'description' => $_POST['description'],
+			'meal_type' => $_POST['meal_type'],
+			'food_type' => $_POST['food_type'],
+			'time_to_prepare' => $_POST['time_to_prepare'],
+			'instructions' => $_POST['instructions']);
+
 		// get data for this meal
 		$meal = meal::load_by_id($id);
 
@@ -143,6 +151,17 @@ class meal_controller {
 
 		// redirect to index page
 		header('Location: ' . BASE_URL . '/meals/');
+	}
+
+	public function search() {
+		$parameters = array(
+			'meal_type' => array_key_exists('meal_type', $_POST) ? $_POST['meal_type'] : null,
+			'food_type' => $_POST['food_type'],
+			'time_to_prepare' => $_POST['time_to_prepare']);
+
+		$meals = meal::search($parameters);
+
+		include_once SYSTEM_PATH.'/view/meals_index.tpl';
 	}
 
 	private static function get_meal_image($meal_title){
