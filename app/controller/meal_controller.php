@@ -154,13 +154,16 @@ class meal_controller {
 	}
 
 	public function search() {
+		// Generate the search parameters
 		$parameters = array(
 			'meal_type' => array_key_exists('meal_type', $_POST) ? $_POST['meal_type'] : null,
 			'food_type' => $_POST['food_type'],
 			'time_to_prepare' => $_POST['time_to_prepare']);
 
+		// Execute the search
 		$meals = meal::search($parameters);
 
+		// Render the search results
 		include_once SYSTEM_PATH.'/view/meals_index.tpl';
 	}
 

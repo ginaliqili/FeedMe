@@ -137,7 +137,7 @@ class meal extends db_object {
       $search_queries[] = $food_type_query;
     }
 
-    // Search by time to time to prepare
+    // Search by time to prepare
     if ($parameters['time_to_prepare'] != null) {
       $time_to_prepare_query = $base_query . sprintf(" WHERE time_to_prepare = '%s'",
         $parameters['time_to_prepare']);
