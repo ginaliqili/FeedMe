@@ -16,7 +16,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-	<script type="text/javascript" src="<?= BASE_URL ?>public/js/scripts.js"></script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
 		// event handler for username textbox on Register page
@@ -26,7 +26,7 @@
 			$(textbox).removeClass('unavailable').removeClass('available');
 			// ajax GET request to see if username is available
 			$.get(
-				'<?php echo BASE_URL ?>users/create/check',
+				'<?php echo BASE_URL ?>/users/create/check',
 				{ "username": $(textbox).val() } )
 				.done(function(data){
 					if(data.success == 'success') {
@@ -59,22 +59,22 @@
 				<?php
 					if (!isset($_SESSION['username']) || $_SESSION['username'] == '') {
 				?>
-				<form method="POST" action="<?= BASE_URL ?>login">
+				<form method="POST" action="<?= BASE_URL ?>/login">
 					<label>Username: <input id="username" type="text" name="username"></label>
 					<label>Password: <input id="password" type="password" name="password"></label>
 					<button type="button submit" class="btn btn-primary btn-sm">Log In</button>
 				</form>
-				<form method="POST" action="<?= BASE_URL ?>signup">
+				<form method="POST" action="<?= BASE_URL ?>/signup">
 					<button type="button submit" class="btn btn-primary btn-sm">Sign Up</button>
 				</form>
 				<?php
 				} else {
 				?>
 				<p>Logged in as <strong><?= $_SESSION['username'] ?></strong></p>
-				<form method="POST" action="<?= BASE_URL ?>logout">
+				<form method="POST" action="<?= BASE_URL ?>/logout">
 					<button type="button submit" class="btn btn-primary btn-sm">Log Out</button>
 				</form>
-				<form method="GET" action="<?= BASE_URL ?>meals/new">
+				<form method="GET" action="<?= BASE_URL ?>/meals/new">
 					<button type="submit">Create Meal</button>
 				</form>
 				<?php
@@ -91,7 +91,7 @@
 			<div id="search">
 				<p>Know what you're looking for?</p>
 				<input type="text" value="Tasty meal.."/>
-				<form method="GET" action="<?= BASE_URL ?>meals">
+				<form method="GET" action="<?= BASE_URL ?>/meals">
 					<button type="button submit" class="btn btn-primary btn-sm">Search</button>
 				</form>
 			</div>
@@ -104,7 +104,7 @@
 
 			<div id="main_content">
 
-					<form id="register" method="POST" action="<?php echo BASE_URL.'users/create'; ?>">
+					<form id="register" method="POST" action="<?php echo BASE_URL.'/users/create'; ?>">
 
 							<div class="meal_content">
 

@@ -63,6 +63,9 @@ class meal_controller {
 		if (isset($_SESSION['username']) && !empty($favorites)) {
 				$favorites = favorite::load_all();
 		}
+		else {
+			$favorites = null;
+		}
 
 
 		// get all meals
@@ -75,6 +78,9 @@ class meal_controller {
 		// get all favorites
 		if (isset($_SESSION['username']) && !empty($favorites)) {
 				$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
 		}
 		// get data for this meal
 		$meal = meal::load_by_id($id);

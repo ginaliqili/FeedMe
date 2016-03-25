@@ -32,6 +32,9 @@ class site_controller {
 		if (isset($_SESSION['username']) && !empty($favorites)) {
 				$favorites = favorite::load_all();
 		}
+		else {
+			$favorites = null;
+		}
 
 
 		include_once SYSTEM_PATH.'/view/index.tpl';
