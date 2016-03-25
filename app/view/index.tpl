@@ -85,7 +85,7 @@
 
 			</div>
 
-			<div id="favorites_bar" style="position: fixed; display: none; left: 88%; padding: 10px; width: auto;">
+			<div id="favorites_bar" style="position: fixed; left: 88%; padding: 10px; width: auto;">
 				<ul class="list-group">
 
 					<?php
