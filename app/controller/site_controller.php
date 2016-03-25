@@ -29,7 +29,7 @@ class site_controller {
 
   public function home() {
 		// get all favorites
-		if (isset($_SESSION['username'])) {
+		if (isset($_SESSION['username']) && !empty($favorites)) {
 				$favorites = favorite::load_all();
 		}
 

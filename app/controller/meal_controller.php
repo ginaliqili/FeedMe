@@ -60,7 +60,7 @@ class meal_controller {
 
   public function index() {
 		// get all favorites
-		if (isset($_SESSION['username'])) {
+		if (isset($_SESSION['username']) && !empty($favorites)) {
 				$favorites = favorite::load_all();
 		}
 
@@ -73,7 +73,7 @@ class meal_controller {
 
   public function show($id) {
 		// get all favorites
-		if (isset($_SESSION['username'])) {
+		if (isset($_SESSION['username']) && !empty($favorites)) {
 				$favorites = favorite::load_all();
 		}
 		// get data for this meal
