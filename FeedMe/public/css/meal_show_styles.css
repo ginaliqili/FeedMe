@@ -1,0 +1,94 @@
+div#main_heading {
+	text-align: center;
+	margin-top: 0;
+}
+div#main_heading h1 {
+	font-family: 'Quicksand';
+	font-size: 54px;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+div#main_heading h2 {
+	font-family: 'Quicksand';
+	font-size: 20px;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+
+div.meal_content {
+	width: 85%;
+	margin: 0 auto;
+	height: auto;
+	overflow: auto;
+	padding: 2% 2% 2% 2%;
+	background-color: rgba(56,56,56, 0.15);
+	border: 2px solid black;
+	border-radius: 8px;
+}
+div.meal_content > div.meal_info {
+	height: auto;
+	overflow: auto;
+}
+
+div.meal_title {
+	min-height: 20px;
+	width: 100%;
+	margin: 10px 0 0 0;
+	padding: 0;
+	font-size: large;
+	overflow: none;
+}
+div.meal_title > * {
+	margin: 0;
+	padding: 0;
+}
+
+div.meal_creator {
+	min-height: 20px;
+	width: 100%;
+	margin: 0 0 10px 0;
+	padding: 0;
+	font-size: small;
+}
+div.meal_creator > * {
+	margin: auto;
+	display: inline-block;
+	vertical-align: top;
+	float: left;
+}
+
+
+div.meal_info {
+	min-height: 300px;
+	width: 100%;
+	border: 1px solid #383838;
+	margin: 10px 0;
+	padding: 0;
+}
+
+div.meal_table_container {
+	float: right;
+	width: 68%;
+}
+
+table.meal_table {
+	width: 100%;
+}
+
+div.meal_info > div.meal_image {
+	min-height: 300px;
+	width: 30%;
+  margin-right: 10px;
+	float: left;
+}
+div.meal_info > div.meal_image > img {
+	max-width: 100%;
+	max-height: 100%;
+}
+div.meal_info > div.meal_decision {
+	padding: 0;
+}
+div.meal_info > div.meal_decision * {
+	display: inline;
+}
