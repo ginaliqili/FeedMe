@@ -177,11 +177,10 @@
 							<input type="hidden" id="meal_id" name="meal_id" value="<?= $meal->get('id') ?>">
 							<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
 
-								<button id="eat_later" style="position: relative" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
-
 							<?php
 							if (isset($_SESSION['username']) && $creator_username == $_SESSION['username']) {
 							echo '
+							<button id="eat_later" style="position: relative" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
 							<form method="GET" action="'.BASE_URL.'/meals/'.$meal->get('id').'/edit">
 								<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
 							</form>

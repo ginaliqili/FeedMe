@@ -3,7 +3,7 @@
 // path constants
 define('SYSTEM_PATH', dirname(__FILE__)); # location of 'app' folder - don't change
 //define('BASE_URL','http://ec2-54-200-124-181.us-west-2.compute.amazonaws.com/apps/FeedMe/');
-define('BASE_URL','http://localhost/apps/FeedMe');
+define('BASE_URL','http://localhost/apps/FeedMe/');
 
 // database constants
 define('DB_HOST','127.0.0.1');

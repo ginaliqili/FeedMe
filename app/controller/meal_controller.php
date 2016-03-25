@@ -73,7 +73,9 @@ class meal_controller {
 
   public function show($id) {
 		// get all favorites
-		$favorites = favorite::load_all();
+		if (isset($_SESSION['username'])) {
+				$favorites = favorite::load_all();
+		}
 		// get data for this meal
 		$meal = meal::load_by_id($id);
 
