@@ -184,7 +184,6 @@ class meal_controller {
 		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
 		// Get the user id
 		$user = user::load_by_username($_SESSION['username']);
-		//$user_id = $user->load_id_by_username($_SESSION['username']);
 		$user_id = $user->get('id');
 
 		// Create a new favorite
@@ -193,7 +192,7 @@ class meal_controller {
 		$favorite->set('meal_title', $meal_title);
 		$favorite->set('user_id', $user_id);
 
-
+		// save the favorite and eccho json
 		if ($favorite->save()) {
 			echo json_encode(array(
 				'success' => 'success',

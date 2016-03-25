@@ -41,7 +41,7 @@ class favorite extends db_object {
         return true;
     }
 
-    // load all meals
+    // load all favorites
     public static function load_all($limit=null) {
         $user = user::load_by_username($_SESSION['username']);
         $user_id = $user->get('id');

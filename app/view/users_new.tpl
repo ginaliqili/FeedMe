@@ -6,8 +6,6 @@
 
 	<title>FeedMe</title>
 
-
-
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
 		<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/index_styles.css">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meal_show_styles.css">

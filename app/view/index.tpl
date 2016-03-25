@@ -156,7 +156,7 @@
 						<td>
 							<div id="advanced_settings">
 							<h3>Advanced Meal Settings:</h3>
-							<button id="display" type="button">Display</button>
+							<button id="display_adv" type="button">Display</button>
 						</div>
 					</td>
 					<td class="advanced">
