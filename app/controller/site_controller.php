@@ -28,6 +28,12 @@ class site_controller {
 	}
 
   public function home() {
+		// get all favorites
+		if (isset($_SESSION['username'])) {
+				$favorites = favorite::load_all();
+		}
+
+
 		include_once SYSTEM_PATH.'/view/index.tpl';
   }
 

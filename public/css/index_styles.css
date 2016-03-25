@@ -15,22 +15,30 @@ div#main_heading h2 {
 	padding: 0 0 0 0;
 }
 
+
+
 div#meal_content {
-	min-height: 400px;
+	width: 85%;
+	margin: 0 auto;
+	min-height: auto;
 	height: auto;
 	overflow: auto;
 	padding: 2% 2% 2% 2%;
-	background-color: rgba(56,56,56, 0.6);
+	background-color: rgba(56,56,56, 0.15);
 	border: 2px solid black;
 	border-radius: 8px;
 }
+
 div#meal_content > * {
-	display: inline;
-	width: 24.5%;
-	height: 50%;
-	float: left;
-	background-color: #00FFFF;
-	border: 1px solid #383838;
+
+}
+
+table {
+	width: 100%
+}
+
+td {
+	width: 27%;
 }
 
 div#main_submission {
@@ -40,4 +48,8 @@ div#main_submission {
 }
 div#main_submission button {
 	width: 100px;
+}
+
+.advanced {
+	display: none;
 }

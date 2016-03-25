@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
 	// Removes sample text from a textbox input
 	$('input[type=text], textarea').click(function(){
 		$(this).val('');
@@ -9,6 +10,20 @@ $(document).ready(function(){
 		$('.hidden').show();
 		$('#main_decision').hide();
 	});
+
+
+
+// Displays advanced meal settings
+$('#display').click(function() {
+	$('.advanced').show();
+})
+
+// Shows Favorites bar
+$('#favorites').click(function() {
+	$('#favorites_bar').toggle();
+})
+
+
 
 	// // event handler for username textbox on Register page
 	// $('#register #uname').blur(function(){
