@@ -54,9 +54,6 @@
 			});
 
 
-
-
-
 			// event handler for checking whether or not can add to favorites
 			$('#eat_later').mouseenter(function(){
 				// ajax GET request to check if duplicate favorite
@@ -67,10 +64,11 @@
 						if(data.success == 'success') {
 							// successfully reached the server
 							if(data.check == 'duplicate') {
-								$('#eat_later').prop('disabled', 'true');
+								//$('#eat_later').prop('disabled', 'true');
+								alert('duplicate');
 
 							} else {
-								//alert("unique");
+								alert("unique");
 							}
 						} else if(data.error != '') {
 							alert("Error");
@@ -80,10 +78,6 @@
 						});
 
 					});
-
-
-
-
 
 		});
 
