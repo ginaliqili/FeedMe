@@ -85,13 +85,13 @@
 						<br>
 
 						<div class="input-group meal_type">
-							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+							<span class="input-group-addon"><i class="fa fa-cutlery"></i></span>
 							<input class="form-control" type="text" name="meal_type" placeholder="Meal Type">
 						</div>
 						<br>
 
 						<div class="input-group food_type">
-							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+							<span class="input-group-addon"><i class="fa fa-globe"></i></span>
 							<input class="form-control" type="text" name="food_type" placeholder="Food Type">
 						</div>
 						<br>

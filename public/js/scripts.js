@@ -14,7 +14,7 @@ $(document).ready(function(){
 
 
 // Displays advanced meal settings
-$('#display').click(function() {
+$('#display').toggle(function() {
 	$('.advanced').show();
 })
 

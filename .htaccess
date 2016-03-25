@@ -24,4 +24,3 @@ RewriteRule ^meals/(\d+)/update/?$ app/controller/meal_controller.php?action=upd
 RewriteRule ^meals/(\d+)/destroy/?$ app/controller/meal_controller.php?action=destroy&meal_id=$1 [QSA,L]
 RewriteRule ^meals/search/?$ app/controller/meal_controller.php?action=search [QSA,L]
 RewriteRule ^meals/(\d+)/favorite/?$ app/controller/meal_controller.php?action=favorite&meal_id=$1 [QSA,L]
-RewriteRule ^meals/(\d+)/favorite_check/?$ app/controller/meal_controller.php?action=favorite_check&meal_id=$1 [QSA,L]

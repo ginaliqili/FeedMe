@@ -55,11 +55,6 @@ class meal_controller {
 				$this->favorite($meal_id, $meal_title);
 				break;
 
-			case 'favorite_check':
-				$meal_id = $_GET['meal_id'];
-				$this->favorite_check($meal_id);
-				break;
-
 		}
 	}
 
@@ -212,25 +207,6 @@ class meal_controller {
 			));
 
 		}
-	}
-
-	public function favorite_check($meal_id) {
-		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
-
-		if (favorite::check_duplicate_favorites($meal_id)) {
-			echo json_encode(array(
-				'success' => 'success',
-				'check' => 'duplicate'
-			));
-		}
-		else {
-			echo json_encode(array(
-				'success' => 'success',
-				'check' => 'unique'
-			));
-
-		}
-
 	}
 
 	private static function generate_image_url($meal_title){

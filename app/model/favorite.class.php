@@ -41,8 +41,6 @@ class favorite extends db_object {
         return true;
     }
 
-
-
     // load all meals
     public static function load_all($limit=null) {
         $user = user::load_by_username($_SESSION['username']);
@@ -70,30 +68,4 @@ class favorite extends db_object {
         return $obj;
     }
 
-
-    // checks to see if there are duplicate favorites
-    public function check_duplicate_favorites($meal_id) {
-      $user = user::load_by_username($_SESSION['username']);
-      $user_id = $user->get('id');
-      $query = sprintf(" SELECT meal_id FROM %s WHERE user_id = $user_id ",
-          self::DB_TABLE);
-      $db = db::instance();
-      $result = $db->lookup($query);
-      $objects = array();
-      while ($row = mysqli_fetch_assoc($result)) {
-          $objects[] = self::load_by_id($row['user_id']);
-      }
-
-      if(!mysqli_num_rows($result)) {
-          return false;
-      }
-      else {
-        foreach ($result as $fav_meal_id) {
-          if ($fav_meal_id == $meal_id) {
-            return true;
-          }
-        }
-          return false;
-    }
-  }
 }

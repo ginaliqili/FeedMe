@@ -54,31 +54,6 @@
 			});
 
 
-			// event handler for checking whether or not can add to favorites
-			$('#eat_later').mouseenter(function(){
-				// ajax GET request to check if duplicate favorite
-				$.get(
-					favorite_check,
-					{ "meal_id": meal_id } )
-					.done(function(data){
-						if(data.success == 'success') {
-							// successfully reached the server
-							if(data.check == 'duplicate') {
-								//$('#eat_later').prop('disabled', 'true');
-								alert('duplicate');
-
-							} else {
-								alert("unique");
-							}
-						} else if(data.error != '') {
-							alert("Error");
-						} })
-						.fail(function(){
-							alert("Ajax error: could not reach server.");
-						});
-
-					});
-
 		});
 
 	</script>
