@@ -12,12 +12,12 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>public/css/styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>public/css/meals_show_styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>public/css/meal_show_styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meals_show_styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meal_show_styles.css">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-	<script type="text/javascript" src="<?= BASE_URL ?>public/js/scripts.js"></script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 </head>
 
 <body>
@@ -27,19 +27,19 @@
 				<?php
 					if (!isset($_SESSION['username']) || $_SESSION['username'] == '') {
 				?>
-				<form method="POST" action="<?= BASE_URL ?>login">
+				<form method="POST" action="<?= BASE_URL ?>/login">
 					<label>Username: <input id="username" type="text" name="username"></label>
 					<label>Password: <input id="password" type="password" name="password"></label>
 					<button type="button submit" class="btn btn-primary btn-sm">Log In</button>
 				</form>
-				<form method="POST" action="<?= BASE_URL ?>signup">
+				<form method="POST" action="<?= BASE_URL ?>/signup">
 					<button type="button submit" class="btn btn-primary btn-sm">Sign Up</button>
 				</form>
 				<?php
 				} else {
 				?>
 				<p>Logged in as <strong><?= $_SESSION['username'] ?></strong></p>
-				<form method="POST" action="<?= BASE_URL ?>logout">
+				<form method="POST" action="<?= BASE_URL ?>/logout">
 					<button type="button submit" class="btn btn-primary btn-sm">Log Out</button>
 				</form>
 				<?php
@@ -50,7 +50,7 @@
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
 				<i class="fa fa-caret-right"></i>
-				<a href="<?= BASE_URL ?>meals">Meals</a>
+				<a href="<?= BASE_URL ?>/meals">Meals</a>
 			</nav>
 
 
@@ -58,7 +58,7 @@
 			<div id="search">
 				<p>Know what you're looking for?</p>
 				<input type="text" value="Tasty meal.."/>
-				<form method="GET" action="<?= BASE_URL ?>meals">
+				<form method="GET" action="<?= BASE_URL ?>/meals">
 					<button type="button submit" class="btn btn-primary btn-sm">Search</button>
 				</form>
 			</div>
@@ -72,7 +72,7 @@
 
 					<button type="button" class="btn btn-default"><a style="color: inherit;" href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
 
-					<form method="GET" action="<?= BASE_URL ?>meals/new">
+					<form method="GET" action="<?= BASE_URL ?>/meals/new">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
 					</form>
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
@@ -91,7 +91,7 @@
 					$meal_title = $favorite->get('meal_title');
 
 					echo '
-				<a href="'.BASE_URL.'meals/'.$meal_id.'"<li class="list-group-item">'.$meal_title.'</li></a>';}}?>
+				<a href="'.BASE_URL.'/meals/'.$meal_id.'"<li class="list-group-item">'.$meal_title.'</li></a>';}}?>
 				</ul>
 			</div>
 
@@ -148,15 +148,15 @@
 							<p>'.$meal_time_to_prepare.'</p>
 						</div>
 						<div class="meal_decision">
-							<form method="GET" action="'.BASE_URL.'meals/'.$meal_id.'">
+							<form method="GET" action="'.BASE_URL.'/meals/'.$meal_id.'">
 								<button type="submit button" class="btn btn-success btn-primary btn-lg">Eat Now</button>
 							</form>';
 				if (isset($_SESSION['username']) && $meal_creator_username == $_SESSION['username']) {
 				echo '
-							<form method="GET" action="'.BASE_URL.'meals/'.$meal_id.'/edit">
+							<form method="GET" action="'.BASE_URL.'/meals/'.$meal_id.'/edit">
 								<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
 							</form>
-							<form method="POST" action="'.BASE_URL.'meals/'.$meal_id.'/destroy">
+							<form method="POST" action="'.BASE_URL.'/meals/'.$meal_id.'/destroy">
 								<button id="meal_delete" type="submit button" class="btn btn-primary btn-lg">Delete</button>
 							</form>';}
 				echo '

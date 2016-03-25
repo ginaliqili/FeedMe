@@ -10,11 +10,11 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>public/css/styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>public/css/meal_show_styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meal_show_styles.css">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-	<script type="text/javascript" src="<?= BASE_URL ?>public/js/scripts.js"></script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 </head>
 
 <body>
@@ -24,19 +24,19 @@
 				<?php
 					if (!isset($_SESSION['username']) || $_SESSION['username'] == '') {
 				?>
-				<form method="POST" action="<?= BASE_URL ?>login">
+				<form method="POST" action="<?= BASE_URL ?>/login">
 					<label>Username: <input id="username" type="text" name="username"></label>
 					<label>Password: <input id="password" type="password" name="password"></label>
 					<button type="button submit" class="btn btn-primary btn-sm">Log In</button>
 				</form>
-				<form method="POST" action="<?= BASE_URL ?>signup">
+				<form method="POST" action="<?= BASE_URL ?>/signup">
 					<button type="button submit" class="btn btn-primary btn-sm">Sign Up</button>
 				</form>
 				<?php
 				} else {
 				?>
 				<p>Logged in as <strong><?= $_SESSION['username'] ?></strong></p>
-				<form method="POST" action="<?= BASE_URL ?>logout">
+				<form method="POST" action="<?= BASE_URL ?>/logout">
 					<button type="button submit" class="btn btn-primary btn-sm">Log Out</button>
 				</form>
 				<?php
@@ -47,9 +47,9 @@
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
 				<i class="fa fa-caret-right"></i>
-				<a href="<?= BASE_URL ?>meals">Meals</a>
+				<a href="<?= BASE_URL ?>/meals">Meals</a>
 				<i class="fa fa-caret-right"></i>
-				<a href="<?= BASE_URL ?>meals/<?=$meal->get('id')?>/edit">Edit</a>
+				<a href="<?= BASE_URL ?>/meals/<?=$meal->get('id')?>/edit">Edit</a>
 			</nav>
 
 
@@ -57,14 +57,14 @@
 			<div id="search">
 				<p>Know what you're looking for?</p>
 				<input type="text" value="Tasty meal.."/>
-				<form method="GET" action="<?= BASE_URL ?>meals">
+				<form method="GET" action="<?= BASE_URL ?>/meals">
 					<button type="button submit" class="btn btn-primary btn-sm">Search</button>
 				</form>
 			</div>
 		</header>
 		<div id="content">
 			<div id="main_content">
-				<form method="POST" action="<?= BASE_URL ?>meals/<?= $meal->get('id') ?>/update">
+				<form method="POST" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/update">
 					<div class="meal_content">
 
 						<div class="input-group title">
