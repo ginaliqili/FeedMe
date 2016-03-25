@@ -82,6 +82,7 @@
 				$meal_meal_type = $meal->get('meal_type');
 				$meal_food_type = $meal->get('food_type');
 				$meal_time_to_prepare = $meal->get('time_to_prepare');
+				$meal_image_url = $meal->get('image_url');
 				echo '
 				<div id="meal_1" class="meal_content">
 					<div class="meal_title">
@@ -95,7 +96,7 @@
 
 					<div class="meal_info">
 						<div class="meal_image">
-							<img id="meal_image" src="'.BASE_URL.'/public/img/meal.jpg" alt="Meal Image"/>
+							<img id="meal_image" src="'.$meal_image_url.'" alt="'.$meal_title.'"/>
 						</div>
 						<div class="meal_description">
 							<h4>Description:</h4>

@@ -73,9 +73,6 @@ class meal_controller {
 			$creator_username = null;
 		}
 
-		// get a random meal image from flickr
-		$meal_image_url = self::get_meal_image($meal->get('title'));
-
 		include_once SYSTEM_PATH.'/view/meals_show.tpl';
   }
 
@@ -91,7 +88,8 @@ class meal_controller {
 			'meal_type' => $_POST['meal_type'],
 			'food_type' => $_POST['food_type'],
 			'time_to_prepare' => $_POST['time_to_prepare'],
-			'instructions' => $_POST['instructions']);
+			'instructions' => $_POST['instructions'],
+			'image_url' => self::generate_image_url($_POST['title']));
 
 		// create a new meal with the appropriate attributes
 		$meal = new meal($attributes);
@@ -167,29 +165,29 @@ class meal_controller {
 		include_once SYSTEM_PATH.'/view/meals_index.tpl';
 	}
 
-	private static function get_meal_image($meal_title){
+	private static function generate_image_url($meal_title){
 		$endpoint = "https://api.flickr.com/services/rest/?";
 
-		// here's the full API call
+		// Here's the full API call
 		$url = $endpoint.
 					"method=flickr.photos.search&".
 					"api_key=5eb81d061626db798d0aa6aae242c8e1&".
 					"text=".urlencode($meal_title)."&".
-					"extras=url_n&". // return URL to small image (320 px longest side)
-					"sort=relevance&". // sort by relevance
+					"extras=url_n&".
+					"sort=relevance&".
 					"safe_search=1&".
 					"page=1&".
 					"per_page=1&".
 					"format=json&".
 					"nojsoncallback=1";
 
-		// download results from Flickr API
+		// Download results from Flickr API
 		$json = file_get_contents($url);
 
-		// decode JSON into php associative array
+		// Decode JSON into php associative array
 		$arr = json_decode($json, true);
 
-		// return the picture
+		// Return the image url
 		return $arr['photos']['photo'][0]['url_n'];
 	}
 }
