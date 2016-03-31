@@ -87,14 +87,12 @@
 
 			<div id="favorites_bar" style="position: fixed; left: 88%; padding: 10px; width: auto;">
 				<ul class="list-group">
-
 					<?php
 					if (isset($_SESSION['username'])) {
 					if ($favorites != null) {
 					foreach($favorites as $favorite) {
 					$meal_id = $favorite->get('meal_id');
 					$meal_title = $favorite->get('meal_title');
-
 					echo '
 				<a href="'.BASE_URL.'/meals/'.$meal_id.'"<li class="list-group-item">'.$meal_title.'</li></a>';}}}?>
 				</ul>
@@ -106,103 +104,95 @@
 			</div>
 
 			<form method="POST" action="<?= BASE_URL ?>/meals/search">
-
 				<div id="main_content">
 					<div id="meal_content">
 						<table id="meal_options">
-								<tr>
-									<td>
-										<h3>Meal Type:</h3>
-										<div>
-											<input type="checkbox" name="meal_type[]" value="Breakfast">Breakfast<br>
-											<input type="checkbox" name="meal_type[]" value="Lunch">Lunch<br>
-											<input type="checkbox" name="meal_type[]" value="Dinner">Dinner<br>
-										</div>
-									</td>
+							<tr>
+								<td>
+									<h3>Meal Type:</h3>
+									<div>
+										<input type="checkbox" name="meal_type[]" value="Breakfast">Breakfast<br>
+										<input type="checkbox" name="meal_type[]" value="Lunch">Lunch<br>
+										<input type="checkbox" name="meal_type[]" value="Dinner">Dinner<br>
+									</div>
+								</td>
 
-
-						<td>
-							<h3>Food Type:</h3>
-							<select name='food_type'>
-								<option selected="selected"></option>
-								<option value="American">American</option>
-							</select>
-						</td>
-
-						<td>
-							<h3>Time to Prepare:</h3>
-							<select name='time_to_prepare'>
-								<option selected="selected"></option>
-								<option value = "1 Hour">1 Hour</option>
-							</select>
-						</td>
-
-						<td>
-							<h3>Food Allergies:</h3>
-							<div>
-								<div id="new_allergy">
-									<input type="text" value="enter a food allergy" />
-									<button type="button">+</button>
-								</div>
-								<div id="select_allergies">
-									<select id="allergies_listbox" multiple="multiple">
+								<td>
+									<h3>Food Type:</h3>
+									<select name='food_type'>
+										<option selected="selected"></option>
+										<option value="American">American</option>
 									</select>
-								</div>
-							</div>
-						</td>
-					</tr>
+								</td>
 
-					<tr>
-						<td>
-							<div id="advanced_settings">
-							<h3>Advanced Meal Settings:</h3>
-							<button id="display_adv" type="button">Display</button>
-						</div>
-					</td>
-					<td class="advanced">
-						<h4>Enter Ingredients:</h4>
-							<div id="new_ingredient">
-								<input type="text" value="enter an ingredient" />
-								<button type="submit">+</button>
-							</div>
-							<div id="select_ingredients">
-								<select id="ingredients_listbox" multiple="multiple">
-									<option>Potato</option>
-									<option>Cheese</option>
-								</select>
-							</div>
-						</td>
+								<td>
+									<h3>Time to Prepare:</h3>
+									<select name='time_to_prepare'>
+										<option selected="selected"></option>
+										<option value = "1 Hour">1 Hour</option>
+									</select>
+								</td>
 
-						<td class="advanced">
-							<h4>Occasion Type:</h4>
+								<td>
+									<h3>Food Allergies:</h3>
+									<div>
+										<div id="new_allergy">
+											<input type="text" value="enter a food allergy" />
+											<button type="button">+</button>
+										</div>
+										<div id="select_allergies">
+											<select id="allergies_listbox" multiple="multiple">
+											</select>
+										</div>
+									</div>
+								</td>
+							</tr>
 
-								<input type="checkbox" name="meal_type" value="Casual">Casual<br>
-								<input type="checkbox" name="meal_type" value="Fancy">Fancy<br>
-								<input type="checkbox" name="meal_type" value="Quick">Outdoor<br>
+							<tr>
+								<td>
+									<div id="advanced_settings">
+										<h3>Advanced Meal Settings:</h3>
+										<button id="display_adv" type="button">Display</button>
+									</div>
+								</td>
+								<td class="advanced">
+									<h4>Enter Ingredients:</h4>
+									<div id="new_ingredient">
+										<input type="text" value="enter an ingredient" />
+										<button type="button">+</button>
+									</div>
+									<div id="select_ingredients">
+										<select id="ingredients_listbox" multiple="multiple">
+											<option>Potato</option>
+											<option>Cheese</option>
+										</select>
+									</div>
+								</td>
 
-						</td>
+								<td class="advanced">
+									<h4>Occasion Type:</h4>
+									<input type="checkbox" name="meal_type" value="Casual">Casual<br>
+									<input type="checkbox" name="meal_type" value="Fancy">Fancy<br>
+									<input type="checkbox" name="meal_type" value="Quick">Outdoor<br>
+								</td>
 
-						<td class="advanced">
-							<h4>Rating:</h4>
-
-								<input type="checkbox" name="meal_type" value="5">5 star<br>
-								<input type="checkbox" name="meal_type" value="4">4 star<br>
-								<input type="checkbox" name="meal_type" value="3">3 star (and below)<br>
-
-						</td>
-
-					</tr>
-				</table>
+								<td class="advanced">
+									<h4>Rating:</h4>
+									<input type="checkbox" name="meal_type" value="5">5 star<br>
+									<input type="checkbox" name="meal_type" value="4">4 star<br>
+									<input type="checkbox" name="meal_type" value="3">3 star (and below)<br>
+								</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 
 				<br>
+
 				<div id="main_submission">
 					<button type="button submit" class="btn btn-success btn-lg">Feed Me</button>
 				</div>
-
 			</form>
-
 		</div>
 
 		<footer>
