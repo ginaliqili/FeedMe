@@ -66,7 +66,6 @@ class user_controller {
 		// Redirect to home page
 		header('Location: '.BASE_URL);
 		exit();
-
 	}
 
 	public function create_check() {
