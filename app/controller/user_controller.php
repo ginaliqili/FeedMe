@@ -51,6 +51,7 @@ class user_controller {
 		$user = user::load_by_id($id);
 
 		include_once SYSTEM_PATH.'/view/users_show.tpl';
+	}
 
 	public function new() {
 		include_once SYSTEM_PATH.'/view/users_new.tpl';
