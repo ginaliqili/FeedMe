@@ -2,17 +2,22 @@
 
 include_once '../global.php';
 
-// get the identifier for the page we want to load
+// Get the identifier for the page we want to load
 $action = $_GET['action'];
 
-// instantiate a user controller and route it
+// Instantiate a user controller and route it
 $uc = new user_controller();
 $uc->route($action);
 
 class user_controller {
-	// route us to the appropriate class method for this action
+	// Route us to the appropriate class method for this action
 	public function route($action) {
 		switch($action) {
+			case 'show':
+				$user_id = $_GET['user_id'];
+				$this->show($user_id);
+				break;
+
 			case 'new':
 				$this->new();
 				break;
@@ -30,7 +35,6 @@ class user_controller {
 			case 'create_check':
 				$this->create_check();
 				break;
-
 		}
 	}
 
@@ -39,8 +43,7 @@ class user_controller {
 	}
 
 	public function create($attributes) {
-
-		// do not create if username is not available
+		// Do not create if username is not available
 		$user = user::load_by_username($_POST['username']);
 		if($user) {
 			// $user is not null, so username is not available
@@ -50,35 +53,37 @@ class user_controller {
 			exit();
 		}
 
-		// create a new user with the appropriate attributes
+		// Create a new user with the appropriate attributes
 		$user = new user($attributes);
 
-		// save the new user
+		// Save the new user
 		$user->save();
 
-		// log the user in
+		// Log the user in
 		$_SESSION['username'] = $user->get('username');
 		$_SESSION['error'] = "You successfully registered as ".$_SESSION['username'].".";
 
-
-		// redirect to home page
+		// Redirect to home page
 		header('Location: '.BASE_URL);
 		exit();
 
 	}
 
 	public function create_check() {
-		// set the header to hint the response type (JSON) for JQuery's Ajax method
+		// Set the header to hint the response type (JSON) for JQuery's Ajax method
 		header('Content-Type: application/json');
-		// get the username data
+
+		// Get the username data
 		$username = $_GET['username'];
-		// make sure it's a real username
+
+		// Make sure it's a real username
 		if(is_null($username) || $username == '') {
 			echo json_encode(array('error' => 'Invalid username.'));
 		}
 		else {
-			// okay, it's a real username. Is it available?
+			// Okay, it's a real username. Is it available?
 			$user = user::load_by_username($username);
+
 			if(is_null($user)) {
 				// $user is null, so username is available!
 				echo json_encode(array(
