@@ -38,6 +38,20 @@ class user_controller {
 		}
 	}
 
+	public function show($id) {
+		// Get all favorites
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
+
+		// Get data for this user
+		$user = user::load_by_id($id);
+
+		include_once SYSTEM_PATH.'/view/users_show.tpl';
+
 	public function new() {
 		include_once SYSTEM_PATH.'/view/users_new.tpl';
 	}

@@ -80,6 +80,7 @@ class meal_controller {
 		else {
 			$favorites = null;
 		}
+		
 		// Get data for this meal
 		$meal = meal::load_by_id($id);
 
