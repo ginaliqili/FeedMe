@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2016 at 07:44 PM
+-- Generation Time: Mar 25, 2016 at 05:31 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -19,6 +19,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `feedme`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `favorite`
+--
+
+CREATE TABLE `favorite` (
+  `id` int(11) NOT NULL,
+  `meal_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `meal_title` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `favorite`
+--
+
+INSERT INTO `favorite` (`id`, `meal_id`, `user_id`, `meal_title`) VALUES
+(1, 1, 2, 'Meatloaf'),
+(2, 2, 2, 'Banana Brea'),
+(3, 5, 1, 'Pho'),
+(4, 4, 1, 'White Cake');
 
 -- --------------------------------------------------------
 
@@ -39,6 +62,17 @@ CREATE TABLE `meal` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `meal`
+--
+
+INSERT INTO `meal` (`id`, `title`, `description`, `meal_type`, `food_type`, `time_to_prepare`, `instructions`, `creator_id`, `image_url`, `date_created`) VALUES
+(1, 'Meatloaf', 'Best meatloaf recipe!', 'Dinner', 'American', '15 min', 'Cook beef', 2, 'https://farm8.staticflickr.com/7350/9491525665_366c2be10d_n.jpg', '2016-03-25 16:21:37'),
+(2, 'Banana Bread', 'Super moist banana bread', 'Breakfast', 'American', '1 hr', 'Add flour, water, vanilla, butter, and eggs into a nonstick bread pan. Add walnuts and chocolate chips if desired. Bake for 1 hour.', 2, 'https://farm5.staticflickr.com/4126/5052439919_e76d3562d5_n.jpg', '2016-03-25 16:23:04'),
+(3, 'Spaghetti', 'Amazing spaghetti', 'Lunch', 'Italian', '20 mins', 'Bring water to boil, add spaghetti noodles and cook. Garnish with italian seasoning, cheese, and tomato sauce.', 2, 'https://farm4.staticflickr.com/3469/5704122117_7d15ce7a60_n.jpg', '2016-03-25 16:24:03'),
+(4, 'White Cake', 'My favorite birthday cake', 'Breakfast', 'American', '1 hr', 'Add cake mix together.', 2, 'https://farm6.staticflickr.com/5190/5693019578_47012d5ec1_n.jpg', '2016-03-25 16:24:42'),
+(5, 'Pho', 'Comfort food!', 'Lunch', 'Asian', '40 min', 'Boil noodles and add MSG. Add vegetables and meat of your choice.', 1, 'https://farm3.staticflickr.com/2703/4137159599_22e99e1d89_n.jpg', '2016-03-25 16:25:37');
+
 -- --------------------------------------------------------
 
 --
@@ -55,8 +89,22 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `password`, `first_name`, `last_name`, `email`) VALUES
+(1, 'ginali', 'pw', 'Gina', 'Li', 'ginali@vt.edu'),
+(2, 'tommydean', 'pw', 'Tommy', 'Dean', 'tommydean@vt.edu');
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `favorite`
+--
+ALTER TABLE `favorite`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `meal`
@@ -77,15 +125,23 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `favorite`
+--
+ALTER TABLE `favorite`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
 -- AUTO_INCREMENT for table `meal`
 --
 ALTER TABLE `meal`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- Constraints for dumped tables
+--
 
 --
 -- Constraints for table `meal`
