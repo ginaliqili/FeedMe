@@ -6,6 +6,12 @@
 
 	<title>FeedMe</title>
 
+	<!--Font Awesome -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meals_show_styles.css">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meal_show_styles.css">
@@ -21,28 +27,21 @@
 				<?php
 					if (!isset($_SESSION['username']) || $_SESSION['username'] == '') {
 				?>
-
 				<form method="POST" action="<?= BASE_URL ?>/login">
-					<label>Username: <input type="text" name="username"></label>
-					<label>Password: <input type="password" name="password"></label>
-					<button type="submit">Log in</button>
+					<label>Username: <input id="username" type="text" name="username"></label>
+					<label>Password: <input id="password" type="password" name="password"></label>
+					<button type="button submit" class="btn btn-primary btn-sm">Log In</button>
 				</form>
 				<form method="POST" action="<?= BASE_URL ?>/signup">
-					<button type="submit">Sign Up</button>
+					<button type="button submit" class="btn btn-primary btn-sm">Sign Up</button>
 				</form>
-
 				<?php
 				} else {
 				?>
-
 				<p>Logged in as <strong><?= $_SESSION['username'] ?></strong></p>
 				<form method="POST" action="<?= BASE_URL ?>/logout">
-					<button type="submit">Log out?</button>
+					<button type="button submit" class="btn btn-primary btn-sm">Log Out</button>
 				</form>
-				<form method="GET" action="<?= BASE_URL ?>/meals/new">
-					<button type="submit">Create Meal</button>
-				</form>
-
 				<?php
 				}
 				?>
@@ -50,19 +49,52 @@
 
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
-				<a>Meals</a>
+				<i class="fa fa-caret-right"></i>
+				<a href="<?= BASE_URL ?>/meals">Meals</a>
 			</nav>
+
+
 
 			<div id="search">
 				<p>Know what you're looking for?</p>
 				<input type="text" value="Tasty meal.."/>
 				<form method="GET" action="<?= BASE_URL ?>/meals">
-					<button type="submit">Search</button>
+					<button type="button submit" class="btn btn-primary btn-sm">Search</button>
 				</form>
 			</div>
 		</header>
 
 		<div id="content">
+
+			<div id="menu_bar" style="position: fixed; float: left; padding: 10px; width: auto;">
+
+				<div class="btn-group-vertical" role="group">
+
+					<button type="button" class="btn btn-default"><a style="color: inherit;" href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
+
+					<form method="GET" action="<?= BASE_URL ?>/meals/new">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
+					</form>
+					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
+
+				</div>
+
+
+			</div>
+
+			<div id="favorites_bar" style="position: fixed; display: none; left: 88%; padding: 10px; width: auto;">
+				<ul class="list-group">
+					<?php
+					if ($favorites != null) {
+					foreach($favorites as $favorite) {
+					$meal_id = $favorite->get('meal_id');
+					$meal_title = $favorite->get('meal_title');
+
+					echo '
+				<a href="'.BASE_URL.'/meals/'.$meal_id.'"<li class="list-group-item">'.$meal_title.'</li></a>';}}?>
+				</ul>
+			</div>
+
 			<div id="main_heading">
 				<h1>This should fill you up</h1>
 			</div>
@@ -85,9 +117,10 @@
 				$meal_image_url = $meal->get('image_url');
 				echo '
 				<div id="meal_1" class="meal_content">
-					<div class="meal_title">
-						<h2>'.$meal_title.'</h2>
-					</div>
+
+						<div class="meal_title">
+							<h2>'.$meal_title.'</h2>
+						</div>
 
 					<div class="meal_creator">
 						<h3>Submitted by:&nbsp;</h3>
@@ -115,17 +148,16 @@
 							<p>'.$meal_time_to_prepare.'</p>
 						</div>
 						<div class="meal_decision">
-							<button class="red_button" type="submit">Eat Later</button>
 							<form method="GET" action="'.BASE_URL.'/meals/'.$meal_id.'">
-								<button class="red_button" type="submit">Eat Now</button>
+								<button type="submit button" class="btn btn-success btn-primary btn-lg">Eat Now</button>
 							</form>';
 				if (isset($_SESSION['username']) && $meal_creator_username == $_SESSION['username']) {
 				echo '
 							<form method="GET" action="'.BASE_URL.'/meals/'.$meal_id.'/edit">
-								<button id="meal_edit" class="red_button" type="submit">Edit</button>
+								<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
 							</form>
 							<form method="POST" action="'.BASE_URL.'/meals/'.$meal_id.'/destroy">
-								<button id="meal_delete" class="red_button" type="submit">Delete</button>
+								<button id="meal_delete" type="submit button" class="btn btn-primary btn-lg">Delete</button>
 							</form>';}
 				echo '
 						</div>
@@ -135,8 +167,8 @@
 			</div>
 
 			<div id="main_decision">
-				<button id="something_else" class="red_button shadow_button" type="submit">Feed me something else</button>
-				<button id="matching_food" class="red_button shadow_button" type="submit">Show me all matching food</button>
+				<button id="something_else" type="button submit" class="btn btn-primary btn-lg">Feed Me something else</button>
+				<button id="matching_food" type="button submit" class="btn btn-primary btn-lg">Show me all matching food</button>
 			</div>
 		</div>
 

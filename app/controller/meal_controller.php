@@ -48,10 +48,26 @@ class meal_controller {
 			case 'search':
 				$this->search();
 				break;
+
+			case 'favorite':
+				$meal_id = $_GET['meal_id'];
+				$meal_title = $_GET['meal_title'];
+				$this->favorite($meal_id, $meal_title);
+				break;
+
 		}
 	}
 
   public function index() {
+		// get all favorites
+		if (isset($_SESSION['username'])) {
+				$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
+
+
 		// get all meals
 		$meals = meal::load_all();
 
@@ -59,6 +75,13 @@ class meal_controller {
   }
 
   public function show($id) {
+		// get all favorites
+		if (isset($_SESSION['username'])) {
+				$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
 		// get data for this meal
 		$meal = meal::load_by_id($id);
 
@@ -163,6 +186,34 @@ class meal_controller {
 
 		// Render the search results
 		include_once SYSTEM_PATH.'/view/meals_index.tpl';
+	}
+
+	public function favorite($meal_id, $meal_title) {
+		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
+		// Get the user id
+		$user = user::load_by_username($_SESSION['username']);
+		$user_id = $user->get('id');
+
+		// Create a new favorite
+		$favorite = new favorite();
+		$favorite->set('meal_id', $meal_id);
+		$favorite->set('meal_title', $meal_title);
+		$favorite->set('user_id', $user_id);
+
+		// save the favorite and eccho json
+		if ($favorite->save()) {
+			echo json_encode(array(
+				'success' => 'success',
+				'check' => 'inserted'
+			));
+		}
+		else {
+			echo json_encode(array(
+				'success' => 'success',
+				'check' => 'not inserted'
+			));
+
+		}
 	}
 
 	private static function generate_image_url($meal_title){
