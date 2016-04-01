@@ -23,17 +23,16 @@ class user_controller {
 				break;
 
 			case 'create':
-				$attributes = array(
-					'username' => $_POST['username'],
-					'password' => $_POST['password'],
-					'email' => $_POST['email'],
-					'first_name' => $_POST['first_name'],
-					'last_name' => $_POST['last_name']);
-				$this->create($attributes);
+				$this->create();
 				break;
 
 			case 'create_check':
 				$this->create_check();
+				break;
+
+			case 'follow':
+				$user_id = $_GET['user_id'];
+				$this->follow($user_id);
 				break;
 		}
 	}
@@ -60,13 +59,21 @@ class user_controller {
 	public function create($attributes) {
 		// Do not create if username is not available
 		$user = user::load_by_username($_POST['username']);
-		if($user) {
+		if ($user) {
 			// $user is not null, so username is not available
 			$_SESSION['register_error'] = 'Sorry, username '.$_POST['username'].' is already taken. Please choose another one';
 
 			header('Location: '.BASE_URL.'/signup');
 			exit();
 		}
+
+		// Create array of attributes
+		$attributes = array(
+			'username' => $_POST['username'],
+			'password' => $_POST['password'],
+			'email' => $_POST['email'],
+			'first_name' => $_POST['first_name'],
+			'last_name' => $_POST['last_name']);
 
 		// Create a new user with the appropriate attributes
 		$user = new user($attributes);
@@ -80,7 +87,6 @@ class user_controller {
 
 		// Redirect to home page
 		header('Location: '.BASE_URL);
-		exit();
 	}
 
 	public function create_check() {
@@ -112,5 +118,31 @@ class user_controller {
 				));
 			}
 		}
+	}
+
+	public function follow($id) {
+		// Exit if no user is logged in
+		if (!isset($_SESSION['username'])) {
+			// Send AJAX error
+			echo('no one is logged in.');
+			exit();
+		}
+
+		// Check if user already follows them
+		$user = user::load_by_username($_SESSION['username']);
+		if ($user->follows($id)) {
+			// Send AJAX error
+			echo('you already follow them.');
+			exit();
+		}
+
+		// Follow the other user
+		$follow = new follow();
+		$follow->set('user_id', $id);
+		$follow->set('follower_id', $user->get('id'));
+		$follow->save();
+
+		// Redirect to show page or update with AJAX
+		header('Location: '.BASE_URL.'/users/'.$id);
 	}
 }

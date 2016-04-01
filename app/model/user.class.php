@@ -45,6 +45,16 @@ class user extends db_object {
         $db->store($this, __CLASS__, self::DB_TABLE, $db_properties);
     }
 
+    // Check if this user follows user with $user_id
+    public function follows($user_id) {
+      return follow::exists($this->id, $user_id);
+    }
+
+    // Check if this user is followed by user with $user_id
+    public function followed_by($user_id) {
+      return follow::exists($user_id, $this->id);
+    }
+
     // load object by ID
     public static function load_by_id($id) {
         $db = db::instance();
