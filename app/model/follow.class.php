@@ -38,9 +38,10 @@ class follow extends db_object {
     $db = db::instance();
 
     // Generate deletion query
-    $query = sprintf("DELETE FROM %s WHERE id = '%s';",
+    $query = sprintf("DELETE FROM %s WHERE user_id = '%s' AND follower_id = '%s';",
     self::DB_TABLE,
-    $this->id);
+    $this->user_id,
+    $this->follower_id);
 
     // Execute the deletion
     $result = $db->lookup($query);

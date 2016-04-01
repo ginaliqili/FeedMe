@@ -7,17 +7,12 @@
 	<title>FeedMe</title>
 
 	<!--Font Awesome -->
-	<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-	rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/index_styles.css">
 
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 </head>
@@ -45,9 +40,7 @@
 				<form method="POST" action="<?= BASE_URL ?>/logout">
 					<button type="button submit" class="btn btn-primary btn-sm">Log Out</button>
 				</form>
-				<?php
-				}
-				?>
+				<?php } ?>
 			</nav>
 
 			<nav id="breadcrumb">
@@ -69,24 +62,23 @@
 					<button type="button" class="btn btn-default"><a style="color: inherit;" href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
 
 					<?php
-					if (isset($_SESSION['username'])) {
+					$current_user = user::load_by_username($_SESSION['username']);
+					if ($current_user != null) {
 					?>
 					<form method="GET" action="<?= BASE_URL ?>/meals/new">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
 					</form>
 
-					<form method="GET" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/following">
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following</button>
 					</form>
 
-					<form method="GET" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/followers">
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/followers">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers</button>
 					</form>
 
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
-					<?php
-					}
-					?>
+					<?php } ?>
 				</div>
 			</div>
 
@@ -100,9 +92,7 @@
 							$meal_title = $favorite->get('meal_title');
 					?>
 					<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
-					<?php
-					}}}
-					?>
+					<?php }}} ?>
 				</ul>
 			</div>
 

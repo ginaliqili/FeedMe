@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
 	// Removes sample text from a textbox input
 	$('input[type=text], textarea').click(function(){
 		$(this).val('');
@@ -20,5 +19,4 @@ $(document).ready(function(){
 	$('#favorites').click(function() {
 		$('#favorites_bar').toggle();
 	})
-
 });

@@ -8,12 +8,11 @@
 
 	<!--Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meal_show_styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/index_styles.css">
 
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 </head>
@@ -23,13 +22,14 @@
 		<header>
 			<nav id="authenticate">
 				<?php
-					if (!isset($_SESSION['username']) || $_SESSION['username'] == '') {
+				if (!isset($_SESSION['username'])) {
 				?>
 				<form method="POST" action="<?= BASE_URL ?>/login">
 					<label>Username: <input id="username" type="text" name="username"></label>
 					<label>Password: <input id="password" type="password" name="password"></label>
 					<button type="button submit" class="btn btn-primary btn-sm">Log In</button>
 				</form>
+
 				<form method="POST" action="<?= BASE_URL ?>/signup">
 					<button type="button submit" class="btn btn-primary btn-sm">Sign Up</button>
 				</form>
@@ -73,15 +73,19 @@
 				</div>
 			</div>
 
-			<div id="favorites_bar" style="position: fixed; display: none; left: 88%; padding: 10px; width: auto;">
+			<div id="favorites_bar" style="position: fixed; left: 88%; padding: 10px; width: auto;">
 				<ul class="list-group">
 					<?php
-					if ($favorites != null) {
-					foreach($favorites as $favorite) {
-					$meal_id = $favorite->get('meal_id');
-					$meal_title = $favorite->get('meal_title');
-					echo '
-				<a href="'.BASE_URL.'/meals/'.$meal_id.'"<li class="list-group-item">'.$meal_title.'</li></a>';}}?>
+					if (isset($_SESSION['username'])) {
+						if ($favorites != null) {
+						foreach($favorites as $favorite) {
+							$meal_id = $favorite->get('meal_id');
+							$meal_title = $favorite->get('meal_title');
+					?>
+					<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
+					<?php
+					}}}
+					?>
 				</ul>
 			</div>
 
@@ -92,18 +96,21 @@
 					</div>
 
 					<?php
-						$current_user = user::load_by_username($_SESSION['username']);
-						if ($current_user != null && !$current_user->follows($user->get('id'))) {
+					$current_user = user::load_by_username($_SESSION['username']);
+					if ($current_user != null) {
+						if ($current_user->follows($user->get('id'))) {
 					?>
-					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/follow">
-						<button type="button submit" class="btn btn-primary btn-sm">Follow Creator</button>
+					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/unfollow">
+						<button type="button submit" class="btn btn-primary btn-sm">Unfollow</button>
 					</form>
 					<?php
-					} else {
+						} else {
 					?>
-					<button type="button" class="btn btn-primary btn-sm disabled">Following</button>
+					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/follow">
+						<button type="button submit" class="btn btn-primary btn-sm">Follow</button>
+					</form>
 					<?php
-					}
+					}}
 					?>
 				</div>
 			</div>

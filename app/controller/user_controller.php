@@ -128,20 +128,16 @@ class user_controller {
 	public function follow($id) {
 		// Exit if no user is logged in
 		if (!isset($_SESSION['username'])) {
-			// Send AJAX error
-			echo('no one is logged in.');
 			exit();
 		}
 
-		// Check if user already follows them
+		// Exit if user already follows them
 		$user = user::load_by_username($_SESSION['username']);
 		if ($user->follows($id)) {
-			// Send AJAX error
-			echo('you already follow them.');
 			exit();
 		}
 
-		// Follow the other user
+		// Create the follow object to be saved to the database, then save
 		$follow = new follow();
 		$follow->set('user_id', $id);
 		$follow->set('follower_id', $user->get('id'));
@@ -154,24 +150,20 @@ class user_controller {
 	public function unfollow($id) {
 		// Exit if no user is logged in
 		if (!isset($_SESSION['username'])) {
-			// Send AJAX error
-			echo('no one is logged in.');
 			exit();
 		}
 
-		// Check if user already follows them
+		// Exit if user already doesn't follow them
 		$user = user::load_by_username($_SESSION['username']);
-		if ($user->follows($id)) {
-			// Send AJAX error
-			echo('you already follow them.');
+		if (!$user->follows($id)) {
 			exit();
 		}
 
-		// Follow the other user
+		// Create the follow object to be deleted from the database, then delete
 		$follow = new follow();
 		$follow->set('user_id', $id);
 		$follow->set('follower_id', $user->get('id'));
-		$follow->save();
+		$follow->delete();
 
 		// Redirect to show page or update with AJAX
 		header('Location: '.BASE_URL.'/users/'.$id);
