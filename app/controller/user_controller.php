@@ -29,16 +29,6 @@ class user_controller {
 			case 'create_check':
 				$this->create_check();
 				break;
-
-			case 'follow':
-				$user_id = $_GET['user_id'];
-				$this->follow($user_id);
-				break;
-
-			case 'unfollow':
-				$user_id = $_GET['user_id'];
-				$this->unfollow($user_id);
-				break;
 		}
 	}
 
@@ -123,49 +113,5 @@ class user_controller {
 				));
 			}
 		}
-	}
-
-	public function follow($id) {
-		// Exit if no user is logged in
-		if (!isset($_SESSION['username'])) {
-			exit();
-		}
-
-		// Exit if user already follows them
-		$user = user::load_by_username($_SESSION['username']);
-		if ($user->follows($id)) {
-			exit();
-		}
-
-		// Create the follow object to be saved to the database, then save
-		$follow = new follow();
-		$follow->set('user_id', $id);
-		$follow->set('follower_id', $user->get('id'));
-		$follow->save();
-
-		// Redirect to show page or update with AJAX
-		header('Location: '.BASE_URL.'/users/'.$id);
-	}
-
-	public function unfollow($id) {
-		// Exit if no user is logged in
-		if (!isset($_SESSION['username'])) {
-			exit();
-		}
-
-		// Exit if user already doesn't follow them
-		$user = user::load_by_username($_SESSION['username']);
-		if (!$user->follows($id)) {
-			exit();
-		}
-
-		// Create the follow object to be deleted from the database, then delete
-		$follow = new follow();
-		$follow->set('user_id', $id);
-		$follow->set('follower_id', $user->get('id'));
-		$follow->delete();
-
-		// Redirect to show page or update with AJAX
-		header('Location: '.BASE_URL.'/users/'.$id);
 	}
 }

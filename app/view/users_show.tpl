@@ -40,9 +40,7 @@
 				<form method="POST" action="<?= BASE_URL ?>/logout">
 					<button type="button submit" class="btn btn-primary btn-sm">Log Out</button>
 				</form>
-				<?php
-				}
-				?>
+				<?php } ?>
 			</nav>
 
 			<nav id="breadcrumb">
@@ -64,13 +62,28 @@
 
 		<div id="content">
 			<div id="menu_bar" style="position: fixed; float: left; padding: 10px; width: auto;">
+				<?php
+				$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
+				if ($current_user != null) {
+				?>
 				<div class="btn-group-vertical" role="group">
 					<button type="button" class="btn btn-default"><a style="color: inherit;" href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
+
 					<form method="GET" action="<?= BASE_URL ?>/meals/new">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
 					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/followers">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers</button>
+					</form>
+
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
+				<?php } ?>
 			</div>
 
 			<div id="favorites_bar" style="position: fixed; left: 88%; padding: 10px; width: auto;">
@@ -83,9 +96,7 @@
 							$meal_title = $favorite->get('meal_title');
 					?>
 					<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
-					<?php
-					}}}
-					?>
+					<?php }}} ?>
 				</ul>
 			</div>
 
@@ -96,7 +107,7 @@
 					</div>
 
 					<?php
-					$current_user = user::load_by_username($_SESSION['username']);
+					$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
 					if ($current_user != null) {
 						if ($current_user->follows($user->get('id'))) {
 					?>
@@ -109,9 +120,7 @@
 					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/follow">
 						<button type="button submit" class="btn btn-primary btn-sm">Follow</button>
 					</form>
-					<?php
-					}}
-					?>
+					<?php }} ?>
 				</div>
 			</div>
 		</div>
