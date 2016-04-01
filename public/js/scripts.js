@@ -11,16 +11,14 @@ $(document).ready(function(){
 		$('#main_decision').hide();
 	});
 
+	// Displays advanced meal settings
+	$('#display_adv').click(function() {
+		$('.advanced').show();
+	})
 
-
-// Displays advanced meal settings
-$('#display_adv').click(function() {
-	$('.advanced').show();
-})
-
-// Shows Favorites bar
-$('#favorites').click(function() {
-	$('#favorites_bar').toggle();
-})
+	// Shows Favorites bar
+	$('#favorites').click(function() {
+		$('#favorites_bar').toggle();
+	})
 
 });

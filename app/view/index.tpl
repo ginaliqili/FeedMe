@@ -27,13 +27,14 @@
 		<header>
 			<nav id="authenticate">
 				<?php
-					if (!isset($_SESSION['username']) || $_SESSION['username'] == '') {
+				if (!isset($_SESSION['username'])) {
 				?>
 				<form method="POST" action="<?= BASE_URL ?>/login">
 					<label>Username: <input id="username" type="text" name="username"></label>
 					<label>Password: <input id="password" type="password" name="password"></label>
 					<button type="button submit" class="btn btn-primary btn-sm">Log In</button>
 				</form>
+
 				<form method="POST" action="<?= BASE_URL ?>/signup">
 					<button type="button submit" class="btn btn-primary btn-sm">Sign Up</button>
 				</form>
@@ -53,8 +54,6 @@
 				<a href="<?= BASE_URL ?>">Home</a>
 			</nav>
 
-
-
 			<div id="search">
 				<p>Know what you're looking for?</p>
 				<input type="text" value="Tasty meal.."/>
@@ -65,36 +64,45 @@
 		</header>
 
 		<div id="content">
-
 			<div id="menu_bar" style="position: fixed; float: left; padding: 10px; width: auto;">
-
 				<div class="btn-group-vertical" role="group">
-
 					<button type="button" class="btn btn-default"><a style="color: inherit;" href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
 
 					<?php
-					if (isset($_SESSION['username'])) { ?>
+					if (isset($_SESSION['username'])) {
+					?>
 					<form method="GET" action="<?= BASE_URL ?>/meals/new">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
 					</form>
-				<?php }; ?>
+
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/following">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/followers">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers</button>
+					</form>
+
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
-
+					<?php
+					}
+					?>
 				</div>
-
-
 			</div>
 
 			<div id="favorites_bar" style="position: fixed; left: 88%; padding: 10px; width: auto;">
 				<ul class="list-group">
 					<?php
 					if (isset($_SESSION['username'])) {
-					if ($favorites != null) {
-					foreach($favorites as $favorite) {
-					$meal_id = $favorite->get('meal_id');
-					$meal_title = $favorite->get('meal_title');
-					echo '
-				<a href="'.BASE_URL.'/meals/'.$meal_id.'"<li class="list-group-item">'.$meal_title.'</li></a>';}}}?>
+						if ($favorites != null) {
+						foreach($favorites as $favorite) {
+							$meal_id = $favorite->get('meal_id');
+							$meal_title = $favorite->get('meal_title');
+					?>
+					<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
+					<?php
+					}}}
+					?>
 				</ul>
 			</div>
 
@@ -129,7 +137,11 @@
 									<h3>Time to Prepare:</h3>
 									<select name='time_to_prepare'>
 										<option selected="selected"></option>
+										<option value = "15 Minutes">15 Minutes</option>
+										<option value = "30 Minutes">30 Minutes</option>
+										<option value = "45 Minutes">45 Minutes</option>
 										<option value = "1 Hour">1 Hour</option>
+										<option value = "More than 1 Hour">More than 1 Hour</option>
 									</select>
 								</td>
 
