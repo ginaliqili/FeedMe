@@ -11,6 +11,7 @@ class user extends db_object {
     protected $first_name;
     protected $last_name;
     protected $email;
+    protected $admin;
 
     // constructor
     public function __construct($args = array()) {
@@ -20,7 +21,8 @@ class user extends db_object {
             'password' => '',
             'email' => null,
             'first_name' => null,
-            'last_name' => null);
+            'last_name' => null,
+            'admin' => null);
 
         $args += $default_args;
 
@@ -30,6 +32,7 @@ class user extends db_object {
         $this->email = $args['email'];
         $this->first_name = $args['first_name'];
         $this->last_name = $args['last_name'];
+        $this->admin = $args['admin'];
     }
 
     // save changes to object

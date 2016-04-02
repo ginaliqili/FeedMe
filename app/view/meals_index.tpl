@@ -154,9 +154,11 @@
 							<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal_id ?>">
 								<button type="submit button" class="btn btn-success btn-primary btn-lg">Eat Now</button>
 							</form>
-				<?php
-						if (isset($_SESSION['username']) && $meal_creator->get('username') == $_SESSION['username']) {
-				?>
+							<?php
+							if (isset($_SESSION['username']) &&
+								($meal_creator->get('username') == $_SESSION['username'] ||
+								(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1)))) {
+							?>
 							<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal_id ?>/edit">
 								<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
 							</form>
@@ -164,7 +166,7 @@
 							<form method="POST" action="<?= BASE_URL ?>/meals/<?= $meal_id ?>/destroy">
 								<button id="meal_delete" type="submit button" class="btn btn-primary btn-lg">Delete</button>
 							</form>
-				<?php } ?>
+							<?php } ?>
 						</div>
 					</div>
 				</div>

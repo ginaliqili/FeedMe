@@ -167,7 +167,6 @@
 							<p><?= $meal->get('time_to_prepare') ?></p>
 						</div>
 
-
 						<div class="meal_decision">
 							<?php
 							if (isset($_SESSION['username'])) {
@@ -177,7 +176,8 @@
 
 							<button id="favorite" style="position: relative" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
 							<?php
-								if ($creator->get('username') == $_SESSION['username']) {
+								if ($creator->get('username') == $_SESSION['username'] ||
+									(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {
 							?>
 							<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/edit">
 								<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
