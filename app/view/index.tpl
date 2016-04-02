@@ -70,11 +70,11 @@
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/followers">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
