@@ -96,8 +96,10 @@ class follow_controller {
 
 		// Retrieve the associated user accounts
 		$followers = array();
-		foreach ($follows as $follow) {
-			$followers[] = user::load_by_id($follow->get('follower_id'));
+		if ($follows != null) {
+			foreach ($follows as $follow) {
+				$followers[] = user::load_by_id($follow->get('follower_id'));
+			}
 		}
 
 		include_once SYSTEM_PATH.'/view/followers_index.tpl';
@@ -120,8 +122,10 @@ class follow_controller {
 
 		// Retrieve the associated user accounts
 		$followers = array();
-		foreach ($follows as $follow) {
-			$followers[] = user::load_by_id($follow->get('user_id'));
+		if ($follows != null) {
+			foreach ($follows as $follow) {
+				$followers[] = user::load_by_id($follow->get('user_id'));
+			}
 		}
 
 		include_once SYSTEM_PATH.'/view/following_index.tpl';
