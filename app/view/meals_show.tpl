@@ -79,7 +79,7 @@
 				<i class="fa fa-caret-right"></i>
 				<a href="<?= BASE_URL ?>/meals">Meals</a>
 				<i class="fa fa-caret-right"></i>
-				<a><?= $meal->get('title') ?></a>
+				<span><?= $meal->get('title') ?></span>
 			</nav>
 
 			<div id="search">

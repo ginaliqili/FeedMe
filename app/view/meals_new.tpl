@@ -48,7 +48,7 @@
 				<i class="fa fa-caret-right"></i>
 				<a href="<?= BASE_URL ?>/meals">Meals</a>
 				<i class="fa fa-caret-right"></i>
-				<a>New</a>
+				<span>New</span>
 			</nav>
 
 			<div id="search">

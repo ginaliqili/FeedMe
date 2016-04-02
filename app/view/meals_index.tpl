@@ -46,7 +46,7 @@
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
 				<i class="fa fa-caret-right"></i>
-				<a href="<?= BASE_URL ?>/meals">Meals</a>
+				<span>Meals</span>
 			</nav>
 
 			<div id="search">
@@ -172,7 +172,7 @@
 			</div>
 
 			<div id="main_decision">
-				<button id="something_else" type="button submit" class="btn btn-primary btn-lg">Feed Me something else</button>
+				<button id="something_else" type="button submit" class="btn btn-primary btn-lg">Feed me something else</button>
 				<button id="matching_food" type="button submit" class="btn btn-primary btn-lg">Show me all matching food</button>
 			</div>
 		</div>

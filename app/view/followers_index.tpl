@@ -46,11 +46,11 @@
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
 				<i class="fa fa-caret-right"></i>
-				<a>Users</a>
+				<span>Users</span>
 				<i class="fa fa-caret-right"></i>
 				<a href="<?= BASE_URL ?>/users/<?= $user->get('id') ?>"><?= $user->get('username') ?></a>
 				<i class="fa fa-caret-right"></i>
-				<a>Followers</a>
+				<span>Followers</span>
 			</nav>
 
 			<div id="search">

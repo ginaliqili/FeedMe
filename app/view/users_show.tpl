@@ -46,9 +46,9 @@
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
 				<i class="fa fa-caret-right"></i>
-				<a>Users</a>
+				<span>Users</span>
 				<i class="fa fa-caret-right"></i>
-				<a><?= $user->get('username') ?></a>
+				<span><?= $user->get('username') ?></span>
 			</nav>
 
 			<div id="search">

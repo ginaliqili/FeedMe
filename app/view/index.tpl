@@ -44,7 +44,7 @@
 			</nav>
 
 			<nav id="breadcrumb">
-				<a>Home</a>
+				<span>Home</span>
 			</nav>
 
 			<div id="search">

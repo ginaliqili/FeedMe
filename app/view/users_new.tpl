@@ -77,7 +77,7 @@
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
 				<i class="fa fa-caret-right"></i>
-				<a>Sign Up</a>
+				<span>Sign Up</span>
 			</nav>
 
 			<div id="search">

@@ -50,7 +50,7 @@
 				<i class="fa fa-caret-right"></i>
 				<a href="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>"><?= $meal->get('title') ?></a>
 				<i class="fa fa-caret-right"></i>
-				<a>Edit</a>
+				<span>Edit</span>
 			</nav>
 
 			<div id="search">
