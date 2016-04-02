@@ -69,10 +69,10 @@ class follow extends db_object {
     $db = db::instance();
 
     // Generate search query
-    $query = sprintf("SELECT * FROM %s WHERE user_id = '%s' AND follower_id = '%s';",
+    $query = sprintf("SELECT * FROM %s WHERE follower_id = '%s' AND user_id = '%s';",
     self::DB_TABLE,
-    $user_id,
-    $follower_id);
+    $follower_id,
+    $user_id);
 
     // Execute the search
     $result = $db->lookup($query);

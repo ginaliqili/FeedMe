@@ -79,11 +79,51 @@ class follow_controller {
 		header('Location: '.BASE_URL.'/users/'.$id);
 	}
 
-	public function followers($user_id) {
+	public function followers($id) {
+		// Get all favorites
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
 
+		// Retrieve the user
+		$user = user::load_by_id($id);
+
+		// Retrieve the user's followers relationships
+		$follows = follow::load_by_user_id($id);
+
+		// Retrieve the associated user accounts
+		$followers = array();
+		foreach ($follows as $follow) {
+			$followers[] = user::load_by_id($follow->get('follower_id'));
+		}
+
+		include_once SYSTEM_PATH.'/view/followers_index.tpl';
 	}
 
-	public function following($user_id) {
+	public function following($id) {
+		// Get all favorites
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
 
+		// Retrieve the user
+		$user = user::load_by_id($id);
+
+		// Retrieve the user's following relationships
+		$follows = follow::load_by_follower_id($id);
+
+		// Retrieve the associated user accounts
+		$followers = array();
+		foreach ($follows as $follow) {
+			$followers[] = user::load_by_id($follow->get('user_id'));
+		}
+
+		include_once SYSTEM_PATH.'/view/following_index.tpl';
 	}
 }

@@ -48,7 +48,9 @@
 				<i class="fa fa-caret-right"></i>
 				<a>Users</a>
 				<i class="fa fa-caret-right"></i>
-				<a><?= $user->get('username') ?></a>
+				<a href="<?= BASE_URL ?>/users/<?= $user->get('id') ?>"><?= $user->get('username') ?></a>
+				<i class="fa fa-caret-right"></i>
+				<a>Followers</a>
 			</nav>
 
 			<div id="search">
@@ -100,28 +102,34 @@
 				</ul>
 			</div>
 
+			<div id="main_heading">
+				<h1><?= $user->get('username') ?>'s Followers</h1>
+			</div>
+
 			<div id="main_content">
+				<?php
+				if ($followers != null) {
+					foreach($followers as $follower) {
+						$username = $follower->get('username');
+						$first_name = $follower->get('first_name');
+						$last_name = $follower->get('last_name');
+				?>
 				<div class="user_content">
 					<div id="username">
-						<h2><?= $user->get('username') ?></h2>
+						<h2>Username: </h2>
+						<span><a href="<?= BASE_URL ?>/users/<?= $follower->get('id') ?>"><?= $username ?></a></span>					</div>
+
+					<div id="first_name">
+						<h2>First Name: </h2>
+						<span><?= $first_name ?><span>
 					</div>
 
-					<?php
-					$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
-					if ($current_user != null) {
-						if ($current_user->follows($user->get('id'))) {
-					?>
-					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/unfollow">
-						<button type="button submit" class="btn btn-primary btn-sm">Unfollow</button>
-					</form>
-					<?php
-						} else {
-					?>
-					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/follow">
-						<button type="button submit" class="btn btn-primary btn-sm">Follow</button>
-					</form>
-					<?php }} ?>
+					<div id="last_name">
+						<h2>Last Name: </h2>
+						<span><?= $last_name ?></span>
+					</div>
 				</div>
+				<?php }} ?>
 			</div>
 		</div>
 

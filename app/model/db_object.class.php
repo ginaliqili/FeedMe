@@ -11,29 +11,29 @@ class db_object {
 		$this->modified = $modified;
 	}
 
-    public function get($field=null) {
-        if($field == null) {
-            return null;
+  public function get($field=null) {
+		if($field == null) {
+		  return null;
 		}
 
-        return ($this->$field);
-    }
+		return ($this->$field);
+  }
 
-    public function getId() {
-        return ($this->id);
-    }
+  public function getId() {
+    return ($this->id);
+  }
 
-    public function set($field=null, $val=null) {
-        if($field == null) {
-            return null;
+  public function set($field=null, $val=null) {
+    if($field == null) {
+        return null;
 		}
 
-        $this->$field = $val;
-        $this->modified = true;
-    }
+    $this->$field = $val;
+    $this->modified = true;
+  }
 
-    public function setId($val) {
-        $this->id = $val;
-        $this->modified = true;
-    }
+  public function setId($val) {
+    $this->id = $val;
+    $this->modified = true;
+  }
 }

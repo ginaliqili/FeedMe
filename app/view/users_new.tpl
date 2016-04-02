@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meal_show_styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
@@ -96,38 +96,38 @@
 
 			<div id="main_content">
 				<form id="register" method="POST" action="<?php echo BASE_URL.'/users/create'; ?>">
-					<div class="meal_content">
+					<div class="user_content">
 						<div class="input-group first_name">
 							<span class="input-group-addon"><i class="fa fa-smile-o"></i></span>
-								<input class="form-control" type="text" name="first_name" placeholder="First Name">
+							<input class="form-control" type="text" name="first_name" placeholder="First Name">
 						</div>
 
 						<br>
 
 						<div class="input-group last_name">
 							<span class="input-group-addon"><i class="fa fa-smile-o"></i></span>
-								<input class="form-control" type="text" name="last_name" placeholder="Last Name">
+							<input class="form-control" type="text" name="last_name" placeholder="Last Name">
 						</div>
 
 						<br>
 
 						<div class="input-group email">
 							<span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-								<input class="form-control" type="text" name="email" placeholder="Email">
+							<input class="form-control" type="text" name="email" placeholder="Email">
 						</div>
 
 						<br>
 
 						<div class="input-group username">
 							<span class="input-group-addon"><i class="fa fa-user"></i></span>
-								<input class="form-control" type="text" name="username" id="uname" placeholder="Username">
+							<input class="form-control" type="text" name="username" id="uname" placeholder="Username">
 						</div>
 
 						<br>
 
 						<div class="input-group password" id="pw">
 							<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-								<input class="form-control" type="password" name="password" placeholder="Password">
+							<input class="form-control" type="password" name="password" placeholder="Password">
 						</div>
 
 						<br>

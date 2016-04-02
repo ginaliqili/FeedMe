@@ -44,7 +44,7 @@ class db {
   }
 
   public function fetchByAttribute($attr_name, $attr_value, $class_name, $db_table) {
-    if ($id === null) {
+    if ($attr_name === null || $attr_value === null) {
          return null;
     }
 
