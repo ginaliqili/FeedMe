@@ -91,6 +91,14 @@ class meal_controller {
   }
 
 	public function new() {
+		// Get all favorites
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
+		
 		include_once SYSTEM_PATH.'/view/meals_new.tpl';
 	}
 
@@ -120,6 +128,14 @@ class meal_controller {
 	}
 
 	public function edit($id) {
+		// Get all favorites
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
+
 		// Get data for this meal
 		$meal = meal::load_by_id($id);
 

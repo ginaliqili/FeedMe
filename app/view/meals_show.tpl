@@ -169,22 +169,24 @@
 
 
 						<div class="meal_decision">
+							<?php
+							if (isset($_SESSION['username'])) {
+							?>
 							<input type="hidden" id="meal_id" name="meal_id" value="<?= $meal->get('id') ?>">
 							<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
 
 							<button id="favorite" style="position: relative" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
-
 							<?php
-							if (isset($_SESSION['username']) && $creator->get('username') == $_SESSION['username']) {
+								if ($creator->get('username') == $_SESSION['username']) {
 							?>
-							<form method="GET" action="'.BASE_URL.'/meals/'.$meal->get('id').'/edit">
+							<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/edit">
 								<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
 							</form>
 
-							<form method="POST" action="'.BASE_URL.'/meals/'.$meal->get('id').'/destroy">
+							<form method="POST" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/destroy">
 								<button id="meal_delete" type="submit button" class="btn btn-primary btn-lg">Delete</button>
 							</form>
-							<?php } ?>
+							<?php }} ?>
 						</div>
 					</div>
 				</div>

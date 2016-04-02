@@ -44,7 +44,7 @@
 			</nav>
 
 			<nav id="breadcrumb">
-				<a href="<?= BASE_URL ?>">Home</a>
+				<a>Home</a>
 			</nav>
 
 			<div id="search">

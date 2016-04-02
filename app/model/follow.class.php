@@ -50,11 +50,18 @@ class follow extends db_object {
     return $result;
   }
 
-  // Load object by ID
-  public static function load_by_id($id) {
+  // Load follows by user_id
+  public static function load_by_user_id($id) {
     $db = db::instance();
-    $obj = $db->fetchById($id, __CLASS__, self::DB_TABLE);
-    return $obj;
+    $follows = $db->fetchByAttribute('user_id', $id, __CLASS__, self::DB_TABLE);
+    return $follows;
+  }
+
+  // Load follows by follower_id
+  public static function load_by_follower_id($id) {
+    $db = db::instance();
+    $follows = $db->fetchByAttribute('follower_id', $id, __CLASS__, self::DB_TABLE);
+    return $follows;
   }
 
   // Check if a follow relationship exists between $follower_id and $user_id
