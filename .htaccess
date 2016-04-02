@@ -13,6 +13,13 @@ RewriteRule ^logout/?$ app/controller/site_controller.php?action=logout [QSA,L]
 RewriteRule ^signup/?$ app/controller/user_controller.php?action=new [QSA,L]
 RewriteRule ^users/create/?$ app/controller/user_controller.php?action=create [QSA,L]
 RewriteRule ^users/create/check/?$ app/controller/user_controller.php?action=create_check [QSA,L]
+RewriteRule ^users/(\d+)/?$ app/controller/user_controller.php?action=show&user_id=$1 [QSA,L]
+
+# Follow
+RewriteRule ^users/(\d+)/follow/?$ app/controller/follow_controller.php?action=follow&user_id=$1 [QSA,L]
+RewriteRule ^users/(\d+)/unfollow/?$ app/controller/follow_controller.php?action=unfollow&user_id=$1 [QSA,L]
+RewriteRule ^users/(\d+)/followers/?$ app/controller/follow_controller.php?action=followers&user_id=$1 [QSA,L]
+RewriteRule ^users/(\d+)/following/?$ app/controller/follow_controller.php?action=following&user_id=$1 [QSA,L]
 
 # Meal
 RewriteRule ^meals/?$ app/controller/meal_controller.php?action=index [QSA,L]

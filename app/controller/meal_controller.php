@@ -2,15 +2,15 @@
 
 include_once '../global.php';
 
-// get the identifier for the page we want to load
+// Get the identifier for the page we want to load
 $action = $_GET['action'];
 
-// instantiate a meal controller and route it
+// Instantiate a meal controller and route it
 $mc = new meal_controller();
 $mc->route($action);
 
 class meal_controller {
-	// route us to the appropriate class method for this action
+	// Route us to the appropriate class method for this action
 	public function route($action) {
 		switch($action) {
 			case 'index':
@@ -54,57 +54,56 @@ class meal_controller {
 				$meal_title = $_GET['meal_title'];
 				$this->favorite($meal_id, $meal_title);
 				break;
-
 		}
 	}
 
   public function index() {
-		// get all favorites
+		// Get all favorites
 		if (isset($_SESSION['username'])) {
-				$favorites = favorite::load_all();
+			$favorites = favorite::load_all();
 		}
 		else {
 			$favorites = null;
 		}
 
-
-		// get all meals
+		// Get all meals
 		$meals = meal::load_all();
 
 		include_once SYSTEM_PATH.'/view/meals_index.tpl';
   }
 
   public function show($id) {
-		// get all favorites
+		// Get all favorites
 		if (isset($_SESSION['username'])) {
-				$favorites = favorite::load_all();
+			$favorites = favorite::load_all();
 		}
 		else {
 			$favorites = null;
 		}
-		// get data for this meal
+
+		// Get data for this meal
 		$meal = meal::load_by_id($id);
 
-		// get data for creator of meal
+		// Get data for creator of meal
 		$creator = user::load_by_id($meal->get('creator_id'));
-
-		// determine the creator's username
-		if ($creator != null) {
-			$creator_username = $creator->get('username');
-		}
-		else {
-			$creator_username = null;
-		}
 
 		include_once SYSTEM_PATH.'/view/meals_show.tpl';
   }
 
 	public function new() {
+		// Get all favorites
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
+		
 		include_once SYSTEM_PATH.'/view/meals_new.tpl';
 	}
 
 	public function create() {
-		// create array of attributes
+		// Create array of attributes
 		$attributes = array(
 			'title' => $_POST['title'],
 			'description' => $_POST['description'],
@@ -114,29 +113,37 @@ class meal_controller {
 			'instructions' => $_POST['instructions'],
 			'image_url' => self::generate_image_url($_POST['title']));
 
-		// create a new meal with the appropriate attributes
+		// Create a new meal with the appropriate attributes
 		$meal = new meal($attributes);
 
-		// set the creator_id
+		// Set the creator_id
 		$creator = user::load_by_username($_SESSION['username']);
 		$meal->set('creator_id', $creator->get('id'));
 
-		// save the new meal
+		// Save the new meal
 		$meal->save();
 
-		// redirect to show page
+		// Redirect to show page
 		header('Location: ' . BASE_URL . '/meals/' . $meal->get('id'));
 	}
 
 	public function edit($id) {
-		// get data for this meal
+		// Get all favorites
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
+
+		// Get data for this meal
 		$meal = meal::load_by_id($id);
 
 		include_once SYSTEM_PATH.'/view/meals_edit.tpl';
 	}
 
 	public function update($id) {
-		// create array of attributes
+		// Create array of attributes
 		$attributes = array(
 			'title' => $_POST['title'],
 			'description' => $_POST['description'],
@@ -145,10 +152,10 @@ class meal_controller {
 			'time_to_prepare' => $_POST['time_to_prepare'],
 			'instructions' => $_POST['instructions']);
 
-		// get data for this meal
+		// Get data for this meal
 		$meal = meal::load_by_id($id);
 
-		// update meal data
+		// Update meal data
 		$meal->set('title', $attributes['title']);
 		$meal->set('description', $attributes['description']);
 		$meal->set('meal_type', $attributes['meal_type']);
@@ -156,25 +163,33 @@ class meal_controller {
 		$meal->set('time_to_prepare', $attributes['time_to_prepare']);
 		$meal->set('instructions', $attributes['instructions']);
 
-		// save the meal
+		// Save the meal
 		$meal->save();
 
-		// redirect to show page
+		// Redirect to show page
 		header('Location: ' . BASE_URL . '/meals/' . $id);
 	}
 
 	public function destroy($id) {
-		// get data for this meal
+		// Get data for this meal
 		$meal = meal::load_by_id($id);
 
-		// delete the meal
+		// Delete the meal
 		$meal->delete();
 
-		// redirect to index page
+		// Redirect to index page
 		header('Location: ' . BASE_URL . '/meals/');
 	}
 
 	public function search() {
+		// Get all favorites
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
+
 		// Generate the search parameters
 		$parameters = array(
 			'meal_type' => array_key_exists('meal_type', $_POST) ? $_POST['meal_type'] : null,
@@ -200,7 +215,7 @@ class meal_controller {
 		$favorite->set('meal_title', $meal_title);
 		$favorite->set('user_id', $user_id);
 
-		// save the favorite and eccho json
+		// Save the favorite and eccho json
 		if ($favorite->save()) {
 			echo json_encode(array(
 				'success' => 'success',
@@ -212,7 +227,6 @@ class meal_controller {
 				'success' => 'success',
 				'check' => 'not inserted'
 			));
-
 		}
 	}
 
@@ -235,10 +249,10 @@ class meal_controller {
 		// Download results from Flickr API
 		$json = file_get_contents($url);
 
-		// Decode JSON into php associative array
+		// Decode JSON into PHP associative array
 		$arr = json_decode($json, true);
 
-		// Return the image url
+		// Return the image URL
 		return $arr['photos']['photo'][0]['url_n'];
 	}
 }

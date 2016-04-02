@@ -36,7 +36,6 @@ class site_controller {
 			$favorites = null;
 		}
 
-
 		include_once SYSTEM_PATH.'/view/index.tpl';
   }
 
@@ -57,7 +56,16 @@ class site_controller {
 		else {
 			// log in when password matches
 			$_SESSION['username'] = $username;
-			$_SESSION['error'] = "You are logged in as ".$username.".";
+
+			// check if admin
+			if($user->get('admin') == 1) {
+				$_SESSION['admin'] = 1;
+			} else {
+				$_SESSION['admin'] = 0;
+			}
+
+			// send success notice
+			$_SESSION['success'] = "You are logged in as ".$username.".";
 		}
 
 		// redirect to home page
