@@ -121,8 +121,80 @@
 						<button type="button submit" class="btn btn-primary btn-sm">Follow</button>
 					</form>
 					<?php }} ?>
+
+					<?php
+					if ($user != null) {
+							$user_id = $user->get('id');
+							$username = $user->get('username');
+							$password = $user->get('password');
+							$first_name = $user->get('first_name');
+							$last_name = $user->get('last_name');
+							$email = $user->get('email');
+							$admin = $user->get('admin');
+								if ($admin == 1) $user_type = 'admin';
+								if ($admin == 0) $user_type = 'registered user';
+
+					?>
+
+						<div class="user_field">
+							First Name:&nbsp;
+							<span class="set"><?= $first_name ?></span>
+							<span class="edit">
+								<input type="text" value="<?= $first_name ?>">
+							</span>
+						</div>
+
+						<div class="user_field">
+							Last Name:&nbsp;
+							<span class="set"><?= $last_name ?></span>
+							<span class="edit">
+								<input type="text" value="<?= $last_name ?>">
+							</span>
+						</div>
+
+						<div class="user_field">
+							Password:&nbsp;
+							<span class="set"><?= $password ?></span>
+							<span class="edit">
+								<input type="text" value="<?= $password ?>">
+							</span>
+						</div>
+
+						<div class="user_field">
+							Email:&nbsp;
+							<span class="set"><?= $email ?></span>
+							<span class="edit">
+								<input type="text" value="<?= $email ?>">
+							</span>
+						</div>
+
+						<div class="user_field">
+							User Type:&nbsp;
+							<span class="set"><?= $user_type ?></span>
+							<span class="edit">
+								<input type="text" value="<?= $user_type ?>">
+							</span>
+						</div>
+
+						<input type="hidden" id="user_id" name="user_id" value="<?= $user_id ?>">
+						<input type="hidden" id="username" name="username" value="<?= $username ?>">
+						<input type="hidden" id="first_name" name="first_name" value="<?= $first_name ?>">
+						<input type="hidden" id="last_name" name="last_name" value="<?= $last_name ?>">
+						<input type="hidden" id="password" name="password" value="<?= $password ?>">
+						<input type="hidden" id="email" name="email" value="<?= $email ?>">
+						<input type="hidden" id="admin" name="admin" value="<?= $admin ?>">
+						<button id="admin_edit" style="position: relative" type="submit button" class="btn btn-success btn-primary">Edit</button>
+
+					</div>
+
+
+				<div>
+					<?php } ?>
 				</div>
-			</div>
+				</div>
+
+
+
 		</div>
 
 		<footer>

@@ -149,7 +149,7 @@
             <span class="set"><?= $user_type ?></span>
 					</div>
 
-          <form method="GET" action="<?= BASE_URL ?>/users/<?= $user_id ?>/edit">
+          <form method="GET" action="<?= BASE_URL ?>/users/<?= $user_id ?>">
             <button type="submit button" class="btn btn-primary">View</button>
           </form>
 
