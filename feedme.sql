@@ -46,6 +46,7 @@ INSERT INTO `favorite` (`id`, `meal_id`, `user_id`, `meal_title`) VALUES
 
 -- --------------------------------------------------------
 
+--
 -- Table structure for table `follow`
 --
 
