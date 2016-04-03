@@ -85,4 +85,22 @@ class user extends db_object {
             return ($obj);
         }
     }
+
+    // load all users
+    public static function load_all($limit=null) {
+      $query = sprintf(" SELECT id FROM %s ORDER BY username ASC ",
+          self::DB_TABLE);
+      $db = db::instance();
+      $result = $db->lookup($query);
+      if(!mysqli_num_rows($result)) {
+          return null;
+      }
+      else {
+          $objects = array();
+          while ($row = mysqli_fetch_assoc($result)) {
+              $objects[] = self::load_by_id($row['id']);
+          }
+          return ($objects);
+      }
+    }
 }

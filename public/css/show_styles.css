@@ -32,6 +32,13 @@ div.user_content {
 	border-radius: 8px;
 }
 
+div.user_field > * > span.edit {
+	display: none;
+}
+
+div.user_field > span.edit {
+	display: none;
+}
 /* Styles for meal show templates */
 
 div.meal_content {

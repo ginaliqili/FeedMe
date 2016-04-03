@@ -29,6 +29,16 @@ class user_controller {
 			case 'create_check':
 				$this->create_check();
 				break;
+
+			case 'users_index':
+				$this->users_index();
+				break;
+
+			case 'user_index':
+				$user_id = $_GET['user_id'];
+				$this->user_index($user_id);
+				break;
+
 		}
 	}
 
@@ -78,6 +88,7 @@ class user_controller {
 
 		// Log the user in
 		$_SESSION['username'] = $user->get('username');
+		$_SESSION['admin'] = $user->get('admin');
 		$_SESSION['error'] = "You successfully registered as ".$_SESSION['username'].".";
 
 		// Redirect to home page
@@ -113,5 +124,33 @@ class user_controller {
 				));
 			}
 		}
+	}
+
+	public function users_index() {
+		// Get all favorites
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
+		// load all users
+		$users = user::load_all();
+
+		include_once SYSTEM_PATH.'/view/users_index.tpl';
+	}
+
+	public function user_index($id) {
+		// Get all favorites
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
+		// Get data for the user being viewed
+		$user = user::load_by_id($id);
+
+		include_once SYSTEM_PATH.'/view/user_index.tpl';
 	}
 }
