@@ -191,7 +191,7 @@
           <input type="hidden" id="password" name="password" value="<?= $password ?>">
           <input type="hidden" id="email" name="email" value="<?= $email ?>">
           <input type="hidden" id="admin" name="admin" value="<?= $admin ?>">
-          <button id="admin_edit" style="position: relative" type="submit button" class="btn btn-primary">Edit</button>
+          <button id="admin_edit" style="position: relative" type="submit button" class="btn btn-success btn-primary">Save</button>
 
         </div>
 

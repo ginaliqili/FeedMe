@@ -141,6 +141,7 @@ class user_controller {
 	}
 
 	public function user_index($id) {
+
 		// Get all favorites
 		if (isset($_SESSION['username'])) {
 			$favorites = favorite::load_all();
