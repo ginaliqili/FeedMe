@@ -23,7 +23,7 @@ class meal_controller {
 				break;
 
 			case 'new':
-				$this->new();
+				$this->new2();
 				break;
 
 			case 'create':
@@ -90,7 +90,7 @@ class meal_controller {
 		include_once SYSTEM_PATH.'/view/meals_show.tpl';
   }
 
-	public function new() {
+	public function new2() {
 		// Get all favorites
 		if (isset($_SESSION['username'])) {
 			$favorites = favorite::load_all();
