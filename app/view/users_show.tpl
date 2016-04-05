@@ -153,7 +153,7 @@
 
 				<?php
 					$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
-					if ($current_user != null) {
+					if ($current_user != null && $current_user->get('id') != $user->get('id')) {
 						if ($current_user->follows($user->get('id'))) {
 					?>
 					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/unfollow">
