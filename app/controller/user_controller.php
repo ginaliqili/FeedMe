@@ -34,9 +34,9 @@ class user_controller {
 				$this->users_index();
 				break;
 
-			case 'user_index':
+			case 'users_show':
 				$user_id = $_GET['user_id'];
-				$this->user_index($user_id);
+				$this->users_show($user_id);
 				break;
 
 			case 'edit':
@@ -141,12 +141,12 @@ class user_controller {
 		}
 		// load all users
 		$users = user::load_all();
-		
+
 
 		include_once SYSTEM_PATH.'/view/users_index.tpl';
 	}
 
-	public function user_index($id) {
+	public function users_show($id) {
 
 		// Get all favorites
 		if (isset($_SESSION['username'])) {
@@ -158,14 +158,14 @@ class user_controller {
 		// Get data for the user being viewed
 		$user = user::load_by_id($id);
 
-		include_once SYSTEM_PATH.'/view/user_index.tpl';
+		include_once SYSTEM_PATH.'/view/users_show.tpl';
 	}
 
 	public function edit($id)
 	{
 
 		$user = user::load_by_id($id);
-		
+
 		$firstname = $_POST['firstname'];
 		if ($firstname != $user->get('first_name') && $firstname != NULL && $firstname != '')
 		{
@@ -178,7 +178,7 @@ class user_controller {
 			$user->set('last_name', $lastname);
 		}
 
-		
+
 		$email = $_POST['email'];
 		if ($email != $user->get('email') && $email != NULL && $email != '')
 		{
@@ -194,8 +194,8 @@ class user_controller {
 		$admin = $_POST['user_type'];
 		if ($admin != $user->get('admin'))
 			$user->set('admin', $admin);
-		
-		
+
+
 		if ($_POST['recipeaccess'] == 'true')
 		{
 			if ($user->get('recipeaccess') == 0)
@@ -225,5 +225,5 @@ class user_controller {
 		header('Location: '.BASE_URL.'/users/'.$id);
 		//include_once SYSTEM_PATH.'/view/practice.tpl';
 	}
-		
+
 }
