@@ -132,6 +132,9 @@ class user_controller {
 	}
 
 	public function users_index() {
+		if ($_SESSION['admin'] == 0) {
+			exit();
+		}
 		// Get all favorites
 		if (isset($_SESSION['username'])) {
 			$favorites = favorite::load_all();
@@ -147,7 +150,6 @@ class user_controller {
 	}
 
 	public function users_show($id) {
-
 		// Get all favorites
 		if (isset($_SESSION['username'])) {
 			$favorites = favorite::load_all();
@@ -163,7 +165,6 @@ class user_controller {
 
 	public function edit($id)
 	{
-
 		$user = user::load_by_id($id);
 
 		$firstname = $_POST['firstname'];
@@ -208,7 +209,6 @@ class user_controller {
 		}
 
 		$user->save();
-		//$useradmin = $user->get('admin');
 
 		if ($_SESSION['error'] == NULL || $_SESSION['error'] == '')
 		{
@@ -223,7 +223,6 @@ class user_controller {
 		}
 
 		header('Location: '.BASE_URL.'/users/'.$id);
-		//include_once SYSTEM_PATH.'/view/practice.tpl';
 	}
 
 }
