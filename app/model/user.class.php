@@ -33,6 +33,7 @@ class user extends db_object {
         $this->first_name = $args['first_name'];
         $this->last_name = $args['last_name'];
         $this->admin = $args['admin'];
+        $this->recipeaccess = $args['recipeaccess'];
     }
 
     // save changes to object
@@ -44,7 +45,10 @@ class user extends db_object {
             'password' => $this->password,
             'email' => $this->email,
             'first_name' => $this->first_name,
-            'last_name' => $this->last_name);
+            'last_name' => $this->last_name,
+            'recipeaccess' => $this->recipeaccess,
+            'admin' => $this->admin
+            );
         $db->store($this, __CLASS__, self::DB_TABLE, $db_properties);
     }
 

@@ -8,29 +8,50 @@
 
 	<!--Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
   <script type="text/javascript">
-		$(document).ready(function(){
-			var user_id = $('#user_id').val();
-			var username = $('#username').val();
-      var password = $('#password').val();
-      var first_name = $('#first_name').val();
-      var last_name = $('#last_name').val();
-      var email = $('#email').val();
-      var admin = $('#admin').val();
 
-			//var admin_edit = "<?= BASE_URL ?>/users/admin_edit";
-			// event handler for meal id for favorite
+
+
+		$(document).ready(function(){
+	      <?php 
+		     $admin = $user->get('admin');
+		     $recipeaccess = $user->get('recipeaccess');
+		     echo "var admin = '{$admin}';";
+		     echo "var recipeaccess = '{$recipeaccess}';";
+		  ?>
+
 			$('#admin_edit').click(function(){
-        $('.set').hide();
-        $('.edit').show();
+		        $('.set').hide();
+		        $('.edit').show();
+		        $('#showmeals').hide();
+		        $(this).hide();
+
+		     if (admin == 1)
+		      	$("#user_type option[value='1']").prop('selected', true);
+
+		     if (recipeaccess == 1)
+		     	$("#recipeaccess").prop('checked', true);
 			});
+
+			$('#showmeals').click(function(){			
+				if ($(this).text() == "Hide User's Uploaded Meals")
+					$(this).text("Show User's Uploaded Meals");
+				else
+					$(this).text("Hide User's Uploaded Meals");
+
+				$('.usermeals').toggle();
+			});
+
+
+
 		});
 	</script>
 </head>
@@ -120,7 +141,33 @@
 				<h1>Users</h1>
 			</div>
 
-			<div id="main_content">
+
+
+		<div id="main_content">
+
+			<div class="user_content">
+					<div id="username">
+						<h2><?= $user->get('username') ?></h2>
+					</div>
+
+
+				<?php
+					$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
+					if ($current_user != null) {
+						if ($current_user->follows($user->get('id'))) {
+					?>
+					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/unfollow">
+						<button type="button submit" class="btn btn-primary btn-sm">Unfollow</button>
+					</form>
+					<?php
+						} else{
+					?>
+					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/follow">
+						<button type="button submit" class="btn btn-primary btn-sm">Follow</button>
+					</form>
+					<?php }} ?>
+
+
 				<?php
 				if ($user != null) {
 						$user_id = $user->get('id');
@@ -133,65 +180,191 @@
               if ($admin == 1) $user_type = 'admin';
               if ($admin == 0) $user_type = 'registered user';
 
-				?>
-        <div class="user_content">
-					<div class="user_field">
-						<h2>
-              <span class="set"><?= $username ?></span>
-              <span class="edit">
-                <input type="text" value="<?= $username ?>">
-              </span>
-            </h2>
-					</div>
+				?>			
 
-					<div class="user_field">
-						First Name:&nbsp;
-            <span class="set"><?= $first_name ?></span>
-            <span class="edit">
-              <input type="text" value="<?= $first_name ?>">
-            </span>
-					</div>
+				<div class="user_field">
+							
+	            <span class="set">First Name:&nbsp;<?= $first_name ?></span>
+	            </div>
 
-          <div class="user_field">
-						Last Name:&nbsp;
-            <span class="set"><?= $last_name ?></span>
-            <span class="edit">
-              <input type="text" value="<?= $last_name ?>">
-            </span>
-					</div>
+	          <div class="user_field">
+							
+	            <span class="set">Last Name:&nbsp;<?= $last_name ?></span>
+	           </div>
 
-          <div class="user_field">
-						Password:&nbsp;
-            <span class="set"><?= $password ?></span>
-            <span class="edit">
-              <input type="text" value="<?= $password ?>">
-            </span>
-					</div>
+	          <div class="user_field">
+							
+	            <span class="set">Password:&nbsp;<?= $password ?></span>
+	            
+						</div>
 
-          <div class="user_field">
-						Email:&nbsp;
-            <span class="set"><?= $email ?></span>
-            <span class="edit">
-              <input type="text" value="<?= $email ?>">
-            </span>
-					</div>
+	          <div class="user_field">
+							
+	            <span class="set">Email:&nbsp;<?= $email ?></span>
+	            
+						</div>
 
-          <div class="user_field">
-						User Type:&nbsp;
-            <span class="set"><?= $user_type ?></span>
-            <span class="edit">
-              <input type="text" value="<?= $user_type ?>">
-            </span>
-					</div>
+	          <div class="user_field">
+	            <span class="set">User Type:&nbsp;<?= $user_type ?></span>
+			  </div>
 
-          <input type="hidden" id="user_id" name="user_id" value="<?= $user_id ?>">
-          <input type="hidden" id="username" name="username" value="<?= $username ?>">
-          <input type="hidden" id="first_name" name="first_name" value="<?= $first_name ?>">
-          <input type="hidden" id="last_name" name="last_name" value="<?= $last_name ?>">
-          <input type="hidden" id="password" name="password" value="<?= $password ?>">
-          <input type="hidden" id="email" name="email" value="<?= $email ?>">
-          <input type="hidden" id="admin" name="admin" value="<?= $admin ?>">
-          <button id="admin_edit" style="position: relative" type="submit button" class="btn btn-success btn-primary">Save</button>
+			  <div class="user_field">
+
+			  <?php 
+			  	if ($user->get('recipeaccess') == 1)
+			  	{
+			  	?>
+			  	<button type="button submit" id="showmeals" class="btn btn-primary btn-sm">Show User's Uploaded Meals</button>
+			  <?php } ?>
+
+	            <span class="usermeals">
+	            <h2>Uploaded Recipes</h2>
+	            <?php
+	            	$meals = meal::load_by_user($user_id);
+	            	if ($meals != null)
+	            	{
+	            	foreach($meals as $meal)
+	            	{ 
+	            	?>
+	            		<div class="meal_info">
+						<div class="meal_image">
+							<img id="meal_image" src="<?= $meal->get('image_url') ?>" alt="<?= $meal->get('title') ?>"/>
+						</div>
+
+						<div class="meal_description">
+							<h4>Description:</h4>
+							<p><?= $meal->get('description') ?></p>
+						</div>
+
+						<div class="meal_type">
+							<h4>Meal Type:</h4>
+							<p><?= $meal->get('meal_type') ?></p>
+						</div>
+
+						<div class="food_type">
+							<h4>Food Type:</h4>
+							<p><?= $meal->get('food_type') ?></p>
+						</div>
+
+						<div class="prepare_time">
+							<h4>Time to Prepare:</h4>
+							<p><?= $meal->get('time_to_prepare') ?></p>
+						</div>
+
+						<div class="meal_decision">
+							<?php
+							if (isset($_SESSION['username'])) {
+							?>
+							<input type="hidden" id="meal_id" name="meal_id" value="<?= $meal->get('id') ?>">
+							<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
+
+							<button id="favorite" style="position: relative" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
+							<?php
+								if ($user->get('username') == $_SESSION['username'] ||
+									(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {
+							?>
+							<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/edit">
+								<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
+							</form>
+
+							<form method="POST" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/destroy">
+								<button id="meal_delete" type="submit button" class="btn btn-primary btn-lg">Delete</button>
+							</form>
+							<?php }
+							} ?>
+						</div>
+						</div>
+	            	<?php } }
+	            	else
+					{
+						echo 'This user does not have any recipes yet';
+					} ?>
+	            </span>
+			  </div>
+
+
+			<?php
+
+				if (isset($_SESSION['username']))
+				{
+					if ($_SESSION['username'] == $username || $_SESSION['admin'] == 1)
+					{
+					echo '
+						 <button id="admin_edit" style="position: relative" type="submit button" class="btn btn-success btn-primary" >Edit</button>
+					';
+					}
+				}
+			?>
+
+	        <form method="POST" action="<?= BASE_URL ?>/users/<?= $user_id ?>/edit">
+
+	          <div class = "user_field">
+	          <span class="edit">
+	          First Name:&nbsp;
+	              <input type="text" name = "firstname" value="<?= $first_name ?>">
+	            </span>
+	          </div>
+
+	          <div class = "user_field">
+	          <span class="edit">
+	          Last Name:&nbsp;
+	              <input type="text" name = "lastname" value="<?= $last_name ?>">
+	            </span>
+	          </div>
+
+	          <div class = "user_field">
+	          <span class="edit">
+	          Password:&nbsp;
+	              <input type="text" name = "password" value="<?= $password ?>">
+	            </span>
+	          </div>
+
+	          <div class = "user_field">
+	          <span class="edit">
+	          Email:&nbsp;
+	              <input type="text" name = "email" value="<?= $email ?>">
+	            </span>
+	           </div>
+
+	           <div class = "user_field">
+	           <span class="edit">
+	           User Type:&nbsp;
+
+	           <?php 
+		           	if ($_SESSION['admin'] == 1)
+		           	{
+		           		?>	
+							<select id="user_type" name = "user_type">
+								<option value = 0>Regular User</option>
+								<option value = 1>Admin</option>
+							</select>
+		              	<?php ;  
+		           	}
+		           	else
+		           	{
+		           		echo $user_type; 
+		           	}
+	           	?>
+
+	        	</span>
+	            </div>
+
+	            <div class="user_field">
+		          <span class="edit">
+		          	<input type="checkbox" name="recipeaccess" id="recipeaccess" value="true"> Allow other users to view uploaded recipes
+		          </span>
+	          	</div>
+
+
+	            <div class="user_field">
+		          <span class="edit">
+		          	<input type="submit" value="Submit Changes" class="btn btn-success btn-primary">
+		          </span>
+	          </div>
+
+	          </form>
+
+        </div>
 
         </div>
 
@@ -199,9 +372,7 @@
       <div>
 				<?php } ?>
 			</div>
-
-
-
+			</div>
 		<footer>
 			<p>Copyright 2016: All Rights Reserved</p>
 		</footer>

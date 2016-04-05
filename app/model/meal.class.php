@@ -94,6 +94,27 @@ class meal extends db_object {
     return $meal;
   }
 
+  // Load meal by ID
+  public static function load_by_user($user_id) {
+    $query = sprintf(" SELECT id FROM %s WHERE creator_id = %s",
+        self::DB_TABLE, $user_id);
+    $db = db::instance();
+    $result = $db->lookup($query);
+    if(!mysqli_num_rows($result)) {
+        return null;
+    }
+    else {
+        $objects = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $objects[] = self::load_by_id($row['id']);
+        }
+        return ($objects);
+    }
+
+    // Return the meal
+    return $meals;
+  }
+
   // Load all meals
   public static function load_all($limit=null) {
     $query = sprintf(" SELECT id FROM %s ORDER BY date_created DESC ",

@@ -19,7 +19,7 @@ class user_controller {
 				break;
 
 			case 'new':
-				$this->new();
+				$this->new2();
 				break;
 
 			case 'create':
@@ -39,6 +39,10 @@ class user_controller {
 				$this->user_index($user_id);
 				break;
 
+			case 'edit':
+				$user_id = $_GET['user_id'];
+				$this->edit($user_id);
+
 		}
 	}
 
@@ -57,7 +61,7 @@ class user_controller {
 		include_once SYSTEM_PATH.'/view/users_show.tpl';
 	}
 
-	public function new() {
+	public function new2() {
 		include_once SYSTEM_PATH.'/view/users_new.tpl';
 	}
 
@@ -78,7 +82,8 @@ class user_controller {
 			'password' => $_POST['password'],
 			'email' => $_POST['email'],
 			'first_name' => $_POST['first_name'],
-			'last_name' => $_POST['last_name']);
+			'last_name' => $_POST['last_name'],
+			'recipeaccess' => '1');
 
 		// Create a new user with the appropriate attributes
 		$user = new user($attributes);
@@ -136,6 +141,7 @@ class user_controller {
 		}
 		// load all users
 		$users = user::load_all();
+		
 
 		include_once SYSTEM_PATH.'/view/users_index.tpl';
 	}
@@ -154,4 +160,70 @@ class user_controller {
 
 		include_once SYSTEM_PATH.'/view/user_index.tpl';
 	}
+
+	public function edit($id)
+	{
+
+		$user = user::load_by_id($id);
+		
+		$firstname = $_POST['firstname'];
+		if ($firstname != $user->get('first_name') && $firstname != NULL && $firstname != '')
+		{
+			$user->set('first_name', $firstname);
+		}
+
+		$lastname = $_POST['lastname'];
+		if ($lastname != $user->get('last_name') && $lastname != NULL && $lastname != '')
+		{
+			$user->set('last_name', $lastname);
+		}
+
+		
+		$email = $_POST['email'];
+		if ($email != $user->get('email') && $email != NULL && $email != '')
+		{
+			$user->set('email', $email);
+		}
+
+		$password = $_POST['password'];
+		if ($password != $user->get('password') && $password != NULL && $password != '')
+		{
+			$user->set('password', $password);
+		}
+
+		$admin = $_POST['user_type'];
+		if ($admin != $user->get('admin'))
+			$user->set('admin', $admin);
+		
+		
+		if ($_POST['recipeaccess'] == 'true')
+		{
+			if ($user->get('recipeaccess') == 0)
+				$user->set('recipeaccess', '1');
+		}
+		else
+		{
+			if ($user->get('recipeaccess') == 1)
+				$user->set('recipeaccess', '0');
+		}
+
+		$user->save();
+		//$useradmin = $user->get('admin');
+
+		if ($_SESSION['error'] == NULL || $_SESSION['error'] == '')
+		{
+			$_SESSION['error'] = 'Your changes have been updated!';
+		}
+
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
+
+		header('Location: '.BASE_URL.'/users/'.$id);
+		//include_once SYSTEM_PATH.'/view/practice.tpl';
+	}
+		
 }
