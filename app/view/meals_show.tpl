@@ -112,6 +112,14 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
+					<?php
+					if ($_SESSION['admin'] == 1) {
+					?>
+					<form method="GET" action="<?= BASE_URL ?>/users">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;</button>
+					</form>
+					<?php } ?>
+
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
 				<?php } ?>
