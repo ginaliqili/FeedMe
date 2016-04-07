@@ -98,7 +98,7 @@ class meal_controller {
 		else {
 			$favorites = null;
 		}
-		
+
 		include_once SYSTEM_PATH.'/view/meals_new.tpl';
 	}
 
@@ -122,6 +122,15 @@ class meal_controller {
 
 		// Save the new meal
 		$meal->save();
+
+		// Create an associated event
+		$event = new Event(array(
+				'user_id' => $meal->get('creator_id'),
+				'type' => 'meal',
+				'action' => 'created',
+				'reference_id' => $meal->get('id')
+		));
+		$event->save();
 
 		// Redirect to show page
 		header('Location: ' . BASE_URL . '/meals/' . $meal->get('id'));
