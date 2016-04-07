@@ -161,26 +161,22 @@ class user_controller {
 		$user = user::load_by_id($id);
 
 		$firstname = $_POST['firstname'];
-		if ($firstname != $user->get('first_name') && $firstname != NULL && $firstname != '')
-		{
+		if ($firstname != $user->get('first_name') && $firstname != NULL && $firstname != '') {
 			$user->set('first_name', $firstname);
 		}
 
 		$lastname = $_POST['lastname'];
-		if ($lastname != $user->get('last_name') && $lastname != NULL && $lastname != '')
-		{
+		if ($lastname != $user->get('last_name') && $lastname != NULL && $lastname != '') {
 			$user->set('last_name', $lastname);
 		}
 
 		$email = $_POST['email'];
-		if ($email != $user->get('email') && $email != NULL && $email != '')
-		{
+		if ($email != $user->get('email') && $email != NULL && $email != '') {
 			$user->set('email', $email);
 		}
 
 		$password = $_POST['password'];
-		if ($password != $user->get('password') && $password != NULL && $password != '')
-		{
+		if ($password != $user->get('password') && $password != NULL && $password != '') {
 			$user->set('password', $password);
 		}
 
@@ -191,25 +187,24 @@ class user_controller {
 
 		if ($_POST['recipeaccess'] == 'true') {
 			if ($user->get('recipeaccess') == 0) {
-				$user->set('recipeaccess', '1')
+				$user->set('recipeaccess', '1');
 			}
 		}
 		else {
 			if ($user->get('recipeaccess') == 1) {
-				$user->set('recipeaccess', '0')
+				$user->set('recipeaccess', '0');
 			}
 		}
 
-		// Update the user data
-		$user->save();
-
-		// Create an associated event
-		$event = new event(array(
-				'creator_id' => $current_user->get('id'),
-				'type' => 'user',
-				'action' => 'edited',
-				'reference_id' => $user->get('id')));
-		$event->save();
+		// Update the user data and create an associated event
+		if ($user->save()) {
+			$event = new event(array(
+					'creator_id' => $current_user->get('id'),
+					'type' => 'user',
+					'action' => 'edited',
+					'reference_id' => $user->get('id')));
+			$event->save();
+		}
 
 		header('Location: '.BASE_URL.'/users/'.$id);
 	}

@@ -1,10 +1,10 @@
 <?php
 
 class meal extends db_object {
-  // Meals table
+  // Name of database table
   const DB_TABLE = 'meal';
 
-  // Table attributes
+  // Database fields
   protected $id;
   protected $title;
   protected $description;
@@ -13,7 +13,6 @@ class meal extends db_object {
   protected $creator_id;
   protected $image_url;
   protected $date_created;
-
   // Advanced attributes (can have multiple values: need relational tables)
   protected $meal_type;
   protected $food_type;
@@ -22,21 +21,21 @@ class meal extends db_object {
   // Constructor
   public function __construct($args = array()) {
     $default_args = array(
-        'id' => null,
-        'title' => '',
-        'description' => '',
-        'time_to_prepare' => '',
-        'instructions' => '',
-        'creator_id' => 0,
-        'image_url' => '',
-        'date_created' => null,
-        'meal_type' => '',
-        'food_type' => '',
-        'ingredients' => '');
+      'id' => null,
+      'title' => '',
+      'description' => '',
+      'time_to_prepare' => '',
+      'instructions' => '',
+      'creator_id' => 0,
+      'image_url' => '',
+      'date_created' => null,
+      'meal_type' => '',
+      'food_type' => '',
+      'ingredients' => '');
 
     $args += $default_args;
 
-    // Set table attributes
+    // Set database fields
     $this->id = $args['id'];
     $this->title = $args['title'];
     $this->description = $args['description'];
@@ -45,7 +44,6 @@ class meal extends db_object {
     $this->creator_id = $args['creator_id'];
     $this->image_url = $args['image_url'];
     $this->date_created = $args['date_created'];
-
     // Set advanced attributes
     $this->meal_type = $args['meal_type'];
     $this->food_type = $args['food_type'];
@@ -55,6 +53,7 @@ class meal extends db_object {
   // Save changes to a meal
   public function save() {
     $db = db::instance();
+
     // Omit id and any timestamps
     $db_properties = array(
         'title' => $this->title,
@@ -66,6 +65,9 @@ class meal extends db_object {
         'creator_id' => $this->creator_id,
         'image_url' => $this->image_url);
     $db->store($this, __CLASS__, self::DB_TABLE, $db_properties);
+
+    // Return successful save
+    return true;
   }
 
   // Delete a meal
@@ -94,21 +96,21 @@ class meal extends db_object {
     return $meal;
   }
 
-  // Load meal by ID
+  // Load meal by user_id
   public static function load_by_user($user_id) {
     $query = sprintf(" SELECT id FROM %s WHERE creator_id = %s",
-        self::DB_TABLE, $user_id);
+      self::DB_TABLE, $user_id);
     $db = db::instance();
     $result = $db->lookup($query);
     if(!mysqli_num_rows($result)) {
-        return null;
+      return null;
     }
     else {
-        $objects = array();
-        while ($row = mysqli_fetch_assoc($result)) {
-            $objects[] = self::load_by_id($row['id']);
-        }
-        return ($objects);
+      $objects = array();
+      while ($row = mysqli_fetch_assoc($result)) {
+        $objects[] = self::load_by_id($row['id']);
+      }
+      return ($objects);
     }
 
     // Return the meal
@@ -118,18 +120,18 @@ class meal extends db_object {
   // Load all meals
   public static function load_all($limit=null) {
     $query = sprintf(" SELECT id FROM %s ORDER BY date_created DESC ",
-        self::DB_TABLE);
+      self::DB_TABLE);
     $db = db::instance();
     $result = $db->lookup($query);
     if(!mysqli_num_rows($result)) {
-        return null;
+      return null;
     }
     else {
-        $objects = array();
-        while ($row = mysqli_fetch_assoc($result)) {
-            $objects[] = self::load_by_id($row['id']);
-        }
-        return ($objects);
+      $objects = array();
+      while ($row = mysqli_fetch_assoc($result)) {
+        $objects[] = self::load_by_id($row['id']);
+      }
+      return ($objects);
     }
   }
 
@@ -139,7 +141,7 @@ class meal extends db_object {
 
     // Build the base query
     $base_query = sprintf(" SELECT * FROM %s",
-        self::DB_TABLE);
+      self::DB_TABLE);
 
     // Store the custom search queries
     $search_queries = array();

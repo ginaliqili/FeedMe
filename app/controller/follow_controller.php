@@ -47,19 +47,23 @@ class follow_controller {
 			exit();
 		}
 
-		// Create the follow object to be saved to the database, then save
-		$follow = new follow();
-		$follow->set('user_id', $id);
-		$follow->set('follower_id', $user->get('id'));
-		$follow->save();
+		// Create array of attributes
+		$attributes = array(
+			'user_id' => $id,
+			'follower_id' => $user->get('id'));
 
-		// Create an associated event
-		$event = new event(array(
-				'creator_id' => $follow->get('follower_id'),
-				'type' => 'user',
-				'action' => 'followed',
-				'reference_id' => $follow->get('user_id')));
-		$event->save();
+		// Create a new follow with the appropriate attributes
+		$follow = new follow($attributes);
+
+		// Save the new follow and create an associated event
+		if ($follow->save()) {
+			$event = new event(array(
+					'creator_id' => $follow->get('follower_id'),
+					'type' => 'user',
+					'action' => 'followed',
+					'reference_id' => $follow->get('user_id')));
+			$event->save();
+		}
 
 		// Redirect to show page or update with AJAX
 		header('Location: '.BASE_URL.'/users/'.$id);
@@ -77,10 +81,15 @@ class follow_controller {
 			exit();
 		}
 
-		// Create the follow object to be deleted from the database, then delete
-		$follow = new follow();
-		$follow->set('user_id', $id);
-		$follow->set('follower_id', $user->get('id'));
+		// Create array of attributes
+		$attributes = array(
+			'user_id' => $id,
+			'follower_id' => $user->get('id'));
+
+		// Create a new follow with the appropriate attributes
+		$follow = new follow($attributes);
+
+		// Delete the follow
 		$follow->delete();
 
 		// Redirect to show page or update with AJAX

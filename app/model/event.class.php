@@ -11,7 +11,7 @@ class event extends db_object {
   protected $id;
   protected $creator_id;
   protected $date_created;
-  // Attributes
+  // Advanced attributes
   protected $type;
   protected $action;
   protected $reference_id;
@@ -28,9 +28,11 @@ class event extends db_object {
 
     $args += $default_args;
 
+    // Set database fields
     $this->id = $args['id'];
     $this->creator_id = $args['creator_id'];
     $this->date_created = $args['date_created'];
+    // Set advanced attributes
     $this->type = $args['type'];
     $this->action = $args['action'];
     $this->reference_id = $args['reference_id'];
@@ -66,6 +68,9 @@ class event extends db_object {
 
     // Store the child event
     $db->store($child, __CLASS__, $child_table, $child_properties);
+
+    // Return successful save
+    return true;
   }
 
   // Retrieve all events from the database

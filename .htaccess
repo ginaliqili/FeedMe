@@ -17,7 +17,6 @@ RewriteRule ^users/(\d+)/?$ app/controller/user_controller.php?action=show&user_
 RewriteRule ^users/(\d+)/edit/?$ app/controller/user_controller.php?action=edit&user_id=$1 [QSA,L]
 RewriteRule ^users/?$ app/controller/user_controller.php?action=index [QSA,L]
 
-
 # Follow
 RewriteRule ^users/(\d+)/follow/?$ app/controller/follow_controller.php?action=follow&user_id=$1 [QSA,L]
 RewriteRule ^users/(\d+)/unfollow/?$ app/controller/follow_controller.php?action=unfollow&user_id=$1 [QSA,L]
