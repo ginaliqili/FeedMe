@@ -46,7 +46,7 @@
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
 				<i class="fa fa-caret-right"></i>
-				<span>Meals</span>
+				<span>Users</span>
 			</nav>
 
 			<div id="search">
