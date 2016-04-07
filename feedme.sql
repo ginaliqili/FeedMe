@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.5.2
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2016 at 05:31 PM
--- Server version: 10.1.10-MariaDB
--- PHP Version: 7.0.4
+-- Generation Time: Apr 05, 2016 at 12:50 AM
+-- Server version: 5.7.9
+-- PHP Version: 5.6.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -26,13 +26,16 @@ SET time_zone = "+00:00";
 -- Table structure for table `favorite`
 --
 
-CREATE TABLE `favorite` (
+DROP TABLE IF EXISTS `favorite`;
+CREATE TABLE IF NOT EXISTS `favorite` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `meal_id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
   `meal_title` varchar(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  KEY `meal_id` (`meal_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `favorite`
@@ -50,12 +53,15 @@ INSERT INTO `favorite` (`id`, `meal_id`, `user_id`, `meal_title`) VALUES
 -- Table structure for table `follow`
 --
 
-CREATE TABLE `follow` (
+DROP TABLE IF EXISTS `follow`;
+CREATE TABLE IF NOT EXISTS `follow` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(11) UNSIGNED NOT NULL,
   `follower_id` int(11) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `follower_id` (`follower_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `follow`
@@ -71,7 +77,8 @@ INSERT INTO `follow` (`id`, `user_id`, `follower_id`) VALUES
 -- Table structure for table `meal`
 --
 
-CREATE TABLE `meal` (
+DROP TABLE IF EXISTS `meal`;
+CREATE TABLE IF NOT EXISTS `meal` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL,
   `description` text NOT NULL,
@@ -82,8 +89,9 @@ CREATE TABLE `meal` (
   `creator_id` int(11) UNSIGNED NOT NULL,
   `image_url` varchar(200) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  KEY `creator_id` (`creator_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `meal`
@@ -102,7 +110,8 @@ INSERT INTO `meal` (`id`, `title`, `description`, `meal_type`, `food_type`, `tim
 -- Table structure for table `user`
 --
 
-CREATE TABLE `user` (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `password` varchar(200) NOT NULL,
@@ -110,46 +119,20 @@ CREATE TABLE `user` (
   `last_name` varchar(50) DEFAULT NULL,
   `email` varchar(200) DEFAULT NULL,
   `admin` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `recipeaccess` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `first_name`, `last_name`, `email`, `admin`) VALUES
-(1, 'ginali', 'pw', 'Gina', 'Li', 'ginali@vt.edu', 1),
-(2, 'tommydean', 'pw', 'Tommy', 'Dean', 'tommydean@vt.edu', 1);
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `favorite`
---
-ALTER TABLE `favorite`
-  ADD KEY `meal_id` (`meal_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `follow`
---
-ALTER TABLE `follow`
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `follower_id` (`follower_id`);
-
---
--- Indexes for table `meal`
---
-ALTER TABLE `meal`
-  ADD KEY `creator_id` (`creator_id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD UNIQUE KEY `username` (`username`);
+INSERT INTO `user` (`id`, `username`, `password`, `first_name`, `last_name`, `email`, `admin`, `recipeaccess`) VALUES
+(1, 'ginali', 'pw', 'Gina', 'Li', 'ginali@vt.edu', 1, 1),
+(2, 'tommydean', 'pw', 'Tommy', 'Dean', 'tommydean@vt.edu', 1, 1),
+(3, 'sophiek', 'pw', 'Sophia', 'Kobelja', 'sophia94@vt.edu', 0, 1),
+(4, 'jd', 'pw', 'john', 'doe', 'jd@vt.edu', 0, 0);
 
 --
 -- Constraints for dumped tables
