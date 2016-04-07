@@ -42,7 +42,6 @@ class user_controller {
 			case 'edit':
 				$user_id = $_GET['user_id'];
 				$this->edit($user_id);
-
 		}
 	}
 
@@ -135,6 +134,7 @@ class user_controller {
 		if ($_SESSION['admin'] == 0) {
 			exit();
 		}
+
 		// Get all favorites
 		if (isset($_SESSION['username'])) {
 			$favorites = favorite::load_all();
@@ -142,21 +142,23 @@ class user_controller {
 		else {
 			$favorites = null;
 		}
-		// load all users
-		$users = user::load_all();
 
+		// Load all users
+		$users = user::load_all();
 
 		include_once SYSTEM_PATH.'/view/users_index.tpl';
 	}
 
 	public function users_show($id) {
-		// Get all favorites
+	// Get all favorites and events
 		if (isset($_SESSION['username'])) {
 			$favorites = favorite::load_all();
+			$events = event::load_by_creator_id($id);
 		}
 		else {
 			$favorites = null;
 		}
+
 		// Get data for the user being viewed
 		$user = user::load_by_id($id);
 
@@ -165,6 +167,18 @@ class user_controller {
 
 	public function edit($id)
 	{
+		// Ensure current user is this user or an admin
+		if (isset($_SESSION['username'])) {
+			$current_user = user::load_by_username($_SESSION['username']);
+			if (!$current_user->get('admin') && $current_user->get('id') != $id) {
+				exit();
+			}
+		}
+		else {
+			exit();
+		}
+
+		// Get data for the user being edited
 		$user = user::load_by_id($id);
 
 		$firstname = $_POST['firstname'];
@@ -179,7 +193,6 @@ class user_controller {
 			$user->set('last_name', $lastname);
 		}
 
-
 		$email = $_POST['email'];
 		if ($email != $user->get('email') && $email != NULL && $email != '')
 		{
@@ -193,36 +206,30 @@ class user_controller {
 		}
 
 		$admin = $_POST['user_type'];
-		if ($admin != $user->get('admin'))
+		if ($admin != $user->get('admin')) {
 			$user->set('admin', $admin);
+		}
 
-
-		if ($_POST['recipeaccess'] == 'true')
-		{
+		if ($_POST['recipeaccess'] == 'true') {
 			if ($user->get('recipeaccess') == 0)
 				$user->set('recipeaccess', '1');
 		}
-		else
-		{
+		else {
 			if ($user->get('recipeaccess') == 1)
 				$user->set('recipeaccess', '0');
 		}
 
+		// Update the user data
 		$user->save();
 
-		if ($_SESSION['error'] == NULL || $_SESSION['error'] == '')
-		{
-			$_SESSION['error'] = 'Your changes have been updated!';
-		}
-
-		if (isset($_SESSION['username'])) {
-			$favorites = favorite::load_all();
-		}
-		else {
-			$favorites = null;
-		}
+		// Create an associated event
+		$event = new event(array(
+				'creator_id' => $current_user->get('id'),
+				'type' => 'user',
+				'action' => 'edited',
+				'reference_id' => $user->get('id')));
+		$event->save();
 
 		header('Location: '.BASE_URL.'/users/'.$id);
 	}
-
 }

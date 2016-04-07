@@ -202,6 +202,30 @@
 				<div id="main_submission">
 					<button type="button submit" class="btn btn-success btn-lg">Feed Me</button>
 				</div>
+
+				<?php
+				if ($events != null) {
+				?>
+				<div id="main_activity_feed">
+					<?php
+					foreach ($events as $event) {
+						$event_creator = user::load_by_id($event->get('creator_id'));
+						$event_action = $event->get('action');
+						$event_type = $event->get('type');
+						if ($event_type == 'meal') {
+							$foreign_object = meal::load_by_id($event->get('reference_id'))->get('title');
+						}
+						else {
+							$foreign_object = user::load_by_id($event->get('reference_id'))->get('username');
+						}
+						$event_date_created = $event->get('date_created');
+					?>
+					<div class="event">
+						<span> <?= $event_creator->get('username') ?> <?= $event_action ?> <?= $event_type ?> <?= $foreign_object ?> on <?= $event_date_created ?></span>
+					</div>
+					<?php } ?>
+				</div>
+				<?php } ?>
 			</form>
 		</div>
 

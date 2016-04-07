@@ -124,12 +124,11 @@ class meal_controller {
 		$meal->save();
 
 		// Create an associated event
-		$event = new Event(array(
-				'user_id' => $meal->get('creator_id'),
+		$event = new event(array(
+				'creator_id' => $meal->get('creator_id'),
 				'type' => 'meal',
 				'action' => 'created',
-				'reference_id' => $meal->get('id')
-		));
+				'reference_id' => $meal->get('id')));
 		$event->save();
 
 		// Redirect to show page
@@ -174,6 +173,14 @@ class meal_controller {
 
 		// Save the meal
 		$meal->save();
+
+		// Create an associated event
+		$event = new event(array(
+				'creator_id' => $meal->get('creator_id'),
+				'type' => 'meal',
+				'action' => 'edited',
+				'reference_id' => $meal->get('id')));
+		$event->save();
 
 		// Redirect to show page
 		header('Location: ' . BASE_URL . '/meals/' . $id);

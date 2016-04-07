@@ -53,6 +53,14 @@ class follow_controller {
 		$follow->set('follower_id', $user->get('id'));
 		$follow->save();
 
+		// Create an associated event
+		$event = new event(array(
+				'creator_id' => $follow->get('follower_id'),
+				'type' => 'user',
+				'action' => 'followed',
+				'reference_id' => $follow->get('user_id')));
+		$event->save();
+
 		// Redirect to show page or update with AJAX
 		header('Location: '.BASE_URL.'/users/'.$id);
 	}
