@@ -85,7 +85,9 @@
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
 				<i class="fa fa-caret-right"></i>
-				<span>Meals</span>
+				<a href="<?= BASE_URL ?>/users">Users</a>
+				<i class="fa fa-caret-right"></i>
+				<span><?= $user->get('username') ?></span>
 			</nav>
 
 			<div id="search">
@@ -117,6 +119,14 @@
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/followers">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;</button>
 					</form>
+
+					<?php
+					if ($_SESSION['admin'] == 1) {
+					?>
+					<form method="GET" action="<?= BASE_URL ?>/users">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;</button>
+					</form>
+					<?php } ?>
 
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
@@ -153,7 +163,7 @@
 
 				<?php
 					$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
-					if ($current_user != null) {
+					if ($current_user != null && $current_user->get('id') != $user->get('id')) {
 						if ($current_user->follows($user->get('id'))) {
 					?>
 					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user->get('id') ?>/unfollow">
