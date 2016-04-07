@@ -30,7 +30,8 @@ class site_controller {
   public function home() {
 		// Get all favorites and relevant events
 		if (isset($_SESSION['username'])) {
-				$favorites = favorite::load_all();
+			$favorites = favorite::load_all();
+			$events = event::load_relevant(user::load_by_username($_SESSION['username'])->get('id'));
 		}
 		else {
 			$favorites = null;
