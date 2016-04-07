@@ -13,6 +13,10 @@ class user_controller {
 	// Route us to the appropriate class method for this action
 	public function route($action) {
 		switch($action) {
+			case 'index':
+				$this->index();
+				break;
+
 			case 'show':
 				$user_id = $_GET['user_id'];
 				$this->show($user_id);
@@ -30,22 +34,17 @@ class user_controller {
 				$this->create_check();
 				break;
 
-			case 'users_index':
-				$this->users_index();
-				break;
-
-			case 'users_show':
-				$user_id = $_GET['user_id'];
-				$this->users_show($user_id);
-				break;
-
 			case 'edit':
 				$user_id = $_GET['user_id'];
 				$this->edit($user_id);
 		}
 	}
 
-	public function show($id) {
+	public function index() {
+		if ($_SESSION['admin'] == 0) {
+			exit();
+		}
+
 		// Get all favorites
 		if (isset($_SESSION['username'])) {
 			$favorites = favorite::load_all();
@@ -54,7 +53,23 @@ class user_controller {
 			$favorites = null;
 		}
 
-		// Get data for this user
+		// Load all users
+		$users = user::load_all();
+
+		include_once SYSTEM_PATH.'/view/users_index.tpl';
+	}
+
+	public function show($id) {
+		// Get all favorites and events
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+			$events = event::load_by_creator_id($id);
+		}
+		else {
+			$favorites = null;
+		}
+
+		// Get data for the user being viewed
 		$user = user::load_by_id($id);
 
 		include_once SYSTEM_PATH.'/view/users_show.tpl';
@@ -130,43 +145,7 @@ class user_controller {
 		}
 	}
 
-	public function users_index() {
-		if ($_SESSION['admin'] == 0) {
-			exit();
-		}
-
-		// Get all favorites
-		if (isset($_SESSION['username'])) {
-			$favorites = favorite::load_all();
-		}
-		else {
-			$favorites = null;
-		}
-
-		// Load all users
-		$users = user::load_all();
-
-		include_once SYSTEM_PATH.'/view/users_index.tpl';
-	}
-
-	public function users_show($id) {
-	// Get all favorites and events
-		if (isset($_SESSION['username'])) {
-			$favorites = favorite::load_all();
-			$events = event::load_by_creator_id($id);
-		}
-		else {
-			$favorites = null;
-		}
-
-		// Get data for the user being viewed
-		$user = user::load_by_id($id);
-
-		include_once SYSTEM_PATH.'/view/users_show.tpl';
-	}
-
-	public function edit($id)
-	{
+	public function edit($id) {
 		// Ensure current user is this user or an admin
 		if (isset($_SESSION['username'])) {
 			$current_user = user::load_by_username($_SESSION['username']);
@@ -211,12 +190,14 @@ class user_controller {
 		}
 
 		if ($_POST['recipeaccess'] == 'true') {
-			if ($user->get('recipeaccess') == 0)
-				$user->set('recipeaccess', '1');
+			if ($user->get('recipeaccess') == 0) {
+				$user->set('recipeaccess', '1')
+			}
 		}
 		else {
-			if ($user->get('recipeaccess') == 1)
-				$user->set('recipeaccess', '0');
+			if ($user->get('recipeaccess') == 1) {
+				$user->set('recipeaccess', '0')
+			}
 		}
 
 		// Update the user data
