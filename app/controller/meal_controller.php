@@ -229,8 +229,15 @@ class meal_controller {
 		$favorite->set('meal_title', $meal_title);
 		$favorite->set('user_id', $user_id);
 
-		// Save the favorite and echo json
+		// Save the favorite, create an associated event, and echo JSON response
 		if ($favorite->save()) {
+			$event = new event(array(
+					'creator_id' => $user_id,
+					'type' => 'meal',
+					'action' => 'favorited',
+					'reference_id' => $meal_id));
+			$event->save();
+
 			echo json_encode(array(
 				'success' => 'success',
 				'check' => 'inserted'

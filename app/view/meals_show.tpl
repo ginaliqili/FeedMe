@@ -25,24 +25,7 @@
 			// event handler for meal id for favorite
 			$('#favorite').click(function(){
 				// AJAX GET request to insert favorite into user's favorite list
-				$.get(
-					favorite_action,
-					{ "meal_id": meal_id, "meal_title": meal_title} )
-					.done(function(data){
-						if(data.success == 'success') {
-							// successfully reached the server
-							if(data.check == 'inserted') {
-								//alert("inserted");
-
-							} else {
-								//alert("not inserted");
-							}
-						} else if(data.error != '') {
-							alert("Error");
-						} })
-					.fail(function(){
-							alert("Ajax error: could not reach server.");
-					});
+				$.get(favorite_action, { "meal_id": meal_id, "meal_title": meal_title} );
 			});
 		});
 	</script>
@@ -200,6 +183,7 @@
 			</div>
 		</div>
 	</div>
+
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>
