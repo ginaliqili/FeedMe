@@ -32,7 +32,7 @@ div.hidden {
 }
 
 
-html, body {
+body {
 	margin: 0;
 	padding: 0;
 	color: black;
@@ -40,7 +40,7 @@ html, body {
 	font-size: medium;
 	background-image: url('../img/food_light.jpg');
 	background-size: cover;
-	height: 100vh;
+	height: 100%;
 	width: 100%;
 }
 

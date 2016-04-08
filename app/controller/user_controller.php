@@ -67,6 +67,7 @@ class user_controller {
 		}
 		else {
 			$favorites = null;
+			$events = null;
 		}
 
 		// Get data for the user being viewed

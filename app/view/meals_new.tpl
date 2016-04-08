@@ -92,20 +92,19 @@
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
 				<?php } ?>
-			</div>
-
-			<div id="favorites_bar" style="position: fixed; left: 88%; padding: 10px; width: auto;">
-				<ul class="list-group">
-					<?php
-					if (isset($_SESSION['username'])) {
-						if ($favorites != null) {
-						foreach($favorites as $favorite) {
-							$meal_id = $favorite->get('meal_id');
-							$meal_title = $favorite->get('meal_title');
-					?>
-					<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
-					<?php }}} ?>
-				</ul>
+				<div id="favorites_bar">
+					<ul class="list-group">
+						<?php
+						if (isset($_SESSION['username'])) {
+							if ($favorites != null) {
+							foreach($favorites as $favorite) {
+								$meal_id = $favorite->get('meal_id');
+								$meal_title = $favorite->get('meal_title');
+						?>
+						<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
+						<?php }}} ?>
+					</ul>
+				</div>
 			</div>
 
 			<div id="main_heading">
@@ -162,11 +161,10 @@
 				</form>
 			</div>
 		</div>
-
-		<footer>
-			<p>Copyright 2016: All Rights Reserved</p>
-		</footer>
 	</div>
+	<footer>
+		<p>Copyright 2016: All Rights Reserved</p>
+	</footer>
 </body>
 
 </html>
