@@ -75,6 +75,10 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
 					</form>
 
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile</button>
+					</form>
+
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;</button>
 					</form>

@@ -131,6 +131,10 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
 					</form>
 
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile</button>
+					</form>
+
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;</button>
 					</form>
@@ -391,13 +395,13 @@
 								$first_name = $follower->get('first_name');
 								$last_name = $follower->get('last_name');
 						?>
-								<span><a href="<?= BASE_URL ?>/users/<?= $follower->get('id') ?>"><?= $username ?></a></span>
+								<span><a href="<?= BASE_URL ?>/users/<?= $follower->get('id') ?>"><?= $username ?></a></span><br />
 						<?php }} ?>
 
 					</span>
 
 					<span class="following_view">
-						<h2>Following</h2>
+						<h2>Follows</h2>
 
 						<?php
 						if ($followers2 != null) {
@@ -406,7 +410,7 @@
 								$first_name = $follower2->get('first_name');
 								$last_name = $follower2->get('last_name');
 						?>
-								<span><a href="<?= BASE_URL ?>/users/<?= $follower2->get('id') ?>"><?= $username ?></a></span>
+								<span><a href="<?= BASE_URL ?>/users/<?= $follower2->get('id') ?>"><?= $username ?></a></span><br />
 						<?php }} ?>
 
 					</span>
