@@ -17,35 +17,30 @@
 
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
   <script type="text/javascript">
-		$(document).ready(function(){
-			var timer = setInterval(function() {
-				// AJAX GET request to see if username is available
-				$.get("<?= BASE_URL ?>/users/<?= $user->get('id') ?>/events").done(function(data) {
-					// Work with the response
-					$('#activity_feed').html(data);
-				});
-			}, 5000);
 
-			<?php
-			$admin = $user->get('admin');
-			$recipeaccess = $user->get('recipeaccess');
-			echo "var admin = '{$admin}';";
-			echo "var recipeaccess = '{$recipeaccess}';";
-			?>
+
+
+		$(document).ready(function(){
+	      <?php
+		     $admin = $user->get('admin');
+		     $recipeaccess = $user->get('recipeaccess');
+		     echo "var admin = '{$admin}';";
+		     echo "var recipeaccess = '{$recipeaccess}';";
+		  ?>
 
 			$('#admin_edit').click(function(){
-        $('.set').hide();
-        $('.edit').show();
-        $('#showmeals').hide();
-				$('#following_view').hide();
-				$('#followers_view').hide();
-        $(this).hide();
+		        $('.set').hide();
+		        $('.edit').show();
+		        $('#showmeals').hide();
+						$('#show_followers').hide();
+						$('#show_following').hide();
+		        $(this).hide();
 
-				if (admin == 1)
-					$("#user_type option[value='1']").prop('selected', true);
+		     if (admin == 1)
+		      	$("#user_type option[value='1']").prop('selected', true);
 
-				if (recipeaccess == 1)
-					$("#recipeaccess").prop('checked', true);
+		     if (recipeaccess == 1)
+		     	$("#recipeaccess").prop('checked', true);
 			});
 
 			$('#showmeals').click(function(){
@@ -58,6 +53,7 @@
 					$(this).text("Hide User's Uploaded Meals");
 
 				$('.usermeals').toggle();
+
 			});
 
 			$('#show_followers').click(function(){
@@ -65,6 +61,7 @@
 				$('.following_view').hide();
 
 				$('.followers_view').toggle();
+
 			});
 
 			$('#show_following').click(function(){
@@ -72,7 +69,11 @@
 				$('.followers_view').hide();
 
 				$('.following_view').toggle();
+
 			});
+
+
+
 		});
 	</script>
 </head>
@@ -235,6 +236,82 @@
 						<span class="set">User Type:&nbsp;<?= $user_type ?></span>
 					</div>
 
+					<form method="POST" action="<?= BASE_URL ?>/users/<?= $user_id ?>/edit">
+
+						<div class = "user_field">
+						<span class="edit">
+						First Name:&nbsp;
+								<input type="text" name = "firstname" value="<?= $first_name ?>">
+							</span>
+						</div>
+
+						<div class = "user_field">
+						<span class="edit">
+						Last Name:&nbsp;
+								<input type="text" name = "lastname" value="<?= $last_name ?>">
+							</span>
+						</div>
+
+						<div class = "user_field">
+						<span class="edit">
+						Password:&nbsp;
+								<input type="text" name = "password" value="<?= $password ?>">
+							</span>
+						</div>
+
+						<div class = "user_field">
+						<span class="edit">
+						Email:&nbsp;
+								<input type="text" name = "email" value="<?= $email ?>">
+							</span>
+						 </div>
+
+						 <div class = "user_field">
+						 <span class="edit">
+						 User Type:&nbsp;
+
+						 <?php
+								if ($_SESSION['admin'] == 1)
+								{
+									?>
+							<select id="user_type" name = "user_type">
+								<option value = 0>Regular User</option>
+								<option value = 1>Admin</option>
+							</select>
+										<?php ;
+								}
+								else
+								{
+									echo $user_type;
+								}
+							?>
+
+						</span>
+
+						<div class="user_field">
+						<span class="edit">
+							<input type="checkbox" name="recipeaccess" id="recipeaccess" value="true"> Allow other users to view uploaded recipes
+						</span>
+						</div>
+							</div>
+
+							<div class="user_field">
+							<span class="edit">
+								<input type="submit" value="Submit Changes" class="btn btn-success btn-primary">
+							</span>
+						</div>
+
+						</form>
+
+						<?php
+						if (isset($_SESSION['username'])) {
+							if ($_SESSION['username'] == $username || $_SESSION['admin'] == 1) {
+							echo '
+								 <button id="admin_edit" type="submit button" class="btn btn-success btn-primary" >Edit</button>
+							';}}?>
+
+								<?php } ?>
+
 				  <div class="user_field">
 						<button type="button submit" id="show_following" class="btn btn-primary btn-sm">Follows</button>
 						<button type="button submit" id="show_followers" class="btn btn-primary btn-sm">Followers</button>
@@ -337,87 +414,10 @@
 
 					</span>
 
-					<?php
-					if (isset($_SESSION['username'])) {
-						if ($_SESSION['username'] == $username || $_SESSION['admin'] == 1) {
-						echo '
-							 <button id="admin_edit" type="submit button" class="btn btn-success btn-primary" >Edit</button>
-						';}}?>
 
-		        <form method="POST" action="<?= BASE_URL ?>/users/<?= $user_id ?>/edit">
-
-		          <div class = "user_field">
-		          <span class="edit">
-		          First Name:&nbsp;
-		              <input type="text" name = "firstname" value="<?= $first_name ?>">
-		            </span>
-		          </div>
-
-		          <div class = "user_field">
-		          <span class="edit">
-		          Last Name:&nbsp;
-		              <input type="text" name = "lastname" value="<?= $last_name ?>">
-		            </span>
-		          </div>
-
-		          <div class = "user_field">
-		          <span class="edit">
-		          Password:&nbsp;
-		              <input type="text" name = "password" value="<?= $password ?>">
-		            </span>
-		          </div>
-
-		          <div class = "user_field">
-		          <span class="edit">
-		          Email:&nbsp;
-		              <input type="text" name = "email" value="<?= $email ?>">
-		            </span>
-		           </div>
-
-		           <div class = "user_field">
-		           <span class="edit">
-		           User Type:&nbsp;
-
-		           <?php
-			           	if ($_SESSION['admin'] == 1)
-			           	{
-			           		?>
-								<select id="user_type" name = "user_type">
-									<option value = 0>Regular User</option>
-									<option value = 1>Admin</option>
-								</select>
-			              	<?php ;
-			           	}
-			           	else
-			           	{
-			           		echo $user_type;
-			           	}
-		           	?>
-
-		        	</span>
-
-							<div class="user_field">
-							<span class="edit">
-								<input type="checkbox" name="recipeaccess" id="recipeaccess" value="true"> Allow other users to view uploaded recipes
-							</span>
-							</div>
-		            </div>
-
-
-
-
-		            <div class="user_field">
-			          <span class="edit">
-			          	<input type="submit" value="Submit Changes" class="btn btn-success btn-primary">
-			          </span>
-		          </div>
-
-		          </form>
-
-							<?php } ?>
 	        </div>
 				</div>
-			
+
 
 				<?php
 				if ($events != null) {
