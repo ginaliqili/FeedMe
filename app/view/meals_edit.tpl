@@ -163,10 +163,10 @@
 				</form>
 			</div>
 		</div>
-	</div>	
-			<footer>
-				<p>Copyright 2016: All Rights Reserved</p>
-			</footer>
+	</div>
+	<footer>
+		<p>Copyright 2016: All Rights Reserved</p>
+	</footer>
 </body>
 
 </html>
