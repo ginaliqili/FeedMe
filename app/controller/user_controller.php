@@ -72,6 +72,7 @@ class user_controller {
 		// Get data for the user being viewed
 		$user = user::load_by_id($id);
 
+		include_once SYSTEM_PATH.'/view/helpers.php';
 		include_once SYSTEM_PATH.'/view/users_show.tpl';
 	}
 
