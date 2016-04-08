@@ -54,6 +54,18 @@ class meal_controller {
 				$meal_title = $_GET['meal_title'];
 				$this->favorite($meal_id, $meal_title);
 				break;
+
+			case 'search_API':
+				$this->search_API();
+				break;
+
+			case 'import':
+	 			$this->import();
+	 			break;
+
+	 		case 'create_import':
+	 			$this->create_import();
+	 			break;
 		}
 	}
 
@@ -255,4 +267,151 @@ class meal_controller {
 		// Return the image URL
 		return $arr['photos']['photo'][0]['url_n'];
 	}
+
+	public function search_API()
+	{
+		require_once SYSTEM_PATH.'/unirest-php-master/src/Unirest.php';
+
+		$endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?";
+		$therest = '';
+
+
+		if ($_POST['title'] != NULL)
+		{
+			$querytitle = $_POST['title'];
+			if ($_POST['food_type'] != "nothing")
+			{
+			 	$therest .= '&cuisine='.$_POST['food_type'];
+			 	$food_type = $_POST['food_type'];
+			}
+			else
+			{
+			 	$food_type = "American";
+			}
+			if ($_POST['meal_type'] != "nothing")
+			{
+			 	$therest .= '&type='.$_POST['meal_type'];
+			 	$meal_type = $_POST['meal_type'];
+			}
+			else
+			{
+				$meal_type = "Dinner";
+			}
+
+			$therest .= '&query='.$_POST['title'];
+			$therest = substr($therest, 1);
+
+			// These code snippets use an open-source library.
+			$response = Unirest\Request::get($endpoint.$therest,
+			  array(
+			    "X-Mashape-Key" => "cBEkw8VH7smshkE2V2900492f46Lp1G5mvWjsnj5VsCoxCsRpr"
+			  )
+			);
+
+			$arr = json_decode($response->raw_body, true);
+			
+			$baseUri = $arr['baseUri'];
+			
+			if ($_POST['time_to_prepare'] != NULL)
+			{
+				foreach($arr['results'] as $food)
+				{
+					if ($food['readyInMinutes'] <= $_POST['time_to_prepare'])
+					{
+						$validmeals[] = $food;
+					}
+
+				}
+
+			}
+			else
+			{
+				$validmeals = $arr['results'];
+			}
+
+			
+			$validmeals = array_slice($validmeals, 0, 2);
+
+			
+
+			foreach($validmeals as $food) 
+			{
+				sleep(1);
+
+				
+				$time_to_prepare = $food['readyInMinutes'];
+				$mealid = $food['id'];	
+
+				$image = $baseUri.$food['image'];
+
+				$title = $food['title']; 
+
+				$readyInMinutes = $food['readyInMinutes'];
+								
+
+			 	$endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
+				$therest = $mealid."/summary";
+			 		// These code snippets use an open-source library.
+			 	$response = Unirest\Request::get($endpoint.$therest,
+			 		  array(
+			 		    "X-Mashape-Key" => "cBEkw8VH7smshkE2V2900492f46Lp1G5mvWjsnj5VsCoxCsRpr"
+			 	  )
+			 	);
+
+			 	$arr_summ = json_decode($response->raw_body, true);
+
+			 	$description = $arr_summ['summary'];		
+
+				$meal = array( 'title' => $title, 'description' => $description, 
+									'meal_type' => $meal_type, 'food_type' => $food_type,
+									'time_to_prepare' => $readyInMinutes, 
+									'image_url' => $image);
+				$meals[] = $meal;
+				
+			}
+		}
+		
+
+		else
+		{
+			$_SESSION['error'] = "Please enter a title query";
+		}
+
+
+ 		include_once SYSTEM_PATH.'/view/food.tpl';
+	
+	}
+
+	public function import() {
+
+		$_SESSION['error'] = '';
+
+ 		include_once SYSTEM_PATH.'/view/meals_import.tpl';
+ 
+ 	}
+
+ 	public function create_import() {
+ 		// Create array of attributes
+		$attributes = array(
+			'title' => $_POST['title'],
+			'description' => $_POST['description'],
+			'meal_type' => $_POST['meal_type'],
+			'food_type' => $_POST['food_type'],
+			'time_to_prepare' => $_POST['time_to_prepare'],
+			'instructions' => $_POST['instructions'],
+			'image_url' => $_POST['image_url']);
+
+		// Create a new meal with the appropriate attributes
+		$meal = new meal($attributes);
+
+		// Set the creator_id
+		$creator = user::load_by_username($_SESSION['username']);
+		$meal->set('creator_id', $creator->get('id'));
+
+		// Save the new meal
+		$meal->save();
+
+		// Redirect to show page
+		header('Location: ' . BASE_URL . '/meals/' . $meal->get('id'));
+ 	}
 }
