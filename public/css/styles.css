@@ -32,7 +32,7 @@ div.hidden {
 }
 
 
-body {
+html, body {
 	margin: 0;
 	padding: 0;
 	color: black;
@@ -40,6 +40,8 @@ body {
 	font-size: medium;
 	background-image: url('../img/food_light.jpg');
 	background-size: cover;
+	height: 100vh;
+	width: 100%;
 }
 
 div#wrapper {
@@ -167,8 +169,29 @@ div#content > * {
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
-div#content > #favorites_bar {
-	padding-right: 2% 2% 0% 2%
+div#content > div#menu_bar {
+	position: fixed; float: left; padding: 10px; width: auto;
+}
+
+div#content > div#menu_bar > div#favorites_bar {
+	display: none;
+}
+
+div#content > div#menu_bar > div#home > button > a {
+	color: black;
+}
+
+div#content div#main_submission {
+	border-top: 3px solid rgba(0, 0, 0, .5);
+	padding-top: 10px;
+}
+
+div#content div#activity_feed {
+	min-height: auto;
+	max-height: 300px;
+	overflow: scroll;
+	padding: 0;
+	margin-top: 30px;
 }
 
 form#register input.available {
@@ -183,15 +206,7 @@ input.generic {
 	line-height: none;
 }
 
-footer#copyright {
-	height: 20px;
-	width: 100%;
-	bottom: 0;
-	left: 0;
-	position: absolute;
-	font-family: 'Quicksand';
-	font-size: small;
-	font-weight: bold;
+footer > * {
 	text-align: center;
 }
 

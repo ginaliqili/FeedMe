@@ -110,7 +110,7 @@ class meal_controller {
 		else {
 			$favorites = null;
 		}
-		
+
 		include_once SYSTEM_PATH.'/view/meals_new.tpl';
 	}
 
@@ -132,8 +132,15 @@ class meal_controller {
 		$creator = user::load_by_username($_SESSION['username']);
 		$meal->set('creator_id', $creator->get('id'));
 
-		// Save the new meal
-		$meal->save();
+		// Save the new meal and create an associated event
+		if ($meal->save()) {
+			$event = new event(array(
+					'creator_id' => $meal->get('creator_id'),
+					'type' => 'meal',
+					'action' => 'created',
+					'reference_id' => $meal->get('id')));
+			$event->save();
+		}
 
 		// Redirect to show page
 		header('Location: ' . BASE_URL . '/meals/' . $meal->get('id'));
@@ -175,8 +182,15 @@ class meal_controller {
 		$meal->set('time_to_prepare', $attributes['time_to_prepare']);
 		$meal->set('instructions', $attributes['instructions']);
 
-		// Save the meal
-		$meal->save();
+		// Save the meal and create an associated event
+		if ($meal->save()) {
+			$event = new event(array(
+					'creator_id' => $meal->get('creator_id'),
+					'type' => 'meal',
+					'action' => 'edited',
+					'reference_id' => $meal->get('id')));
+			$event->save();
+		}
 
 		// Redirect to show page
 		header('Location: ' . BASE_URL . '/meals/' . $id);
@@ -227,8 +241,15 @@ class meal_controller {
 		$favorite->set('meal_title', $meal_title);
 		$favorite->set('user_id', $user_id);
 
-		// Save the favorite and eccho json
+		// Save the favorite, create an associated event, and echo JSON response
 		if ($favorite->save()) {
+			$event = new event(array(
+					'creator_id' => $user_id,
+					'type' => 'meal',
+					'action' => 'favorited',
+					'reference_id' => $meal_id));
+			$event->save();
+
 			echo json_encode(array(
 				'success' => 'success',
 				'check' => 'inserted'

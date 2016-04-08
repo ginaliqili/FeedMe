@@ -13,6 +13,10 @@ class user_controller {
 	// Route us to the appropriate class method for this action
 	public function route($action) {
 		switch($action) {
+			case 'index':
+				$this->index();
+				break;
+
 			case 'show':
 				$user_id = $_GET['user_id'];
 				$this->show($user_id);
@@ -30,23 +34,21 @@ class user_controller {
 				$this->create_check();
 				break;
 
-			case 'users_index':
-				$this->users_index();
-				break;
-
-			case 'users_show':
-				$user_id = $_GET['user_id'];
-				$this->users_show($user_id);
-				break;
-
 			case 'edit':
 				$user_id = $_GET['user_id'];
 				$this->edit($user_id);
 
+			case 'events':
+				$user_id = $_GET['user_id'];
+				$this->events($user_id);
 		}
 	}
 
-	public function show($id) {
+	public function index() {
+		if ($_SESSION['admin'] == 0) {
+			exit();
+		}
+
 		// Get all favorites
 		if (isset($_SESSION['username'])) {
 			$favorites = favorite::load_all();
@@ -55,9 +57,49 @@ class user_controller {
 			$favorites = null;
 		}
 
-		// Get data for this user
+		// Load all users
+		$users = user::load_all();
+
+		include_once SYSTEM_PATH.'/view/users_index.tpl';
+	}
+
+	public function show($id) {
+		// Get all favorites and events
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+			$events = event::load_by_creator_id($id);
+		}
+		else {
+			$favorites = null;
+			$events = null;
+		}
+
+		// Get data for the user being viewed
 		$user = user::load_by_id($id);
 
+		// Retrieve the user's followers relationships
+		$follows = follow::load_by_user_id($id);
+
+		// Retrieve the associated user accounts
+		$followers = array();
+		if ($follows != null) {
+			foreach ($follows as $follow) {
+				$followers[] = user::load_by_id($follow->get('follower_id'));
+			}
+		}
+
+		// Retrieve the user's following relationships
+		$follows2 = follow::load_by_follower_id($id);
+
+		// Retrieve the associated user accounts
+		$followers2 = array();
+		if ($follows2 != null) {
+			foreach ($follows2 as $follow2) {
+				$followers2[] = user::load_by_id($follow2->get('user_id'));
+			}
+		}
+
+		include_once SYSTEM_PATH.'/view/helpers.php';
 		include_once SYSTEM_PATH.'/view/users_show.tpl';
 	}
 
@@ -131,98 +173,93 @@ class user_controller {
 		}
 	}
 
-	public function users_index() {
-		if ($_SESSION['admin'] == 0) {
+	public function edit($id) {
+		// Ensure current user is this user or an admin
+		if (isset($_SESSION['username'])) {
+			$current_user = user::load_by_username($_SESSION['username']);
+			if (!$current_user->get('admin') && $current_user->get('id') != $id) {
+				exit();
+			}
+		}
+		else {
 			exit();
 		}
-		// Get all favorites
-		if (isset($_SESSION['username'])) {
-			$favorites = favorite::load_all();
-		}
-		else {
-			$favorites = null;
-		}
-		// load all users
-		$users = user::load_all();
 
-
-		include_once SYSTEM_PATH.'/view/users_index.tpl';
-	}
-
-	public function users_show($id) {
-		// Get all favorites
-		if (isset($_SESSION['username'])) {
-			$favorites = favorite::load_all();
-		}
-		else {
-			$favorites = null;
-		}
-		// Get data for the user being viewed
-		$user = user::load_by_id($id);
-
-		include_once SYSTEM_PATH.'/view/users_show.tpl';
-	}
-
-	public function edit($id)
-	{
+		// Get data for the user being edited
 		$user = user::load_by_id($id);
 
 		$firstname = $_POST['firstname'];
-		if ($firstname != $user->get('first_name') && $firstname != NULL && $firstname != '')
-		{
+		if ($firstname != $user->get('first_name') && $firstname != NULL && $firstname != '') {
 			$user->set('first_name', $firstname);
 		}
 
 		$lastname = $_POST['lastname'];
-		if ($lastname != $user->get('last_name') && $lastname != NULL && $lastname != '')
-		{
+		if ($lastname != $user->get('last_name') && $lastname != NULL && $lastname != '') {
 			$user->set('last_name', $lastname);
 		}
 
-
 		$email = $_POST['email'];
-		if ($email != $user->get('email') && $email != NULL && $email != '')
-		{
+		if ($email != $user->get('email') && $email != NULL && $email != '') {
 			$user->set('email', $email);
 		}
 
 		$password = $_POST['password'];
-		if ($password != $user->get('password') && $password != NULL && $password != '')
-		{
+		if ($password != $user->get('password') && $password != NULL && $password != '') {
 			$user->set('password', $password);
 		}
 
 		$admin = $_POST['user_type'];
-		if ($admin != $user->get('admin'))
+		if ($admin != $user->get('admin')) {
 			$user->set('admin', $admin);
+		}
 
-
-		if ($_POST['recipeaccess'] == 'true')
-		{
-			if ($user->get('recipeaccess') == 0)
+		if ($_POST['recipeaccess'] == 'true') {
+			if ($user->get('recipeaccess') == 0) {
 				$user->set('recipeaccess', '1');
-		}
-		else
-		{
-			if ($user->get('recipeaccess') == 1)
-				$user->set('recipeaccess', '0');
-		}
-
-		$user->save();
-
-		if ($_SESSION['error'] == NULL || $_SESSION['error'] == '')
-		{
-			$_SESSION['error'] = 'Your changes have been updated!';
-		}
-
-		if (isset($_SESSION['username'])) {
-			$favorites = favorite::load_all();
+			}
 		}
 		else {
-			$favorites = null;
+			if ($user->get('recipeaccess') == 1) {
+				$user->set('recipeaccess', '0');
+			}
+		}
+
+		// Update the user data and create an associated event
+		if ($user->save()) {
+			$event = new event(array(
+					'creator_id' => $current_user->get('id'),
+					'type' => 'user',
+					'action' => 'edited',
+					'reference_id' => $user->get('id')));
+			$event->save();
 		}
 
 		header('Location: '.BASE_URL.'/users/'.$id);
 	}
 
+	public function events($user_id) {
+		include_once SYSTEM_PATH.'/view/helpers.php';
+
+		// Set the header to hint the response type (HTML) for JQuery's Ajax method
+		header('Content-Type: application/html');
+
+		// Get all relevant events
+		if (isset($_SESSION['username'])) {
+			$events = event::load_by_creator_id($user_id);
+		}
+		else {
+			exit();
+		}
+
+		// Generate the new HTML for the activity feed
+		$events_HTML = '';
+		foreach($events as $event) {
+			$events_HTML = $events_HTML . "<div class='event'><span class='list-group-item' href='#'><span>";
+			$events_HTML = $events_HTML . format_event($event);
+			$events_HTML = $events_HTML . "</span></span></div>";
+		}
+
+		// Return the new HTML for the activity feed
+		echo $events_HTML;
+	}
 }
