@@ -6,42 +6,22 @@
 
 	<title>FeedMe</title>
 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meals_show_styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meal_show_styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/index_styles.css">
 
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var meal_id = $('#meal_id').val();
-			var meal_title = $('#meal_title').val();
-
-			var favorite_check = "<?= BASE_URL ?>/meals/" + meal_id + "/favorite_check";
-			var favorite_action = "<?= BASE_URL ?>/meals/" + meal_id + "/favorite";
-			// event handler for meal id for favorite
-			$('#favorite').click(function(){
-				// AJAX GET request to insert favorite into user's favorite list
-				$.get(
-					favorite_action,
-					{ "meal_id": meal_id, "meal_title": meal_title} )
-					.done(function(data){
-						if(data.success == 'success') {
-							// successfully reached the server
-							if(data.check == 'inserted') {
-								//alert("inserted");
-
-							} else {
-								//alert("not inserted");
-							}
-						} else if(data.error != '') {
-							alert("Error");
-						} })
-					.fail(function(){
-							alert("Ajax error: could not reach server.");
-					});
-			});
+			$("#description a").click(function(e){
+				e.preventDefault();
+				var a_href = $(this).attr('href');
+				location.href = 'http://spoonacular.com' + a_href;
+			})
 		});
 	</script>
 
@@ -136,13 +116,13 @@
 							<p>Spoonacular API</p>
 							</div>
 						<div class="meal_info">
-								<input type = "hidden" name = "title" value = "<?= $title ?>"> 
+								<input type = "hidden" name = "title" value = "'.$title.'"> 
 								<input type = "hidden" name = "instructions" value = "'.$instructions.'">
 								<input type="hidden" name="image_url" value="'.$meal_image_url.'">
 								<div class="meal_image">
 									<img id="meal_image" src="'.$meal_image_url.'" alt = "meal image" />
 								</div>
-								<div class="meal_description">
+								<div id="description" class="meal_description">
 									<h4>Description:</h4>
 									<input type = "hidden" name = "description" value = "'. $meal_description .'">
 									'.$meal_description.'
@@ -165,7 +145,7 @@
 							if (isset($_SESSION['username'])) 
 							{ 
 							echo '
-							<button id="meal_edit" class="red_button" type="submit">Upload</button> 
+							<button id="meal_edit" class="btn btn-success btn-lg" type="submit">Upload</button> 
 							';}'
 							</div>
 						</div>

@@ -24,13 +24,14 @@
 		<header>
 			<nav id="authenticate">
 				<?php
-					if (!isset($_SESSION['username']) || $_SESSION['username'] == '') {
+				if (!isset($_SESSION['username'])) {
 				?>
 				<form method="POST" action="<?= BASE_URL ?>/login">
 					<label>Username: <input id="username" type="text" name="username"></label>
 					<label>Password: <input id="password" type="password" name="password"></label>
 					<button type="button submit" class="btn btn-primary btn-sm">Log In</button>
 				</form>
+
 				<form method="POST" action="<?= BASE_URL ?>/signup">
 					<button type="button submit" class="btn btn-primary btn-sm">Sign Up</button>
 				</form>
@@ -41,9 +42,7 @@
 				<form method="POST" action="<?= BASE_URL ?>/logout">
 					<button type="button submit" class="btn btn-primary btn-sm">Log Out</button>
 				</form>
-				<?php
-				}
-				?>
+				<?php } ?>
 			</nav>
 
 			<nav id="breadcrumb">

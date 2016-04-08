@@ -290,7 +290,14 @@ class meal_controller {
 			}
 			if ($_POST['meal_type'] != "nothing")
 			{
-			 	$therest .= '&type='.$_POST['meal_type'];
+				if ($_POST['meal_type'] == 'lunch' || $_POST['meal_type'] == 'dinner')
+				{
+					$therest .= '&type=main+course';
+				}
+				else
+				{
+			 		$therest .= '&type='.$_POST['meal_type'];
+				}
 			 	$meal_type = $_POST['meal_type'];
 			}
 			else
@@ -311,7 +318,9 @@ class meal_controller {
 			$arr = json_decode($response->raw_body, true);
 			
 			$baseUri = $arr['baseUri'];
-			
+
+			$validmeals = null;
+
 			if ($_POST['time_to_prepare'] != NULL)
 			{
 				foreach($arr['results'] as $food)
@@ -320,56 +329,59 @@ class meal_controller {
 					{
 						$validmeals[] = $food;
 					}
-
 				}
-
 			}
 			else
 			{
 				$validmeals = $arr['results'];
 			}
 
-			
-			$validmeals = array_slice($validmeals, 0, 2);
-
-			
-
-			foreach($validmeals as $food) 
+			if ($validmeals != null)
 			{
-				sleep(1);
+				$validmeals = array_slice($validmeals, 0, 2);	
+				foreach($validmeals as $food) 
+				{
+					sleep(1);
 
-				
-				$time_to_prepare = $food['readyInMinutes'];
-				$mealid = $food['id'];	
+					
+					$time_to_prepare = $food['readyInMinutes'];
+					$mealid = $food['id'];	
 
-				$image = $baseUri.$food['image'];
+					$image = $baseUri.$food['image'];
 
-				$title = $food['title']; 
+					$title = $food['title']; 
 
-				$readyInMinutes = $food['readyInMinutes'];
-								
+					$readyInMinutes = $food['readyInMinutes'];
+									
 
-			 	$endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
-				$therest = $mealid."/summary";
-			 		// These code snippets use an open-source library.
-			 	$response = Unirest\Request::get($endpoint.$therest,
-			 		  array(
-			 		    "X-Mashape-Key" => "cBEkw8VH7smshkE2V2900492f46Lp1G5mvWjsnj5VsCoxCsRpr"
-			 	  )
-			 	);
+				 	$endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
+					$therest = $mealid."/summary";
+				 		// These code snippets use an open-source library.
+				 	$response = Unirest\Request::get($endpoint.$therest,
+				 		  array(
+				 		    "X-Mashape-Key" => "cBEkw8VH7smshkE2V2900492f46Lp1G5mvWjsnj5VsCoxCsRpr"
+				 	  )
+				 	);
 
-			 	$arr_summ = json_decode($response->raw_body, true);
+				 	$arr_summ = json_decode($response->raw_body, true);
 
-			 	$description = $arr_summ['summary'];		
+				 	$description = $arr_summ['summary'];		
 
-				$meal = array( 'title' => $title, 'description' => $description, 
-									'meal_type' => $meal_type, 'food_type' => $food_type,
-									'time_to_prepare' => $readyInMinutes, 
-									'image_url' => $image);
-				$meals[] = $meal;
-				
+					$meal = array( 'title' => $title, 'description' => $description, 
+										'meal_type' => $meal_type, 'food_type' => $food_type,
+										'time_to_prepare' => $readyInMinutes, 
+										'image_url' => $image);
+					$meals[] = $meal;
+					
+				}
+			}
+			else
+			{
+				$_SESSION['error'] = "There are no matches to your search";
 			}
 		}
+
+			
 		
 
 		else
