@@ -95,7 +95,7 @@ class user_controller {
 		$followers2 = array();
 		if ($follows2 != null) {
 			foreach ($follows2 as $follow2) {
-				$followers2[] = user::load_by_id($follow->get('user_id'));
+				$followers2[] = user::load_by_id($follow2->get('user_id'));
 			}
 		}
 

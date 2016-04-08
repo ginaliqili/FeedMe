@@ -17,30 +17,35 @@
 
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
   <script type="text/javascript">
-
-
-
 		$(document).ready(function(){
-	      <?php
-		     $admin = $user->get('admin');
-		     $recipeaccess = $user->get('recipeaccess');
-		     echo "var admin = '{$admin}';";
-		     echo "var recipeaccess = '{$recipeaccess}';";
-		  ?>
+			var timer = setInterval(function() {
+				// AJAX GET request to see if username is available
+				$.get("<?= BASE_URL ?>/users/<?= $user->get('id') ?>/events").done(function(data) {
+					// Work with the response
+					$('#activity_feed').html(data);
+				});
+			}, 5000);
+
+			<?php
+			$admin = $user->get('admin');
+			$recipeaccess = $user->get('recipeaccess');
+			echo "var admin = '{$admin}';";
+			echo "var recipeaccess = '{$recipeaccess}';";
+			?>
 
 			$('#admin_edit').click(function(){
-		        $('.set').hide();
-		        $('.edit').show();
-		        $('#showmeals').hide();
-						$('#following_view').hide();
-						$('#followers_view').hide();
-		        $(this).hide();
+        $('.set').hide();
+        $('.edit').show();
+        $('#showmeals').hide();
+				$('#following_view').hide();
+				$('#followers_view').hide();
+        $(this).hide();
 
-		     if (admin == 1)
-		      	$("#user_type option[value='1']").prop('selected', true);
+				if (admin == 1)
+					$("#user_type option[value='1']").prop('selected', true);
 
-		     if (recipeaccess == 1)
-		     	$("#recipeaccess").prop('checked', true);
+				if (recipeaccess == 1)
+					$("#recipeaccess").prop('checked', true);
 			});
 
 			$('#showmeals').click(function(){
@@ -53,7 +58,6 @@
 					$(this).text("Hide User's Uploaded Meals");
 
 				$('.usermeals').toggle();
-
 			});
 
 			$('#show_followers').click(function(){
@@ -61,7 +65,6 @@
 				$('.following_view').hide();
 
 				$('.followers_view').toggle();
-
 			});
 
 			$('#show_following').click(function(){
@@ -69,11 +72,7 @@
 				$('.followers_view').hide();
 
 				$('.following_view').toggle();
-
 			});
-
-
-
 		});
 	</script>
 </head>
