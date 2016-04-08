@@ -103,10 +103,6 @@
 					</form>
 					<?php } ?>
 
-					<form method="GET" action="<?= BASE_URL ?>/meals/import">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-cloud-download"></i>&nbsp;Import Meal</button>
-					</form>
-
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
 				<?php } ?>
@@ -137,7 +133,6 @@
 			    if ($_SESSION['error'] != '')
 				{
 					echo $_SESSION['error'];
-					$_SESSION['error'] = '';
 				}
 			}
 
