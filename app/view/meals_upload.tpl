@@ -73,10 +73,10 @@
 				if ($current_user != null) {
 				?>
 				<div id="home" class="btn-group-vertical" role="group">
-					<button type="button" class="btn btn-default"><a href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
+					<button type="button" class="btn btn-default"><a href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home&nbsp;</a></button>
 
 					<form method="GET" action="<?= BASE_URL ?>/meals/new">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/meals/import">
@@ -84,22 +84,22 @@
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/followers">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<?php
 					if ($_SESSION['admin'] == 1) {
 					?>
 					<form method="GET" action="<?= BASE_URL ?>/users">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 					<?php } ?>
 
@@ -136,11 +136,11 @@
 				}
 			}
 
-			else if ($meals != null) 
+			else if ($meals != null)
 			{
-				foreach($meals as $meal) 
+				foreach($meals as $meal)
 				{
-						
+
 					$meal_title = $meal['title'];
 					$meal_description = $meal['description'];
 					$meal_meal_type = $meal['meal_type'];
@@ -160,7 +160,7 @@
 							<p>Spoonacular API</p>
 							</div>
 						<div class="meal_info">
-								<input type = "hidden" name = "title" value = "'.$title.'"> 
+								<input type = "hidden" name = "title" value = "'.$title.'">
 								<input type = "hidden" name = "instructions" value = "'.$instructions.'">
 								<input type="hidden" name="image_url" value="'.$meal_image_url.'">
 								<div class="meal_image">
@@ -168,7 +168,7 @@
 								</div>
 								<div id="description" class="meal_description">
 									<h4>Description:</h4>
-									
+
 									<input type = "hidden" id="description" name = "description" value = "The recipes description">
 
 									'.$meal_description.'
@@ -188,35 +188,24 @@
 									'.$meal_time_to_prepare.'
 								</div>
 								';
-							if (isset($_SESSION['username'])) 
-							{ 
+							if (isset($_SESSION['username']))
+							{
 							echo '
-							<button id="meal_edit" class="btn btn-success btn-lg" type="submit">Upload</button> 
+							<button id="meal_edit" class="btn btn-success btn-lg" type="submit">Upload</button>
 							';}'
 							</div>
 						</div>
 					</form>
-							<!-- <form>
-								<input type="hidden" id="querytitle" name = "querytitle" value="'.$querytitle.'">
-								<input type="hidden" id=""
-							</form> -->
-					 ';								
-				}//end foreach 
+					 ';
+				}//end foreach
 			}//end else if
 		?>
-
-		<!-- <?php
-			$description = $meal['description'];
-			$description = str_replace('"', '/"', $description);
-			echo $description;
-		?> -->
 			</div> <!-- end main content -->
 		</div> <!-- end content -->
-
-		<footer>
-			<p>Copyright 2016: All Rights Reserved</p>
-		</footer>
 	</div> <!-- end wrapper -->
+	<footer>
+		<p>Copyright 2016: All Rights Reserved</p>
+	</footer>
 </body>
 
 </html>

@@ -73,10 +73,10 @@
 				if ($current_user != null) {
 				?>
 				<div id="home" class="btn-group-vertical" role="group">
-					<button type="button" class="btn btn-default"><a href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
+					<button type="button" class="btn btn-default"><a href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home&nbsp;</a></button>
 
 					<form method="GET" action="<?= BASE_URL ?>/meals/new">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/meals/import">
@@ -84,22 +84,22 @@
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/followers">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<?php
 					if ($_SESSION['admin'] == 1) {
 					?>
 					<form method="GET" action="<?= BASE_URL ?>/users">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 					<?php } ?>
 
@@ -132,14 +132,14 @@
 						<div class="input-group title">
 							<span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
 								<input class="form-control" type="text" name="title" placeholder="MANDATORY: Title of Food (e.g: Burger)">
-								
+
 						</div>
 						<br>
 
 						<div class="input-group meal_type">
 							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 							<!-- <input class="form-control" type="text" name="meal_type" placeholder="Meal Type"> -->
-							
+
 							<select name="meal_type">
 								<option value='nothing' selected="selected">Meal Type</option>
 								<option value="breakfast">Breakfast</option>
@@ -153,7 +153,7 @@
 						<div class="input-group food_type">
 							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 							<!-- <input class="form-control" type="text" name="food_type" placeholder="Food Type"> -->
-							
+
 							<select name="food_type" placeholder = "Title">
 								<option value = "nothing" selected = "selected">Food Type</option>
 								<option value = "american">American</option>
@@ -177,11 +177,10 @@
 				</form>
 			</div>
 		</div>
-
-		<footer>
-			<p>Copyright 2016: All Rights Reserved</p>
-		</footer>
 	</div>
+	<footer>
+		<p>Copyright 2016: All Rights Reserved</p>
+	</footer>
 </body>
 
 </html>
