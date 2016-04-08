@@ -32,45 +32,36 @@
 		<header>
 			<nav id="authenticate">
 				<?php
-					if (!isset($_SESSION['username']) || $_SESSION['username'] == '') {
+				if (!isset($_SESSION['username'])) {
 				?>
-
 				<form method="POST" action="<?= BASE_URL ?>/login">
-					<label>Username: <input type="text" name="username"></label>
-					<label>Password: <input type="password" name="password"></label>
-					<button type="submit">Log in</button>
-				</form>
-				<form method="POST" action="<?= BASE_URL ?>/signup">
-					<button type="submit">Sign Up</button>
+					<label>Username: <input id="username" type="text" name="username"></label>
+					<label>Password: <input id="password" type="password" name="password"></label>
+					<button type="button submit" class="btn btn-primary btn-sm">Log In</button>
 				</form>
 
+				<form method="POST" action="<?= BASE_URL ?>/signup">
+					<button type="button submit" class="btn btn-primary btn-sm">Sign Up</button>
+				</form>
 				<?php
 				} else {
 				?>
-
 				<p>Logged in as <strong><?= $_SESSION['username'] ?></strong></p>
 				<form method="POST" action="<?= BASE_URL ?>/logout">
-					<button type="submit">Log out?</button>
+					<button type="button submit" class="btn btn-primary btn-sm">Log Out</button>
 				</form>
-				<form method="GET" action="<?= BASE_URL ?>/meals/new">
-					<button type="submit">Create Meal</button>
-				</form>
-
-				<?php
-				}
-				?>
+				<?php } ?>
 			</nav>
 
 			<nav id="breadcrumb">
-				<a href="<?= BASE_URL ?>">Home</a>
-				<a>Meals</a>
+				<span>Home</span>
 			</nav>
 
 			<div id="search">
 				<p>Know what you're looking for?</p>
 				<input type="text" value="Tasty meal.."/>
 				<form method="GET" action="<?= BASE_URL ?>/meals">
-					<button type="submit">Search</button>
+					<button type="button submit" class="btn btn-primary btn-sm">Search</button>
 				</form>
 			</div>
 		</header>
