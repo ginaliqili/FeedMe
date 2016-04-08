@@ -92,13 +92,13 @@
 		</header>
 
 		<div id="content">
-			<div id="menu_bar" style="position: fixed; float: left; padding: 10px; width: auto;">
+			<div id="menu_bar">
 				<?php
 				$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
 				if ($current_user != null) {
 				?>
-				<div class="btn-group-vertical" role="group">
-					<button type="button" class="btn btn-default"><a style="color: inherit;" href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
+				<div id="home" class="btn-group-vertical" role="group">
+					<button type="button" class="btn btn-default"><a href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
 
 					<form method="GET" action="<?= BASE_URL ?>/meals/new">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
@@ -181,7 +181,7 @@
 							<input type="hidden" id="meal_id" name="meal_id" value="<?= $meal->get('id') ?>">
 							<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
 
-							<button id="favorite" style="position: relative" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
+							<button id="favorite" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
 							<?php
 								if ($creator->get('username') == $_SESSION['username'] ||
 									(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {
@@ -198,7 +198,7 @@
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
 	</div>
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
