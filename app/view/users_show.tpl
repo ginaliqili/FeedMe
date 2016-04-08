@@ -356,7 +356,7 @@
 				<?php
 				if ($events != null) {
 				?>
-				<div id="main_activity_feed">
+				<div id="activity_feed" class="list-group">
 					<?php
 					foreach ($events as $event) {
 						$event_creator = user::load_by_id($event->get('creator_id'));
@@ -371,7 +371,9 @@
 						$event_date_created = $event->get('date_created');
 					?>
 					<div class="event">
-						<span> <?= $event_creator->get('username') ?> <?= $event_action ?> <?= $event_type ?> <?= $foreign_object ?> on <?= $event_date_created ?></span>
+						<span class="list-group-item" href="#">
+							<span> <a href="<?= BASE_URL ?>/users/<?= $event_creator->get('id') ?>"><?= $event_creator->get('username') ?> </a><?= $event_action ?> <?= $event_type ?> <?= $foreign_object ?> on <?= $event_date_created ?></span>
+						</span>
 					</div>
 					<?php } ?>
 				</div>

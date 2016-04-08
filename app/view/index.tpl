@@ -88,20 +88,22 @@
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
 				<?php } ?>
-			</div>
 
-			<div id="favorites_bar" style="position: fixed; left: 88%; padding: 10px; width: auto;">
-				<ul class="list-group">
-					<?php
-					if (isset($_SESSION['username'])) {
-						if ($favorites != null) {
-						foreach($favorites as $favorite) {
-							$meal_id = $favorite->get('meal_id');
-							$meal_title = $favorite->get('meal_title');
-					?>
-					<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
-					<?php }}} ?>
-				</ul>
+				<div id="favorites_bar">
+					<ul class="list-group">
+						<?php
+						if (isset($_SESSION['username'])) {
+							if ($favorites != null) {
+							foreach($favorites as $favorite) {
+								$meal_id = $favorite->get('meal_id');
+								$meal_title = $favorite->get('meal_title');
+						?>
+						<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
+						<?php }}} ?>
+					</ul>
+				</div>
+
+
 			</div>
 
 			<div id="main_heading">
@@ -194,19 +196,22 @@
 								</td>
 							</tr>
 						</table>
+
+						<br>
+
+						<div id="main_submission">
+							<button type="button submit" class="btn btn-success btn-lg">Feed Me</button>
+						</div>
+					</form>
+
 					</div>
+
+
 				</div>
-
-				<br>
-
-				<div id="main_submission">
-					<button type="button submit" class="btn btn-success btn-lg">Feed Me</button>
-				</div>
-
 				<?php
 				if ($events != null) {
 				?>
-				<div id="main_activity_feed">
+				<div id="activity_feed" class="list-group">
 					<?php
 					foreach ($events as $event) {
 						$event_creator = user::load_by_id($event->get('creator_id'));
@@ -221,7 +226,9 @@
 						$event_date_created = $event->get('date_created');
 					?>
 					<div class="event">
-						<span> <?= $event_creator->get('username') ?> <?= $event_action ?> <?= $event_type ?> <?= $foreign_object ?> on <?= $event_date_created ?></span>
+						<span class="list-group-item" href="#">
+							<span> <a href="<?= BASE_URL ?>/users/<?= $event_creator->get('id') ?>"><?= $event_creator->get('username') ?></a> <?= $event_action ?> <?= $event_type ?> <?= $foreign_object ?> on <?= $event_date_created ?></span>
+						</span>
 					</div>
 					<?php } ?>
 				</div>
@@ -229,10 +236,10 @@
 			</form>
 		</div>
 
-		<footer>
-			<p>Copyright 2016: All Rights Reserved</p>
-		</footer>
 	</div>
+	<footer>
+		<p>Copyright 2016: All Rights Reserved</p>
+	</footer>
 </body>
 
 </html>

@@ -229,7 +229,7 @@ class meal_controller {
 		$favorite->set('meal_title', $meal_title);
 		$favorite->set('user_id', $user_id);
 
-		// Save the favorite and eccho json
+		// Save the favorite and echo json
 		if ($favorite->save()) {
 			echo json_encode(array(
 				'success' => 'success',
