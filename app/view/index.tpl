@@ -15,6 +15,17 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var timer = setInterval(function() {
+				// AJAX GET request to see if username is available
+				$.get('<?= BASE_URL ?>/events').done(function(data) {
+					// Work with the response
+					$('#activity_feed').html(data);
+				});
+			}, 5000);
+		});
+	</script>
 </head>
 
 <body>
@@ -225,6 +236,7 @@
 			<?php } ?>
 		</div>
 	</div>
+
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>
