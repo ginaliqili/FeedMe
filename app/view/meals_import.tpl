@@ -8,13 +8,17 @@
 
 	<!--Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
-
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/meal_show_styles.css">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
+
+
 </head>
 
 <body>
@@ -46,8 +50,12 @@
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
 				<i class="fa fa-caret-right"></i>
-				<span>Users</span>
+				<a href="<?= BASE_URL ?>/meals">Meals</a>
+				<i class="fa fa-caret-right"></i>
+				<a href="<?= BASE_URL ?>/meals/import">import</a>
 			</nav>
+
+
 
 			<div id="search">
 				<p>Know what you're looking for?</p>
@@ -59,7 +67,7 @@
 		</header>
 
 		<div id="content">
-			<div id="menu_bar">
+					<div id="menu_bar">
 				<?php
 				$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
 				if ($current_user != null) {
@@ -98,6 +106,7 @@
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
 				<?php } ?>
+
 				<div id="favorites_bar">
 					<ul class="list-group">
 						<?php
@@ -112,70 +121,67 @@
 					</ul>
 				</div>
 			</div>
-
 			<div id="main_heading">
-				<h1>Users</h1>
+				<h1>Import a Meal</h1>
+        <h2>From Spoonacular</h2>
 			</div>
-
 			<div id="main_content">
-				<?php
-				if ($users != null) {
-					foreach($users as $user) {
-						$user_id = $user->get('id');
-            $username = $user->get('username');
-						$password = $user->get('password');
-						$first_name = $user->get('first_name');
-						$last_name = $user->get('last_name');
-            $email = $user->get('email');
-            $admin = $user->get('admin');
-              if ($admin == 1) $user_type = 'admin';
-              if ($admin == 0) $user_type = 'registered user';
+				<form method="POST" action="<?= BASE_URL ?>/meals/searchapi">
+					<div class="meal_content">
 
-				?>
-        <div class="user_content">
-					<div class="user_field">
-						<h2>
-              <span class="set"><?= $username ?></span>
-            </h2>
+						<div class="input-group title">
+							<span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+								<input class="form-control" type="text" name="title" placeholder="MANDATORY: Title of Food (e.g: Burger)">
+								
+						</div>
+						<br>
+
+						<div class="input-group meal_type">
+							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+							<!-- <input class="form-control" type="text" name="meal_type" placeholder="Meal Type"> -->
+							
+							<select name="meal_type">
+								<option value='nothing' selected="selected">Meal Type</option>
+								<option value="breakfast">Breakfast</option>
+								<option value="lunch">Lunch</option>
+								<option value="dinner">Dinner</option>
+								<option value="dessert">Dessert</option>
+							</select>
+						</div>
+						<br>
+
+						<div class="input-group food_type">
+							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+							<!-- <input class="form-control" type="text" name="food_type" placeholder="Food Type"> -->
+							
+							<select name="food_type" placeholder = "Title">
+								<option value = "nothing" selected = "selected">Food Type</option>
+								<option value = "american">American</option>
+								<option value="italian">Italian</option>
+								<option value="chinese">Chinese</option>
+								<option value="spanish">Spanish</option>
+								<option value="Thai">Thai</option>
+							</select>
+						</div>
+						<br>
+
+						<div class="input-group time_to_prepare">
+							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+							<input class="form-control" type="text" name="time_to_prepare" placeholder="Time to Prepare in Minutes">
+						</div>
+						<br>
+
 					</div>
-
-					<div class="user_field">
-						First Name:&nbsp;
-            <span class="set"><?= $first_name ?></span>
-					</div>
-
-          <div class="user_field">
-						Last Name:&nbsp;
-            <span class="set"><?= $last_name ?></span>
-					</div>
-
-          <div class="user_field">
-						Password:&nbsp;
-            <span class="set"><?= $password ?></span>
-					</div>
-
-          <div class="user_field">
-						Email:&nbsp;
-            <span class="set"><?= $email ?></span>
-					</div>
-
-          <div class="user_field">
-						User Type:&nbsp;
-            <span class="set"><?= $user_type ?></span>
-					</div>
-
-          <form method="GET" action="<?= BASE_URL ?>/users/<?= $user_id ?>">
-            <button type="submit button" class="btn btn-primary">View</button>
-          </form>
-        </div>
-      <div>
-				<?php }} ?>
+					<br>
+					<button type="button submit" class="btn btn-success btn-lg">Import Meal</button>
+				</form>
 			</div>
-	</div>
+		</div>
 
-	<footer>
-		<p>Copyright 2016: All Rights Reserved</p>
-	</footer>
+		<footer>
+			<p>Copyright 2016: All Rights Reserved</p>
+		</footer>
+	</div>
 </body>
 
 </html>
