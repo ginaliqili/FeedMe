@@ -289,7 +289,7 @@ class meal_controller {
 		return $arr['photos']['photo'][0]['url_n'];
 	}
 
-		public function search_API()
+	public function search_API()
 	{
 		require_once SYSTEM_PATH.'/unirest-php-master/src/Unirest.php';
 
@@ -346,13 +346,14 @@ class meal_controller {
 			{
 				foreach($arr['results'] as $meal)
 				{
-					if ($food['readyInMinutes'] <= $_POST['time_to_prepare'])
+					if ($meal['readyInMinutes'] <= $_POST['time_to_prepare'])
 					{
-						$food = $meal['results'][0];
+						$food = $meal;
+						break;
 					}
 				}
 			}
-			else
+			else if ($arr != null)
 			{
 				$food = $arr['results'][0];
 			}
