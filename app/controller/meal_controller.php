@@ -296,7 +296,6 @@ class meal_controller {
 		$endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?";
 		$therest = '';
 
-
 		if ($_POST['title'] != NULL)
 		{
 			$querytitle = $_POST['title'];
@@ -337,7 +336,7 @@ class meal_controller {
 			);
 
 			$arr = json_decode($response->raw_body, true);
-			
+
 			$baseUri = $arr['baseUri'];
 
 			$food = null;
@@ -360,21 +359,15 @@ class meal_controller {
 
 			if ($food != null)
 			{
-				//$validmeals = array_slice($validmeals, 0, 2);	
-				//foreach($validmeals as $food) 
-				//{
-					//sleep(1);
-
-					
 					$time_to_prepare = $food['readyInMinutes'];
-					$mealid = $food['id'];	
+					$mealid = $food['id'];
 
 					$image = $baseUri.$food['image'];
 
-					$title = $food['title']; 
+					$title = $food['title'];
 
 					$readyInMinutes = $food['readyInMinutes'];
-									
+
 
 				 	$endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
 					$therest = $mealid."/summary";
@@ -387,11 +380,11 @@ class meal_controller {
 
 				 	$arr_summ = json_decode($response->raw_body, true);
 
-				 	$description = $arr_summ['summary'];		
+				 	$description = $arr_summ['summary'];
 
-					$meal = array( 'title' => $title, 'description' => $description, 
+					$meal = array( 'title' => $title, 'description' => $description,
 										'meal_type' => $meal_type, 'food_type' => $food_type,
-										'time_to_prepare' => $readyInMinutes, 
+										'time_to_prepare' => $readyInMinutes,
 										'image_url' => $image);
 					$meals[] = $meal;
 			}
@@ -407,7 +400,7 @@ class meal_controller {
 
 
  		include_once SYSTEM_PATH.'/view/meals_upload.tpl';
-	
+
 	}
 
 	public function import() {
@@ -415,14 +408,10 @@ class meal_controller {
 		$_SESSION['error'] = '';
 
  		include_once SYSTEM_PATH.'/view/meals_import.tpl';
- 
+
  	}
 
  	public function create_import() {
-
- 		//$description = $_POST['description'];
-
- 		//$description = str_replace('"', "/'", $description);
  		// Create array of attributes
 		$attributes = array(
 			'title' => $_POST['title'],
@@ -440,8 +429,15 @@ class meal_controller {
 		$creator = user::load_by_username($_SESSION['username']);
 		$meal->set('creator_id', $creator->get('id'));
 
-		// Save the new meal
-		$meal->save();
+		// Save the new meal and create an associated event
+		if ($meal->save()) {
+			$event = new event(array(
+					'creator_id' => $meal->get('creator_id'),
+					'type' => 'meal',
+					'action' => 'imported',
+					'reference_id' => $meal->get('id')));
+			$event->save();
+		}
 
 		// Redirect to show page
 		header('Location: ' . BASE_URL . '/meals/' . $meal->get('id'));
