@@ -38,6 +38,7 @@ class site_controller {
 			$events = null;
 		}
 
+		include_once SYSTEM_PATH.'/view/helpers.php';
 		include_once SYSTEM_PATH.'/view/index.tpl';
   }
 
