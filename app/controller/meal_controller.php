@@ -289,7 +289,7 @@ class meal_controller {
 		return $arr['photos']['photo'][0]['url_n'];
 	}
 
-	public function search_API()
+		public function search_API()
 	{
 		require_once SYSTEM_PATH.'/unirest-php-master/src/Unirest.php';
 
@@ -340,29 +340,29 @@ class meal_controller {
 			
 			$baseUri = $arr['baseUri'];
 
-			$validmeals = null;
+			$food = null;
 
 			if ($_POST['time_to_prepare'] != NULL)
 			{
-				foreach($arr['results'] as $food)
+				foreach($arr['results'] as $meal)
 				{
 					if ($food['readyInMinutes'] <= $_POST['time_to_prepare'])
 					{
-						$validmeals[] = $food;
+						$food = $meal['results'][0];
 					}
 				}
 			}
 			else
 			{
-				$validmeals = $arr['results'];
+				$food = $arr['results'][0];
 			}
 
-			if ($validmeals != null)
+			if ($food != null)
 			{
-				$validmeals = array_slice($validmeals, 0, 2);	
-				foreach($validmeals as $food) 
-				{
-					sleep(1);
+				//$validmeals = array_slice($validmeals, 0, 2);	
+				//foreach($validmeals as $food) 
+				//{
+					//sleep(1);
 
 					
 					$time_to_prepare = $food['readyInMinutes'];
@@ -393,25 +393,19 @@ class meal_controller {
 										'time_to_prepare' => $readyInMinutes, 
 										'image_url' => $image);
 					$meals[] = $meal;
-					
-				}
 			}
 			else
 			{
 				$_SESSION['error'] = "There are no matches to your search";
 			}
 		}
-
-			
-		
-
 		else
 		{
 			$_SESSION['error'] = "Please enter a title query";
 		}
 
 
- 		include_once SYSTEM_PATH.'/view/food.tpl';
+ 		include_once SYSTEM_PATH.'/view/meals_upload.tpl';
 	
 	}
 
@@ -424,6 +418,10 @@ class meal_controller {
  	}
 
  	public function create_import() {
+
+ 		//$description = $_POST['description'];
+
+ 		//$description = str_replace('"', "/'", $description);
  		// Create array of attributes
 		$attributes = array(
 			'title' => $_POST['title'],

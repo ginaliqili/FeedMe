@@ -80,6 +80,10 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
 					</form>
 
+					<form method="GET" action="<?= BASE_URL ?>/meals/import">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cloud-download"></i>&nbsp;Import Meal</button>
+					</form>
+
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile</button>
 					</form>
@@ -99,10 +103,6 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;</button>
 					</form>
 					<?php } ?>
-
-					<form method="GET" action="<?= BASE_URL ?>/meals/import">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-cloud-download"></i>&nbsp;Import Meal</button>
-					</form>
 
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
