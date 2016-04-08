@@ -208,24 +208,32 @@
 
 
 				</div>
-
-
-
-			<div id="activity_feed" class="list-group" style="">
-				<a class="list-group-item" href="#">&nbsp; News feed item 1</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 2</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 3</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 4</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 1</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 2</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 3</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 4</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 1</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 2</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 3</a>
-				<a class="list-group-item" href="#">&nbsp; News feed item 4</a>
-			</div>
-
+				<?php
+				if ($events != null) {
+				?>
+				<div id="activity_feed" class="list-group">
+					<?php
+					foreach ($events as $event) {
+						$event_creator = user::load_by_id($event->get('creator_id'));
+						$event_action = $event->get('action');
+						$event_type = $event->get('type');
+						if ($event_type == 'meal') {
+							$foreign_object = meal::load_by_id($event->get('reference_id'))->get('title');
+						}
+						else {
+							$foreign_object = user::load_by_id($event->get('reference_id'))->get('username');
+						}
+						$event_date_created = $event->get('date_created');
+					?>
+					<div class="event">
+						<span class="list-group-item" href="#">
+							<span> <a href="<?= BASE_URL ?>/users/<?= $event_creator->get('id') ?>"><?= $event_creator->get('username') ?></a> <?= $event_action ?> <?= $event_type ?> <?= $foreign_object ?> on <?= $event_date_created ?></span>
+						</span>
+					</div>
+					<?php } ?>
+				</div>
+				<?php } ?>
+			</form>
 		</div>
 
 	</div>

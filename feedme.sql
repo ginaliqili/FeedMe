@@ -23,6 +23,89 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `event`
+--
+
+CREATE TABLE IF NOT EXISTS `event` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `creator_id` int(11) UNSIGNED NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `event`
+--
+
+INSERT INTO `event` (`id`, `creator_id`, `date_created`) VALUES
+(1, 2, '2016-03-25 16:21:37'),
+(2, 2, '2016-03-25 16:23:04'),
+(3, 2, '2016-03-25 16:24:03'),
+(4, 2, '2016-03-25 16:24:42'),
+(5, 1, '2016-03-25 16:25:37'),
+(6, 2, '2016-03-25 16:26:37'),
+(7, 2, '2016-03-25 16:27:37'),
+(8, 1, '2016-03-25 16:28:37'),
+(9, 1, '2016-03-25 16:29:37'),
+(10, 2, '2016-03-25 16:30:37'),
+(11, 1, '2016-03-25 16:31:37');
+
+--
+-- Table structure for table `meal_event`
+--
+
+DROP TABLE IF EXISTS `meal_event`;
+CREATE TABLE IF NOT EXISTS `meal_event` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `event_id` int(11) UNSIGNED NOT NULL,
+  `meal_id` int(11) UNSIGNED NOT NULL,
+  `action` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `event_id` (`event_id`),
+  KEY `meal_id` (`meal_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `meal_event`
+--
+
+INSERT INTO `meal_event` (`id`, `event_id`, `meal_id`, `action`) VALUES
+(1, 1, 1, 'created'),
+(2, 2, 2, 'created'),
+(3, 3, 3, 'created'),
+(4, 4, 4, 'created'),
+(5, 5, 5, 'created'),
+(6, 6, 1, 'favorited'),
+(7, 7, 2, 'favorited'),
+(8, 8, 5, 'favorited'),
+(9, 9, 4, 'favorited');
+
+--
+-- Table structure for table `user_event`
+--
+
+DROP TABLE IF EXISTS `user_event`;
+CREATE TABLE IF NOT EXISTS `user_event` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `event_id` int(11) UNSIGNED NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL,
+  `action` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `event_id` (`event_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_event`
+--
+
+INSERT INTO `user_event` (`id`, `event_id`, `user_id`, `action`) VALUES
+(1, 10, 1, 'followed'),
+(2, 11, 2, 'followed');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `favorite`
 --
 
@@ -31,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `favorite` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `meal_id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
-  `meal_title` varchar(11) NOT NULL,
+  `meal_title` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `meal_id` (`meal_id`),
   KEY `user_id` (`user_id`)
@@ -43,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `favorite` (
 
 INSERT INTO `favorite` (`id`, `meal_id`, `user_id`, `meal_title`) VALUES
 (1, 1, 2, 'Meatloaf'),
-(2, 2, 2, 'Banana Brea'),
+(2, 2, 2, 'Banana Bread'),
 (3, 5, 1, 'Pho'),
 (4, 4, 1, 'White Cake');
 
@@ -137,6 +220,22 @@ INSERT INTO `user` (`id`, `username`, `password`, `first_name`, `last_name`, `em
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `meal_event`
+--
+ALTER TABLE `meal_event`
+  ADD CONSTRAINT `meal_event_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `meal_event_ibfk_2` FOREIGN KEY (`meal_id`) REFERENCES `meal` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `meal_event_ck_1` CHECK (`action` IN (`created`, `edited`, `favorited`));
+
+--
+-- Constraints for table `user_event`
+--
+ALTER TABLE `user_event`
+  ADD CONSTRAINT `user_event_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_event_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `meal_event_ck_1` CHECK (`action` IN (`edited`, `followed`));
 
 --
 -- Constraints for table `favorite`

@@ -120,8 +120,15 @@ class meal_controller {
 		$creator = user::load_by_username($_SESSION['username']);
 		$meal->set('creator_id', $creator->get('id'));
 
-		// Save the new meal
-		$meal->save();
+		// Save the new meal and create an associated event
+		if ($meal->save()) {
+			$event = new event(array(
+					'creator_id' => $meal->get('creator_id'),
+					'type' => 'meal',
+					'action' => 'created',
+					'reference_id' => $meal->get('id')));
+			$event->save();
+		}
 
 		// Redirect to show page
 		header('Location: ' . BASE_URL . '/meals/' . $meal->get('id'));
@@ -163,8 +170,15 @@ class meal_controller {
 		$meal->set('time_to_prepare', $attributes['time_to_prepare']);
 		$meal->set('instructions', $attributes['instructions']);
 
-		// Save the meal
-		$meal->save();
+		// Save the meal and create an associated event
+		if ($meal->save()) {
+			$event = new event(array(
+					'creator_id' => $meal->get('creator_id'),
+					'type' => 'meal',
+					'action' => 'edited',
+					'reference_id' => $meal->get('id')));
+			$event->save();
+		}
 
 		// Redirect to show page
 		header('Location: ' . BASE_URL . '/meals/' . $id);
