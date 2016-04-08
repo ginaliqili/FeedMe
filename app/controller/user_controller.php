@@ -73,6 +73,28 @@ class user_controller {
 		// Get data for the user being viewed
 		$user = user::load_by_id($id);
 
+		// Retrieve the user's followers relationships
+		$follows = follow::load_by_user_id($id);
+
+		// Retrieve the associated user accounts
+		$followers = array();
+		if ($follows != null) {
+			foreach ($follows as $follow) {
+				$followers[] = user::load_by_id($follow->get('follower_id'));
+			}
+		}
+
+		// Retrieve the user's following relationships
+		$follows2 = follow::load_by_follower_id($id);
+
+		// Retrieve the associated user accounts
+		$followers2 = array();
+		if ($follows2 != null) {
+			foreach ($follows2 as $follow2) {
+				$followers2[] = user::load_by_id($follow->get('user_id'));
+			}
+		}
+
 		include_once SYSTEM_PATH.'/view/helpers.php';
 		include_once SYSTEM_PATH.'/view/users_show.tpl';
 	}

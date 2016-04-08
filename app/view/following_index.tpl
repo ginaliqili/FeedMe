@@ -128,7 +128,7 @@
 
 					<div id="first_name">
 						<h2>First Name: </h2>
-						<span><?= $first_name ?><span>
+						<span><?= $first_name ?></span>
 					</div>
 
 					<div id="last_name">
@@ -140,7 +140,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>

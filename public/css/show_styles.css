@@ -43,6 +43,14 @@ div.user_field > span.edit {
 div.user_field > span.usermeals {
 	display: none;
 }
+
+div.user_content > span.following_view {
+	display: none;
+}
+
+div.user_content > span.followers_view {
+	display: none;
+}
 /* Styles for meal show templates */
 
 div.meal_content {

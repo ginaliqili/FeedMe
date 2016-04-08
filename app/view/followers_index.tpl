@@ -124,11 +124,12 @@
 				<div class="user_content">
 					<div id="username">
 						<h2>Username: </h2>
-						<span><a href="<?= BASE_URL ?>/users/<?= $follower->get('id') ?>"><?= $username ?></a></span>					</div>
+						<span><a href="<?= BASE_URL ?>/users/<?= $follower->get('id') ?>"><?= $username ?></a></span>
+					</div>
 
 					<div id="first_name">
 						<h2>First Name: </h2>
-						<span><?= $first_name ?><span>
+						<span><?= $first_name ?></span>
 					</div>
 
 					<div id="last_name">
@@ -140,7 +141,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>
