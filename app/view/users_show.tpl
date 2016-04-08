@@ -194,13 +194,15 @@
 					</div>
 
 					<?php
-					if ($username == $_SESSION['username'] || $_SESSION['admin'] == 1) {
+					if (isset($_SESSION['username']) && isset($_SESSION['admin'])) {
+						if ($username == $_SESSION['username'] || $_SESSION['admin'] == 1) {
 					?>
 					<div class="user_field">
 					  <span class="set">Password:&nbsp;<?= $password ?></span>
 					</div>
 
 					<?php
+						}
 					}
 					?>
 
@@ -381,7 +383,7 @@
       </div>
 		</div>
 	</div>
-	
+
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>
