@@ -336,7 +336,6 @@
 						<?php }} ?>
 
 					</span>
-				</div>
 
 					<?php
 					if (isset($_SESSION['username'])) {
@@ -417,6 +416,8 @@
 
 							<?php } ?>
 	        </div>
+				</div>
+			
 
 				<?php
 				if ($events != null) {
