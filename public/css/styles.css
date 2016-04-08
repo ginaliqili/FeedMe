@@ -179,8 +179,11 @@ div#content div#main_submission {
 }
 
 div#content div#activity_feed {
-	height: 200px;
+	min-height: auto;
+	max-height: 300px;
 	overflow: scroll;
+	padding: 0;
+	margin-top: 30px;
 }
 
 form#register input.available {
