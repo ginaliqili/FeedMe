@@ -25,25 +25,11 @@
 			// event handler for meal id for favorite
 			$('#favorite').click(function(){
 				// AJAX GET request to insert favorite into user's favorite list
-				$.get(
-					favorite_action,
-					{ "meal_id": meal_id, "meal_title": meal_title} )
-					.done(function(data){
-						if(data.success == 'success') {
-							// successfully reached the server
-							if(data.check == 'inserted') {
-								//alert("inserted");
-
-							} else {
-								//alert("not inserted");
-							}
-						} else if(data.error != '') {
-							alert("Error");
-						} })
-					.fail(function(){
-							alert("Ajax error: could not reach server.");
-					});
+				$.get(favorite_action, { "meal_id": meal_id, "meal_title": meal_title} );
 			});
+			// $("#not_a_decision a").click(function(e){
+			// 	e.preventDefault();
+			// });
 		});
 	</script>
 </head>
@@ -92,51 +78,58 @@
 		</header>
 
 		<div id="content">
-			<div id="menu_bar" style="position: fixed; float: left; padding: 10px; width: auto;">
+			<div id="menu_bar">
 				<?php
 				$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
 				if ($current_user != null) {
 				?>
-				<div class="btn-group-vertical" role="group">
-					<button type="button" class="btn btn-default"><a style="color: inherit;" href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
+				<div id="home" class="btn-group-vertical" role="group">
+					<button type="button" class="btn btn-default"><a href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home&nbsp;</a></button>
 
 					<form method="GET" action="<?= BASE_URL ?>/meals/new">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal&nbsp;</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/meals/import">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cloud-download"></i>&nbsp;Import Meal</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/followers">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<?php
 					if ($_SESSION['admin'] == 1) {
 					?>
 					<form method="GET" action="<?= BASE_URL ?>/users">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 					<?php } ?>
 
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
 				<?php } ?>
-			</div>
-
-			<div id="favorites_bar" style="position: fixed; left: 88%; padding: 10px; width: auto;">
-				<ul class="list-group">
-					<?php
-					if (isset($_SESSION['username'])) {
-						if ($favorites != null) {
-						foreach($favorites as $favorite) {
-							$meal_id = $favorite->get('meal_id');
-							$meal_title = $favorite->get('meal_title');
-					?>
-					<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
-					<?php }}} ?>
-				</ul>
+				<div id="favorites_bar">
+					<ul class="list-group">
+						<?php
+						if (isset($_SESSION['username'])) {
+							if ($favorites != null) {
+							foreach($favorites as $favorite) {
+								$meal_id = $favorite->get('meal_id');
+								$meal_title = $favorite->get('meal_title');
+						?>
+						<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
+						<?php }}} ?>
+					</ul>
+				</div>
 			</div>
 
 			<div id="main_content">
@@ -151,6 +144,7 @@
 					</div>
 
 					<div class="meal_info">
+					<div id="not_a_decision">
 						<div class="meal_image">
 							<img id="meal_image" src="<?= $meal->get('image_url') ?>" alt="<?= $meal->get('title') ?>"/>
 						</div>
@@ -174,6 +168,7 @@
 							<h4>Time to Prepare:</h4>
 							<p><?= $meal->get('time_to_prepare') ?></p>
 						</div>
+					</div>
 
 						<div class="meal_decision">
 							<?php
@@ -182,7 +177,7 @@
 							<input type="hidden" id="meal_id" name="meal_id" value="<?= $meal->get('id') ?>">
 							<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
 
-							<button id="favorite" style="position: relative" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
+							<button id="favorite" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
 							<?php
 								if ($creator->get('username') == $_SESSION['username'] ||
 									(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {
@@ -200,11 +195,11 @@
 				</div>
 			</div>
 		</div>
-
-		<footer>
-			<p>Copyright 2016: All Rights Reserved</p>
-		</footer>
 	</div>
+
+	<footer>
+		<p>Copyright 2016: All Rights Reserved</p>
+	</footer>
 </body>
 
 </html>

@@ -61,51 +61,58 @@
 		</header>
 
 		<div id="content">
-			<div id="menu_bar" style="position: fixed; float: left; padding: 10px; width: auto;">
+			<div id="menu_bar">
 				<?php
 				$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
 				if ($current_user != null) {
 				?>
-				<div class="btn-group-vertical" role="group">
-					<button type="button" class="btn btn-default"><a style="color: inherit;" href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
+				<div id="home" class="btn-group-vertical" role="group">
+					<button type="button" class="btn btn-default"><a href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home&nbsp;</a></button>
 
 					<form method="GET" action="<?= BASE_URL ?>/meals/new">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal&nbsp;</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/meals/import">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cloud-download"></i>&nbsp;Import Meal</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/followers">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<?php
 					if ($_SESSION['admin'] == 1) {
 					?>
 					<form method="GET" action="<?= BASE_URL ?>/users">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 					<?php } ?>
 
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
 				<?php } ?>
-			</div>
-
-			<div id="favorites_bar" style="position: fixed; left: 88%; padding: 10px; width: auto;">
-				<ul class="list-group">
-					<?php
-					if (isset($_SESSION['username'])) {
-						if ($favorites != null) {
-						foreach($favorites as $favorite) {
-							$meal_id = $favorite->get('meal_id');
-							$meal_title = $favorite->get('meal_title');
-					?>
-					<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
-					<?php }}} ?>
-				</ul>
+				<div id="favorites_bar">
+					<ul class="list-group">
+						<?php
+						if (isset($_SESSION['username'])) {
+							if ($favorites != null) {
+							foreach($favorites as $favorite) {
+								$meal_id = $favorite->get('meal_id');
+								$meal_title = $favorite->get('meal_title');
+						?>
+						<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
+						<?php }}} ?>
+					</ul>
+				</div>
 			</div>
 
 			<div id="main_heading">
@@ -162,11 +169,11 @@
 				</form>
 			</div>
 		</div>
-
-		<footer>
-			<p>Copyright 2016: All Rights Reserved</p>
-		</footer>
 	</div>
+
+	<footer>
+		<p>Copyright 2016: All Rights Reserved</p>
+	</footer>
 </body>
 
 </html>

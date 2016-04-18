@@ -6,15 +6,25 @@
 
 	<title>FeedMe</title>
 
-	<!--Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/index_styles.css">
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#description a").click(function(e){
+				e.preventDefault();
+				var a_href = $(this).attr('href');
+				location.href = 'http://spoonacular.com' + a_href;
+			})
+		});
+	</script>
+
 </head>
 
 <body>
@@ -44,13 +54,7 @@
 			</nav>
 
 			<nav id="breadcrumb">
-				<a href="<?= BASE_URL ?>">Home</a>
-				<i class="fa fa-caret-right"></i>
-				<span>Users</span>
-				<i class="fa fa-caret-right"></i>
-				<a href="<?= BASE_URL ?>/users/<?= $user->get('id') ?>"><?= $user->get('username') ?></a>
-				<i class="fa fa-caret-right"></i>
-				<span>Followers</span>
+				<span>Home</span>
 			</nav>
 
 			<div id="search">
@@ -63,7 +67,7 @@
 		</header>
 
 		<div id="content">
-			<div id="menu_bar">
+					<div id="menu_bar">
 				<?php
 				$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
 				if ($current_user != null) {
@@ -102,6 +106,7 @@
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
 				<?php } ?>
+
 				<div id="favorites_bar">
 					<ul class="list-group">
 						<?php
@@ -116,39 +121,88 @@
 					</ul>
 				</div>
 			</div>
-
 			<div id="main_heading">
-				<h1><?= $user->get('username') ?>'s Following</h1>
+				<h1>This should fill you up</h1>
 			</div>
 
-			<div id="main_content">
-				<?php
-				if ($followers != null) {
-					foreach($followers as $follower) {
-						$username = $follower->get('username');
-						$first_name = $follower->get('first_name');
-						$last_name = $follower->get('last_name');
-				?>
-				<div class="user_content">
-					<div id="username">
-						<h2>Username: </h2>
-						<span><a href="<?= BASE_URL ?>/users/<?= $follower->get('id') ?>"><?= $username ?></a></span>					</div>
+		<div id="main_content">
+			<?php
 
-					<div id="first_name">
-						<h2>First Name: </h2>
-						<span><?= $first_name ?></span>
-					</div>
+			if ($_SESSION['error'] != null)
+			{
+			    if ($_SESSION['error'] != '')
+				{
+					echo $_SESSION['error'];
+				}
+			}
 
-					<div id="last_name">
-						<h2>Last Name: </h2>
-						<span><?= $last_name ?></span>
-					</div>
-				</div>
-				<?php }} ?>
-			</div>
-		</div>
-	</div>
+			else if ($meals != null)
+			{
+				foreach($meals as $meal)
+				{
 
+					$meal_title = $meal['title'];
+					$meal_description = $meal['description'];
+					$meal_meal_type = $meal['meal_type'];
+					$meal_food_type = $meal['food_type'];
+					$meal_time_to_prepare = $meal['time_to_prepare'];
+					$meal_image_url = $meal['image_url'];
+					$instructions = "no instructions yet";
+
+					echo '
+					<form method="POST" action="'.BASE_URL.'/meals/create_import" >
+						<div id="meal_1" class="meal_content">
+							<div class="meal_title">
+								<h2>'.$meal_title.'</h2>
+							</div>
+							<div class="meal_creator">
+							<h3>Uploaded from:&nbsp;</h3>
+							<p>Spoonacular API</p>
+							</div>
+						<div class="meal_info">
+								<input type = "hidden" name = "title" value = "'.$title.'">
+								<input type = "hidden" name = "instructions" value = "'.$instructions.'">
+								<input type="hidden" name="image_url" value="'.$meal_image_url.'">
+								<div class="meal_image">
+									<img id="meal_image" src="'.$meal_image_url.'" alt = "meal image" />
+								</div>
+								<div id="description" class="meal_description">
+									<h4>Description:</h4>
+
+									<input type = "hidden" id="description" name = "description" value = "The recipes description">
+
+									'.$meal_description.'
+								</div>
+								<div class="meal_type">
+									<h4>Meal Type:</h4>
+									<input type = "hidden" name = "meal_type" value = "'.$meal_meal_type.'">
+									'.$meal_meal_type.'
+								</div>
+								<div class="food_type">
+									<h4>Food Type:</h4>
+									<input type = "hidden" name = "food_type" value = "'.$meal_food_type.'">'.$meal_food_type.'
+								</div>
+								<div class="prepare_time">
+									<h4>Time to Prepare:</h4>
+									<input type = "hidden" name = "time_to_prepare" value = "'.$meal_time_to_prepare.'">
+									'.$meal_time_to_prepare.'
+								</div>
+								';
+							if (isset($_SESSION['username']))
+							{
+							echo '
+							<button id="meal_edit" class="btn btn-success btn-lg" type="submit">Upload</button>
+							';}'
+							</div>
+						</div>
+					</form>
+					 ';
+				}//end foreach
+			}//end else if
+		?>
+			</div> <!-- end main content -->
+		</div> <!-- end content -->
+	</div> <!-- end wrapper -->
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>

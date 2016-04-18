@@ -24,6 +24,10 @@ class site_controller {
 			case 'logout':
 				$this->logout();
 				break;
+
+			case 'events':
+				$this->events();
+				break;
 		}
 	}
 
@@ -82,5 +86,31 @@ class site_controller {
 
 		// Redirect to home page
 		header('Location: '.BASE_URL);
+	}
+
+	public function events() {
+		include_once SYSTEM_PATH.'/view/helpers.php';
+
+		// Set the header to hint the response type (HTML) for JQuery's Ajax method
+		header('Content-Type: application/html');
+
+		// Get all relevant events
+		if (isset($_SESSION['username'])) {
+			$events = event::load_relevant(user::load_by_username($_SESSION['username'])->get('id'));
+		}
+		else {
+			exit();
+		}
+
+		// Generate the new HTML for the activity feed
+		$events_HTML = '';
+		foreach($events as $event) {
+			$events_HTML = $events_HTML . "<div class='event'><span class='list-group-item' href='#'><span>";
+			$events_HTML = $events_HTML . format_event($event);
+			$events_HTML = $events_HTML . "</span></span></div>";
+		}
+
+		// Return the new HTML for the activity feed
+		echo $events_HTML;
 	}
 }

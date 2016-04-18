@@ -37,6 +37,10 @@ class user_controller {
 			case 'edit':
 				$user_id = $_GET['user_id'];
 				$this->edit($user_id);
+
+			case 'events':
+				$user_id = $_GET['user_id'];
+				$this->events($user_id);
 		}
 	}
 
@@ -67,10 +71,33 @@ class user_controller {
 		}
 		else {
 			$favorites = null;
+			$events = null;
 		}
 
 		// Get data for the user being viewed
 		$user = user::load_by_id($id);
+
+		// Retrieve the user's followers relationships
+		$follows = follow::load_by_user_id($id);
+
+		// Retrieve the associated user accounts
+		$followers = array();
+		if ($follows != null) {
+			foreach ($follows as $follow) {
+				$followers[] = user::load_by_id($follow->get('follower_id'));
+			}
+		}
+
+		// Retrieve the user's following relationships
+		$follows2 = follow::load_by_follower_id($id);
+
+		// Retrieve the associated user accounts
+		$followers2 = array();
+		if ($follows2 != null) {
+			foreach ($follows2 as $follow2) {
+				$followers2[] = user::load_by_id($follow2->get('user_id'));
+			}
+		}
 
 		include_once SYSTEM_PATH.'/view/helpers.php';
 		include_once SYSTEM_PATH.'/view/users_show.tpl';
@@ -208,5 +235,31 @@ class user_controller {
 		}
 
 		header('Location: '.BASE_URL.'/users/'.$id);
+	}
+
+	public function events($user_id) {
+		include_once SYSTEM_PATH.'/view/helpers.php';
+
+		// Set the header to hint the response type (HTML) for JQuery's Ajax method
+		header('Content-Type: application/html');
+
+		// Get all relevant events
+		if (isset($_SESSION['username'])) {
+			$events = event::load_by_creator_id($user_id);
+		}
+		else {
+			exit();
+		}
+
+		// Generate the new HTML for the activity feed
+		$events_HTML = '';
+		foreach($events as $event) {
+			$events_HTML = $events_HTML . "<div class='event'><span class='list-group-item' href='#'><span>";
+			$events_HTML = $events_HTML . format_event($event);
+			$events_HTML = $events_HTML . "</span></span></div>";
+		}
+
+		// Return the new HTML for the activity feed
+		echo $events_HTML;
 	}
 }

@@ -15,6 +15,17 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var timer = setInterval(function() {
+				// AJAX GET request to see if username is available
+				$.get('<?= BASE_URL ?>/events').done(function(data) {
+					// Work with the response
+					$('#activity_feed').html(data);
+				});
+			}, 5000);
+		});
+	</script>
 </head>
 
 <body>
@@ -57,31 +68,39 @@
 		</header>
 
 		<div id="content">
-			<div id="menu_bar" style="position: fixed; float: left; padding: 10px; width: auto;">
+			<div id="menu_bar">
 				<?php
 				$current_user = isset($_SESSION['username']) ? user::load_by_username($_SESSION['username']) : null;
 				if ($current_user != null) {
 				?>
-				<div class="btn-group-vertical" role="group">
-					<button type="button" class="btn btn-default"><a style="color: inherit;" href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
+				<div id="home" class="btn-group-vertical" role="group">
+					<button type="button" class="btn btn-default"><a href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home&nbsp;</a></button>
 
 					<form method="GET" action="<?= BASE_URL ?>/meals/new">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal&nbsp;</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/meals/import">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cloud-download"></i>&nbsp;Import Meal</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/followers">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<?php
 					if ($_SESSION['admin'] == 1) {
 					?>
 					<form method="GET" action="<?= BASE_URL ?>/users">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 					<?php } ?>
 
