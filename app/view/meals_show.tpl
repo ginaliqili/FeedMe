@@ -27,6 +27,9 @@
 				// AJAX GET request to insert favorite into user's favorite list
 				$.get(favorite_action, { "meal_id": meal_id, "meal_title": meal_title} );
 			});
+			// $("#not_a_decision a").click(function(e){
+			// 	e.preventDefault();
+			// });
 		});
 	</script>
 </head>
@@ -81,25 +84,33 @@
 				if ($current_user != null) {
 				?>
 				<div id="home" class="btn-group-vertical" role="group">
-					<button type="button" class="btn btn-default"><a href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home</a></button>
+					<button type="button" class="btn btn-default"><a href="<?= BASE_URL ?>"><i class="fa fa-home"></i>&nbsp;Home&nbsp;</a></button>
 
 					<form method="GET" action="<?= BASE_URL ?>/meals/new">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cutlery"></i>&nbsp;Create Meal&nbsp;</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/meals/import">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-cloud-download"></i>&nbsp;Import Meal</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/followers">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<?php
 					if ($_SESSION['admin'] == 1) {
 					?>
 					<form method="GET" action="<?= BASE_URL ?>/users">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 					<?php } ?>
 
@@ -133,6 +144,7 @@
 					</div>
 
 					<div class="meal_info">
+					<div id="not_a_decision">
 						<div class="meal_image">
 							<img id="meal_image" src="<?= $meal->get('image_url') ?>" alt="<?= $meal->get('title') ?>"/>
 						</div>
@@ -156,6 +168,7 @@
 							<h4>Time to Prepare:</h4>
 							<p><?= $meal->get('time_to_prepare') ?></p>
 						</div>
+					</div>
 
 						<div class="meal_decision">
 							<?php
