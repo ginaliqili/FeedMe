@@ -3,7 +3,6 @@
 
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width = 1050, user-scalable = no" />
 
 	<title>FeedMe</title>
 
@@ -11,52 +10,16 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/cookbook_styles.css">
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
-	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/modernizr.2.5.3.min.js"></script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/turn.js"></script>
 	<script type="text/javascript">
-
-	function loadApp() {
-
-		// Create the flipbook
-
-		$('.flipbook').turn({
-				// Width
-
-				width:922,
-
-				// Height
-
-				height:600,
-
-				// Elevation
-
-				elevation: 50,
-
-				// Enable gradients
-
-				gradients: true,
-
-				// Auto center this flipbook
-
-				autoCenter: true
-
-		});
-	}
-
-	// Load the HTML4 version if there's not CSS transform
-
-	yepnope({
-		test : Modernizr.csstransforms,
-		yep: ['<?= BASE_URL ?>/public/js/turn.js'],
-		nope: ['<?= BASE_URL ?>/public/js/turn.html4.min.js'],
-		both: ['<?= BASE_URL ?>/public/css/cookbook_styles.css'],
-		complete: loadApp
+	$(document).ready(function(){
+		loadTurnJS();
 	});
-
 	</script>
 </head>
 
