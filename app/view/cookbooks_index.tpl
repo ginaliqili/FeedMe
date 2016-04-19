@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	 <meta name="viewport" content="width = 1050, user-scalable = no" />
+	<meta name="viewport" content="width = 1050, user-scalable = no" />
 
 	<title>FeedMe</title>
 
