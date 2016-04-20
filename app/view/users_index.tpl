@@ -75,8 +75,29 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cloud-download"></i>&nbsp;Import Meal</button>
 					</form>
 
+					<?php
+					if ($_SESSION['admin'] == 1) {
+					?>
+					<form method="GET" action="<?= BASE_URL ?>/users">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
+					</form>
+					<?php } ?>
+
+
+				</div>
+				<?php } ?>
+
+
+			</div>
+
+			<div id="menu_bar_right">
+				<div id="right" class="btn-group-vertical" role="group">
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile&nbsp;</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/cookbooks">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-book"></i>&nbsp;Cookbooks&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
@@ -87,17 +108,8 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
-					<?php
-					if ($_SESSION['admin'] == 1) {
-					?>
-					<form method="GET" action="<?= BASE_URL ?>/users">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
-					</form>
-					<?php } ?>
-
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
-				<?php } ?>
 				<div id="favorites_bar">
 					<ul class="list-group">
 						<?php

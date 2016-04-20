@@ -7,13 +7,15 @@
 	<title>FeedMe</title>
 
 	<!--Font Awesome -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -94,8 +96,29 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cloud-download"></i>&nbsp;Import Meal</button>
 					</form>
 
+					<?php
+					if ($_SESSION['admin'] == 1) {
+					?>
+					<form method="GET" action="<?= BASE_URL ?>/users">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
+					</form>
+					<?php } ?>
+
+
+				</div>
+				<?php } ?>
+
+
+			</div>
+
+			<div id="menu_bar_right">
+				<div id="right" class="btn-group-vertical" role="group">
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile&nbsp;</button>
+					</form>
+
+					<form method="GET" action="<?= BASE_URL ?>/cookbooks">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-book"></i>&nbsp;Cookbooks&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
@@ -106,17 +129,8 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
-					<?php
-					if ($_SESSION['admin'] == 1) {
-					?>
-					<form method="GET" action="<?= BASE_URL ?>/users">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
-					</form>
-					<?php } ?>
-
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
-				<?php } ?>
 				<div id="favorites_bar">
 					<ul class="list-group">
 						<?php

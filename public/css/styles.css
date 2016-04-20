@@ -173,7 +173,14 @@ div#content > div#menu_bar {
 	position: fixed; float: left; padding: 10px; width: auto;
 }
 
-div#content > div#menu_bar > div#favorites_bar {
+div#content > div#menu_bar_right {
+	position: fixed;
+	padding: 10px;
+	width: auto;
+	right: 0;
+}
+
+div#content > div#menu_bar_right > div#favorites_bar {
 	display: none;
 }
 
