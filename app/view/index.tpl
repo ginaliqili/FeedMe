@@ -15,17 +15,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			var timer = setInterval(function() {
-				// AJAX GET request to see if username is available
-				$.get('<?= BASE_URL ?>/events').done(function(data) {
-					// Work with the response
-					$('#activity_feed').html(data);
-				});
-			}, 5000);
-		});
-	</script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/index_scripts.js"></script>
+	<input type="hidden" name="BASE_URL" value="<?= BASE_URL ?>" />
 </head>
 
 <body>
@@ -136,9 +127,11 @@
 								<td>
 									<h3>Meal Type:</h3>
 									<div>
-										<input type="checkbox" name="meal_type[]" value="Breakfast">Breakfast<br>
-										<input type="checkbox" name="meal_type[]" value="Lunch">Lunch<br>
-										<input type="checkbox" name="meal_type[]" value="Dinner">Dinner<br>
+										<?php
+										foreach(MEAL_TYPES as $meal_type) {
+										?>
+										<input type="checkbox" name="meal_type[]" value="<?= $meal_type ?>">&nbsp;<?= $meal_type ?><br>
+										<?php } ?>
 									</div>
 								</td>
 
@@ -146,7 +139,11 @@
 									<h3>Food Type:</h3>
 									<select name='food_type'>
 										<option selected="selected"></option>
-										<option value="American">American</option>
+										<?php
+										foreach(FOOD_TYPES as $food_type) {
+										?>
+										<option value="<?= $food_type ?>"><?= $food_type ?></option>
+										<?php } ?>
 									</select>
 								</td>
 
@@ -154,21 +151,22 @@
 									<h3>Time to Prepare:</h3>
 									<select name='time_to_prepare'>
 										<option selected="selected"></option>
-										<option value = "15 Minutes">15 Minutes</option>
-										<option value = "30 Minutes">30 Minutes</option>
-										<option value = "45 Minutes">45 Minutes</option>
-										<option value = "1 Hour">1 Hour</option>
-										<option value = "More than 1 Hour">More than 1 Hour</option>
+										<?php
+										foreach(TIMES_TO_PREPARE as $time_to_prepare) {
+										?>
+										<option value="<?= $time_to_prepare ?>"><?= $time_to_prepare ?></option>
+										<?php } ?>
 									</select>
 								</td>
 
 								<td>
 									<h3>Food Allergies:</h3>
 									<div>
-										<div id="new_allergy">
-											<input type="text" value="enter a food allergy" />
-											<button type="button">+</button>
+										<div id="new_allergies">
+											<input id="new_allergy" type="text" value="enter a food allergy" />
+											<button id="submit_allergy" type="button">+</button>
 										</div>
+
 										<div id="select_allergies">
 											<select id="allergies_listbox" multiple="multiple">
 											</select>
@@ -179,37 +177,32 @@
 
 							<tr>
 								<td>
-									<div id="advanced_settings">
+									<div>
 										<h3>Advanced Meal Settings:</h3>
-										<button id="display_adv" type="button">Display</button>
+										<button id="display_advanced" type="button">Display</button>
 									</div>
 								</td>
-								<td class="advanced">
+
+								<td class="advanced_options">
 									<h4>Enter Ingredients:</h4>
-									<div id="new_ingredient">
-										<input type="text" value="enter an ingredient" />
-										<button type="button">+</button>
+									<div id="new_ingredients">
+										<input id="new_ingredient" type="text" value="enter an ingredient" />
+										<button id="submit_ingredient" type="button">+</button>
 									</div>
+
 									<div id="select_ingredients">
 										<select id="ingredients_listbox" multiple="multiple">
-											<option>Potato</option>
-											<option>Cheese</option>
 										</select>
 									</div>
 								</td>
 
-								<td class="advanced">
-									<h4>Occasion Type:</h4>
-									<input type="checkbox" name="meal_type" value="Casual">Casual<br>
-									<input type="checkbox" name="meal_type" value="Fancy">Fancy<br>
-									<input type="checkbox" name="meal_type" value="Quick">Outdoor<br>
-								</td>
-
-								<td class="advanced">
+								<td class="advanced_options">
 									<h4>Rating:</h4>
-									<input type="checkbox" name="meal_type" value="5">5 star<br>
-									<input type="checkbox" name="meal_type" value="4">4 star<br>
-									<input type="checkbox" name="meal_type" value="3">3 star (and below)<br>
+									<?php
+									foreach(MEAL_RATINGS as $rating) {
+									?>
+									<input type="radio" name="meal_rating" value="<?= $rating ?>">&nbsp;<?= $rating ?><br>
+									<?php } ?>
 								</td>
 							</tr>
 						</table>

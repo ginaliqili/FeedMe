@@ -13,12 +13,12 @@ $(document).ready(function(){
 	// Displays advanced meal settings
 	$('#display_adv').click(function() {
 		$('.advanced').show();
-	})
+	});
 
 	// Shows Favorites bar
 	$('#favorites').click(function() {
 		$('#favorites_bar').toggle();
-	})
+	});
 });
 
 function loadTurnJS() {
