@@ -20,6 +20,17 @@
 	$(document).ready(function(){
 		loadTurnJS();
 	});
+	var meal_id = $('#meal_id').val();
+	var meal_title = $('#meal_title').val();
+
+	var favorite_check = "<?= BASE_URL ?>/meals/" + meal_id + "/favorite_check";
+	var favorite_action = "<?= BASE_URL ?>/meals/" + meal_id + "/favorite";
+	// event handler for meal id for favorite
+	$('#favorite').click(function(){
+		// AJAX GET request to insert favorite into user's favorite list
+		$.get(favorite_action, { "meal_id": meal_id, "meal_title": meal_title} );
+	});
+
 	</script>
 </head>
 
@@ -85,6 +96,10 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile&nbsp;</button>
 					</form>
 
+					<form method="GET" action="<?= BASE_URL ?>/cookbooks">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-book"></i>&nbsp;Cookbooks&nbsp;&nbsp;&nbsp;</button>
+					</form>
+
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Following&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
@@ -104,6 +119,7 @@
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
 				<?php } ?>
+
 				<div id="favorites_bar">
 					<ul class="list-group">
 						<?php
@@ -123,14 +139,73 @@
 				<div class="flipbook-viewport">
 					<div class="container">
 						<div class="flipbook">
-							<div style="background-color:red">My Cookbook</div>
-							<div style="background-color:blue"></div>
-							<div style="background-color:green"></div>
-							<div style="background-color:yellow"></div>
-							<div style="background-color:orange"></div>
-							<div style="background-color:purple"></div>
-							<div style="background-color:white"></div>
-							<div style="background-color:red"></div>
+							<div class="page" style="background-image: url(<?= BASE_URL ?>/public/img/book_cover.jpg)"></div>
+								<?php
+								$meals = meal::load_by_user($user->get('id'));
+								if ($meals != null) {
+									foreach($meals as $meal) {
+								?>
+								<div style="background-color: white">
+								<span class="usermeals">
+								<span class="meal_info">
+
+									<h3><?= $meal->get('title') ?></h3>
+									<span class="meal_image">
+										<img id="meal_image" src="<?= $meal->get('image_url') ?>" alt="<?= $meal->get('title') ?>"/>
+									</span>
+
+									<span class="meal_description">
+
+										<h4>Description:</h4>
+										<p><?= $meal->get('description') ?></p>
+									</span>
+
+									<span class="meal_type">
+										<h4>Meal Type:</h4>
+										<p><?= $meal->get('meal_type') ?></p>
+									</span>
+
+									<span class="food_type">
+										<h4>Food Type:</h4>
+										<p><?= $meal->get('food_type') ?></p>
+									</span>
+
+									<span class="prepare_time">
+										<h4>Time to Prepare:</h4>
+										<p><?= $meal->get('time_to_prepare') ?></p>
+									</span>
+
+									<span class="meal_decision">
+										<?php
+										if (isset($_SESSION['username'])) {
+										?>
+										<input type="hidden" id="meal_id" name="meal_id" value="<?= $meal->get('id') ?>">
+										<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
+
+										<button id="favorite" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
+										<?php
+											if ($user->get('username') == $_SESSION['username'] ||
+												(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {
+										?>
+										<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/edit">
+											<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
+										</form>
+
+										<form method="POST" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/destroy">
+											<button id="meal_delete" type="submit button" class="btn btn-primary btn-lg">Delete</button>
+										</form>
+										<?php }
+										} ?>
+									</span>
+								</span>
+							</span>
+						</div>
+								<?php }}
+								else {
+									echo 'This user does not have any recipes yet';
+								} ?>
+
+							<div style="background-color: white"></div>
 						</div>
 					</div>
 				</div>

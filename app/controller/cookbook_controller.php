@@ -28,7 +28,11 @@ class cookbook_controller {
 			$favorites = null;
 		}
 
+		// Get data for the user being viewed
+		$user = user::load_by_username($_SESSION['username']);
+
 		include_once SYSTEM_PATH.'/view/cookbooks_index.tpl';
+
   }
 
 }
