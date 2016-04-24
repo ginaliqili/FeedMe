@@ -22,6 +22,10 @@ class cookbook_controller {
 				$this->destroy($meal_id);
 				break;
 
+			case 'get_page_numbers':
+				$this->get_page_numbers();
+				break;
+
 		}
 	}
 
@@ -37,13 +41,11 @@ class cookbook_controller {
 		// Get data for the user being viewed
 		$user = user::load_by_username($_SESSION['username']);
 
+		cookbook::truncate();
+
 		include_once SYSTEM_PATH.'/view/cookbooks_index.tpl';
 
   }
-
-	public function destroy_confirm() {
-
-	}
 
 	public function destroy($id) {
 		// Get data for this meal
@@ -56,5 +58,16 @@ class cookbook_controller {
 		header('Location: ' . BASE_URL . '/cookbooks/');
 
 	}
+
+	public function get_page_numbers() {
+		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
+
+		$page_numbers = cookbook::get_page_numbers();
+		//$page_numbers = "aloha";
+		// echo JSON array with page numbers in order
+		echo json_encode($page_numbers);
+	}
+
+
 
 }

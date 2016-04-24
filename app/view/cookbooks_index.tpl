@@ -27,6 +27,30 @@
 
 		loadTurnJS();
 
+		var get_page_numbers = "<?= BASE_URL ?>/cookbooks/get_page_numbers";
+		var page_numbers_only = new Array();
+		$.get(get_page_numbers, function(data) {
+			console.log(data);
+			var parsed = JSON.parse(data);
+			console.log(parsed);
+			for (var i = 0; i < parsed.length; i++) {
+				page_numbers_only[i] = parsed[i].page_number;
+				console.log(page_numbers_only[i]);
+			}
+			//var page = parsed[0].page_number;
+			//console.log(page);
+		});
+
+		console.log(page_numbers_only[0]);
+
+
+
+		$('#jump').click(function() {
+			$(".flipbook").turn("page", $('#val').val());
+			alert("hi");
+			// $(".flipbook").turn("removePage", 1);
+		});
+
 		var meal_id = $('#meal_id').val();
 		var meal_title = $('#meal_title').val();
 
@@ -163,6 +187,31 @@
 					<div class="container">
 						<div class="flipbook">
 							<div style="background-image: url(<?= BASE_URL ?>/public/img/book_cover.jpg)"></div>
+							<div style="background-color: white">
+								Table of Contents
+								<button id="toc">click me</button>
+								<?php
+								$page_count = 2;
+								$id = 0;
+								$meals = meal::load_by_user($user->get('id'));
+								if ($meals != null) {
+									foreach($meals as $meal) {
+										$meal_id = $meal->get('id');
+										$page_count += 1;
+										$cookbook = new cookbook();
+										$cookbook->set('meal_id', $meal_id);
+										$cookbook->set('page_number', $page_count);
+										$cookbook->save();
+										$id += 1;
+										$cookbook_item = cookbook::load_by_id($id);
+										$cookbook_id = $cookbook->get('id') + 2;
+								?>
+								<br />
+								<span><?= $meal->get('title') ?></span><input id="val" type="hidden" value="5"><button id="jump"><?= $page_count ?></button><br />
+								<?php }
+
+								} ?>
+							</div>
 								<?php
 								$meals = meal::load_by_user($user->get('id'));
 								if ($meals != null) {
@@ -205,7 +254,9 @@
 										<input type="hidden" id="meal_id" name="meal_id" value="<?= $meal->get('id') ?>">
 										<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
 
-										<button class="favorite" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
+										<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/">
+											<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg btn-success">Eat Now</button>
+										</form>
 										<?php
 											if ($user->get('username') == $_SESSION['username'] ||
 												(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {
@@ -218,7 +269,7 @@
 											<button id="meal_destroy" type="submit button" class="btn btn-primary btn-lg">Delete</button>
 										</form>
 
-											<button id="meal_delete" value="<?= $meal->get('id') ?>" type="submit button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#delete_modal">Delete</button>
+											<button id="meal_delete" value="<?= $meal->get('id') ?>" type="submit button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#delete_modal">Delete 2</button>
 										<?php }
 										} ?>
 									</span>
