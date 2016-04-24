@@ -20,7 +20,6 @@
 			var meal_id = $('#meal_id').val();
 			var meal_title = $('#meal_title').val();
 
-			var favorite_check = "<?= BASE_URL ?>/meals/" + meal_id + "/favorite_check";
 			var favorite_action = "<?= BASE_URL ?>/meals/" + meal_id + "/favorite";
 			// event handler for meal id for favorite
 			$('#favorite').click(function(){

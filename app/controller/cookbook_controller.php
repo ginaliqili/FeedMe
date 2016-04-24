@@ -16,6 +16,12 @@ class cookbook_controller {
 			case 'index':
 				$this->index();
 				break;
+
+			case 'destroy':
+				$meal_id = $_GET['meal_id'];
+				$this->destroy($meal_id);
+				break;
+
 		}
 	}
 
@@ -34,5 +40,21 @@ class cookbook_controller {
 		include_once SYSTEM_PATH.'/view/cookbooks_index.tpl';
 
   }
+
+	public function destroy_confirm() {
+
+	}
+
+	public function destroy($id) {
+		// Get data for this meal
+		$meal = meal::load_by_id($id);
+
+		// Delete the meal
+		$meal->delete();
+
+		// Redirect to index page
+		header('Location: ' . BASE_URL . '/cookbooks/');
+
+	}
 
 }

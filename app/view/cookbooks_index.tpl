@@ -7,29 +7,52 @@
 	<title>FeedMe</title>
 
 	<!--Font Awesome -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/cookbook_styles.css">
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/turn.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
-		loadTurnJS();
-	});
-	var meal_id = $('#meal_id').val();
-	var meal_title = $('#meal_title').val();
+		$('#meal_delete').click(function() {
+    	$('#myModal').modal();
+		});
 
-	var favorite_check = "<?= BASE_URL ?>/meals/" + meal_id + "/favorite_check";
-	var favorite_action = "<?= BASE_URL ?>/meals/" + meal_id + "/favorite";
-	// event handler for meal id for favorite
-	$('#favorite').click(function(){
-		// AJAX GET request to insert favorite into user's favorite list
-		$.get(favorite_action, { "meal_id": meal_id, "meal_title": meal_title} );
+		loadTurnJS();
+
+		var meal_id = $('#meal_id').val();
+		var meal_title = $('#meal_title').val();
+
+		var favorite_action = "<?= BASE_URL ?>/meals/" + meal_id + "/favorite";
+		var destroy_action = "<?= BASE_URL ?>/cookbooks/" + meal_id + "/destroy";
+		// event handler for meal id for favorite
+		$('.favorite').click(function(){
+			alert(meal_title);
+			// AJAX GET request to insert favorite into user's favorite list
+			$.get(favorite_action, { "meal_id": meal_id, "meal_title": meal_title } );
+		});
+		// event handler for meak destroy in cookbook
+		$('#delete_confirm').click(function(){
+			var curr_page = $('#curr_page');
+			// AJAX GET request to insert favorite into user's favorite list
+			$.get(destroy_action, { "meal_id": $('#meal_delete').val() } )
+			.done(function(data){
+				if (data.success == 'success') {
+					if (data.check == 'deleted') {
+						$(curr_page).hide();
+					}
+				}
+			});
+		});
 	});
+
 
 	</script>
 </head>
@@ -92,19 +115,6 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-cloud-download"></i>&nbsp;Import Meal</button>
 					</form>
 
-					<?php
-					if ($_SESSION['admin'] == 1) {
-					?>
-					<form method="GET" action="<?= BASE_URL ?>/users">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
-					</form>
-					<?php } ?>
-				</div>
-				<?php } ?>
-			</div>
-
-			<div id="menu_bar_right">
-				<div id="right" class="btn-group-vertical" role="group">
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>">
 						<button type="submit button" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;View Profile&nbsp;</button>
 					</form>
@@ -121,8 +131,18 @@
 						<button type="submit button" class="btn btn-default"><i class="fa fa-users"></i>&nbsp;Followers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
+					<?php
+					if ($_SESSION['admin'] == 1) {
+					?>
+					<form method="GET" action="<?= BASE_URL ?>/users">
+						<button type="submit button" class="btn btn-default"><i class="fa fa-list"></i>&nbsp;Users List&nbsp;&nbsp;&nbsp;&nbsp;</button>
+					</form>
+					<?php } ?>
+
 					<button id="favorites" type="button" class="btn btn-default"><i class="fa fa-heart"></i>&nbsp;Favorites</button>
 				</div>
+				<?php } ?>
+
 				<div id="favorites_bar">
 					<ul class="list-group">
 						<?php
@@ -142,13 +162,13 @@
 				<div class="flipbook-viewport">
 					<div class="container">
 						<div class="flipbook">
-							<div class="page" style="background-image: url(<?= BASE_URL ?>/public/img/book_cover.jpg)"></div>
+							<div style="background-image: url(<?= BASE_URL ?>/public/img/book_cover.jpg)"></div>
 								<?php
 								$meals = meal::load_by_user($user->get('id'));
 								if ($meals != null) {
 									foreach($meals as $meal) {
 								?>
-								<div style="background-color: white">
+								<div id="curr_page" style="background-color: white">
 								<span class="usermeals">
 								<span class="meal_info">
 
@@ -185,7 +205,7 @@
 										<input type="hidden" id="meal_id" name="meal_id" value="<?= $meal->get('id') ?>">
 										<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
 
-										<button id="favorite" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
+										<button class="favorite" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
 										<?php
 											if ($user->get('username') == $_SESSION['username'] ||
 												(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {
@@ -194,9 +214,11 @@
 											<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
 										</form>
 
-										<form method="POST" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/destroy">
-											<button id="meal_delete" type="submit button" class="btn btn-primary btn-lg">Delete</button>
+										<form method="GET" action="<?= BASE_URL ?>/cookbooks/<?= $meal->get('id') ?>/destroy">
+											<button id="meal_destroy" type="submit button" class="btn btn-primary btn-lg">Delete</button>
 										</form>
+
+											<button id="meal_delete" value="<?= $meal->get('id') ?>" type="submit button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#delete_modal">Delete</button>
 										<?php }
 										} ?>
 									</span>
@@ -219,6 +241,25 @@
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete meal this meal?</p?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="delete_confirm" type="button" class="btn btn-primary btn-danger" data-dismiss="modal">Delete</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </body>
 
 </html>

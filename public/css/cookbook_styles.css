@@ -1,7 +1,6 @@
 /* Basic sample */
 
 body{
-	overflow:hidden;
 	background-color:#fcfcfc;
 	margin:0;
 	padding:0;
@@ -28,8 +27,10 @@ body{
 }
 
 .flipbook-viewport .page{
+	overflow: auto;
 	width:461px;
 	height:600px;
+	padding: 10px;
 	background-color:white;
 	background-repeat:no-repeat;
 	background-size:100% 100%;
