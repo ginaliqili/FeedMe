@@ -71,14 +71,12 @@ $(document).ready(function(){
 
 		// Append the allergies & ingredients to the form
 		$.each(allergies, function(i, allergy) {
-			alert(allergy);
 			form.append($('<input type="hidden">').attr({
 				name: "allergies[]",
 				value: allergy
 			}));
 		});
 		$.each(ingredients, function(i, ingredient) {
-			alert(ingredient);
 			form.append($('<input type="hidden">').attr({
 				name: "ingredients[]",
 				value: ingredient
