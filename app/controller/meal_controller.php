@@ -340,6 +340,7 @@ class meal_controller {
 			$baseUri = $arr['baseUri'];
 
 			$food = null;
+			$meals = array();
 
 			if ($_POST['time_to_prepare'] != NULL)
 			{
@@ -347,46 +348,56 @@ class meal_controller {
 				{
 					if ($meal['readyInMinutes'] <= $_POST['time_to_prepare'])
 					{
-						$food = $meal;
-						break;
+						$meals[] = $meal;
 					}
 				}
 			}
 			else if ($arr != null)
 			{
-				$food = $arr['results'][0];
+				$meals = $arr['results'];
 			}
 
-			if ($food != null)
+			if ($arr != null)
 			{
-					$time_to_prepare = $food['readyInMinutes'];
-					$mealid = $food['id'];
+				foreach ($meals as $meal)
+				{
+						$time_to_prepare = $meal['readyInMinutes'];
+						$mealid = $meal['id'];
 
-					$image = $baseUri.$food['image'];
+						$image = $baseUri.$meal['image'];
 
-					$title = $food['title'];
+						$title = $meal['title'];
 
-					$readyInMinutes = $food['readyInMinutes'];
+						$readyInMinutes = $meal['readyInMinutes'];
 
 
-				 	$endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
-					$therest = $mealid."/summary";
-				 		// These code snippets use an open-source library.
-				 	$response = Unirest\Request::get($endpoint.$therest,
-				 		  array(
-				 		    "X-Mashape-Key" => "cBEkw8VH7smshkE2V2900492f46Lp1G5mvWjsnj5VsCoxCsRpr"
-				 	  )
-				 	);
+					 // 	$endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
+						// $therest = $mealid."/summary";
+					 // 		// These code snippets use an open-source library.
+					 // 	$response = Unirest\Request::get($endpoint.$therest,
+					 // 		  array(
+					 // 		    "X-Mashape-Key" => "cBEkw8VH7smshkE2V2900492f46Lp1G5mvWjsnj5VsCoxCsRpr"
+					 // 	  )
+					 // 	);
 
-				 	$arr_summ = json_decode($response->raw_body, true);
+					 // 	$arr_summ = json_decode($response->raw_body, true);
 
-				 	$description = $arr_summ['summary'];
+					 // 	$description = $arr_summ['summary'];
 
-					$meal = array( 'title' => $title, 'description' => $description,
-										'meal_type' => $meal_type, 'food_type' => $food_type,
-										'time_to_prepare' => $readyInMinutes,
-										'image_url' => $image);
-					$meals[] = $meal;
+						// $meal = array( 'title' => $title, 'description' => $description,
+						// 					'meal_type' => $meal_type, 'food_type' => $food_type,
+						// 					'time_to_prepare' => $readyInMinutes,
+						// 					'image_url' => $image);
+
+						$json = array('text' => $title, 'count' => $readyInMinutes);
+						//$j[] =  json_encode($json);
+						$j[] = $json; 
+						//$meals[] = $meal;
+				}
+				$json_meals = json_encode($j);
+				// foreach ($b as $x)
+				// 	echo $x;
+				//echo $b;
 			}
 			else
 			{
@@ -396,11 +407,12 @@ class meal_controller {
 		else
 		{
 			$_SESSION['error'] = "Please enter a title query";
+			echo $_SESSION['error'];
 		}
 
 
- 		include_once SYSTEM_PATH.'/view/meals_upload.tpl';
-
+ 		include_once SYSTEM_PATH.'/view/import_show.tpl';
+		//header('Location: ' . BASE_URL . '/view/' . $meal->get('id'));
 	}
 
 	public function import() {
