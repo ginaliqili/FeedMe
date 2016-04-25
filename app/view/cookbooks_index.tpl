@@ -25,16 +25,11 @@
 		loadTurnJS();
 
 		var get_page_numbers = "<?= BASE_URL ?>/cookbooks/get_page_numbers";
-		var page_numbers_only = new Array();
 		$.get(get_page_numbers, function(data) {
 			console.log(data);
 
 			var parsed = JSON.parse(data);
-			console.log(parsed);
 			for (var i = 0; i < parsed.length; i++) {
-				page_numbers_only[i] = parsed[i].page_number;
-				console.log(page_numbers_only[i]);
-
 				var elems = document.getElementsByClassName('jump');
 				var counter = 2;
 				var page = 2;
@@ -43,17 +38,9 @@
 					counter += 1;
 					elems[i].id = counter
 					elems[i].setAttribute("font-size", page);
-
-					console.log('#' + elems[i].id);
-					console.log(parsed[i].page_number);
-					var x = i;
 					$('#' + elems[i].id).click(function() {
 						console.log(this.id);
 							$(".flipbook").turn("page", this.id);
-
-
-						//$(".flipbook").turn("page", 1);
-						// $(".flipbook").turn("removePage", 1);
 					});
 				}
 

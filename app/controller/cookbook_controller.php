@@ -26,6 +26,12 @@ class cookbook_controller {
 				$this->get_page_numbers();
 				break;
 
+			case 'add_to_cookbook':
+				$meal_id = $_GET['meal_id'];
+				$cookbook_id = $_GET['cookbook_id'];
+				$this->add_to_cookbook($meal_id, $cookbook_id);
+				break;
+
 		}
 	}
 
@@ -66,6 +72,10 @@ class cookbook_controller {
 		//$page_numbers = "aloha";
 		// echo JSON array with page numbers in order
 		echo json_encode($page_numbers);
+	}
+
+	public function add_to_cookbook($meal_id, $cookbook_id) {
+		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
 	}
 
 

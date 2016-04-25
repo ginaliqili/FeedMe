@@ -24,11 +24,15 @@
 			// event handler for meal id for favorite
 			$('#favorite').click(function(){
 				// AJAX GET request to insert favorite into user's favorite list
-				$.get(favorite_action, { "meal_id": meal_id, "meal_title": meal_title} );
+				$.get(favorite_action, { "meal_id": meal_id, "meal_title": meal_title } );
 			});
-			// $("#not_a_decision a").click(function(e){
-			// 	e.preventDefault();
-			// });
+
+			var add_to_cookbook = "<?= BASE_URL ?>/cookbook/" + meal_id + "/add_to_cookbook";
+			// event handler add to cookbook
+			$('#cookbook2').click(function(){
+				// AJAX GET request to insert favorite into user's favorite list
+				$.get(add_to_cookbook, { "meal_id": meal_id, "cookbook_id": cookbook_id } );
+			});
 		});
 	</script>
 </head>
@@ -177,6 +181,7 @@
 							<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
 
 							<button id="favorite" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
+							<button id="cookbook2" type="submit button" class="btn btn-success btn-primary btn-lg">Add to Cookbook</button>
 							<?php
 								if ($creator->get('username') == $_SESSION['username'] ||
 									(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {

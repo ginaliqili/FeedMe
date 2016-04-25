@@ -43,3 +43,4 @@ RewriteRule ^meals/create_import/?$ app/controller/meal_controller.php?action=cr
 RewriteRule ^cookbooks/?$ app/controller/cookbook_controller.php?action=index [QSA,L]
 RewriteRule ^cookbooks/(\d+)/destroy/?$ app/controller/cookbook_controller.php?action=destroy&meal_id=$1 [QSA,L]
 RewriteRule ^cookbooks/get_page_numbers/?$ app/controller/cookbook_controller.php?action=get_page_numbers [QSA,L]
+RewriteRule ^cookbooks/(\d+)/add_to_cookbook/(\d+)/?$ app/controller/cookbook_controller.php?action=add_to_cookbook&meal_id=$1&cookbook_id=$2 [QSA,L]
