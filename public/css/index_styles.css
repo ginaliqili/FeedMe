@@ -29,16 +29,12 @@ div#meal_content {
 	border-radius: 8px;
 }
 
-div#meal_content > * {
-
-}
-
 table {
 	width: 100%
 }
 
 td {
-	width: 27%;
+	width: 25%;
 }
 
 div#main_submission {
@@ -51,6 +47,6 @@ div#main_submission button {
 	width: 100px;
 }
 
-.advanced_settings {
+.advanced_options {
 	display: none;
 }

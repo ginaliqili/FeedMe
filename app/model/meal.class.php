@@ -147,14 +147,9 @@ class meal extends db_object {
     $search_queries = array();
 
     // Search by meal type
-    $meal_type_count = count($parameters['meal_type']);
-    if ($parameters['meal_type'] != null && $meal_type_count > 0) {
+    if ($parameters['meal_type'] != null) {
       $meal_type_query = $base_query . sprintf(" WHERE meal_type = '%s'",
-        $parameters['meal_type'][0]);
-      for ($i = 1; $i < $meal_type_count; $i++) {
-        $meal_type_query = $meal_type_query . sprintf(" AND meal_type = '%s'",
-          $parameters['meal_type'][$i]);
-      }
+        $parameters['meal_type']);
       $search_queries[] = $meal_type_query;
     }
 
@@ -172,7 +167,7 @@ class meal extends db_object {
       $search_queries[] = $time_to_prepare_query;
     }
 
-    // Retrieve the meals for the appropriate search query
+    // Store the retrieved meals
     $meals = array();
 
     // Check if any custom search queries were generated
@@ -201,6 +196,8 @@ class meal extends db_object {
           }
           else {
             // Intersect object arrays using inline comparator function
+            /* It would be better to use a SQL Intersect statement, but it's
+            not supported by MySQL */
             $meals = array_uintersect($meals, $results, function($obj1, $obj2) {
               if ($obj1 == $obj2) {
                 return 0;
@@ -226,7 +223,7 @@ class meal extends db_object {
       }
     }
 
-    // Return the meals
+    // Return the retrieved meals
     return $meals;
   }
 }

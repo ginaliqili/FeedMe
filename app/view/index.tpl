@@ -130,7 +130,7 @@
 										<?php
 										foreach(MEAL_TYPES as $meal_type) {
 										?>
-										<input type="checkbox" name="meal_type[]" value="<?= $meal_type ?>">&nbsp;<?= $meal_type ?><br>
+										<input type="radio" name="meal_type" value="<?= $meal_type ?>">&nbsp;<?= $meal_type ?><br>
 										<?php } ?>
 									</div>
 								</td>
@@ -164,12 +164,13 @@
 									<div>
 										<div id="new_allergies">
 											<input id="new_allergy" type="text" placeholder="enter a food allergy" />
-											<button id="submit_allergy" type="button">+</button>
+											<button id="submit_allergy" class="btn btn-success" type="button">+</button>
 										</div>
 
 										<div id="select_allergies">
 											<select id="allergies_listbox" multiple="multiple">
 											</select>
+											<button id="remove_allergy" class="btn btn-danger" type="button">Remove</button>
 										</div>
 									</div>
 								</td>
@@ -179,7 +180,7 @@
 								<td>
 									<div>
 										<h3>Advanced Meal Settings:</h3>
-										<button id="display_advanced" type="button">Display</button>
+										<button id="display_advanced" class="btn btn-info" type="button">Display</button>
 									</div>
 								</td>
 
@@ -187,7 +188,7 @@
 									<h4>Enter Ingredients:</h4>
 									<div id="new_ingredients">
 										<input id="new_ingredient" type="text" placeholder="enter an ingredient" />
-										<button id="submit_ingredient" type="button">+</button>
+										<button id="submit_ingredient" class="btn btn-success" type="button">+</button>
 									</div>
 
 									<div id="select_ingredients">

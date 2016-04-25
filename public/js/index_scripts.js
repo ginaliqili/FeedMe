@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 	// Start the activity feed AJAX refresh
 	var timer = setInterval(function() {
-		// AJAX GET request to see if username is available
+		// AJAX GET request to retrieve the events
 		$.get(BASE_URL + '/events').done(function(data) {
 			// Work with the response
 			$('#activity_feed').html(data);
@@ -16,7 +16,7 @@ $(document).ready(function(){
 		$('.advanced_options').toggle();
 	});
 
-	// Store the allergies and ingredients for this search session
+	// Store the allergies and ingredients for this feed me session
 	var allergies = [];
 	var ingredients = [];
 
@@ -25,12 +25,12 @@ $(document).ready(function(){
 		// Get the submitted allergy
 		var allergy = $('#new_allergy').val();
 
-		// Clear the field for a new allergy
-		$('#new_allergy').val("");
-		$('#new_allergy').attr("placeholder", "enter another allergy");
-
 		// Validate the submission
 		if (allergy != "" && allergy != null) {
+			// Clear the field for a new allergy
+			$('#new_allergy').val("");
+			$('#new_allergy').attr("placeholder", "enter another allergy");
+
 			// Add to the list of allergies
 			allergies.push(allergy);
 
@@ -47,12 +47,12 @@ $(document).ready(function(){
 		// Get the submitted ingredient
 		var ingredient = $('#new_ingredient').val();
 
-		// Clear the field for a new ingredient
-		$('#new_ingredient').val("");
-		$('#new_ingredient').attr("placeholder", "enter another ingredient");
-
 		// Validate the submission
 		if (ingredient != "" && ingredient != null) {
+			// Clear the field for a new ingredient
+			$('#new_ingredient').val("");
+			$('#new_ingredient').attr("placeholder", "enter another ingredient");
+
 			// Add to the list of ingredients
 			ingredients.push(ingredient);
 
