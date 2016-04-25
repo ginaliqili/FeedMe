@@ -169,6 +169,10 @@ div#content > * {
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
+div#content table.table_of_contents {
+	width: 100%;
+}
+
 div#content > div#menu_bar {
 	position: fixed; float: left; padding: 10px; width: auto;
 }

@@ -6,6 +6,14 @@ body{
 	padding:0;
 }
 
+td.title {
+	width: 85%;
+}
+
+td.page_number {
+	width: 15%;
+}
+
 .flipbook-viewport{
 	overflow:hidden;
 	width:100%;

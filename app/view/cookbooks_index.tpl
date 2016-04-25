@@ -21,9 +21,6 @@
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/turn.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
-		$('#meal_delete').click(function() {
-    	$('#myModal').modal();
-		});
 
 		loadTurnJS();
 
@@ -31,24 +28,41 @@
 		var page_numbers_only = new Array();
 		$.get(get_page_numbers, function(data) {
 			console.log(data);
+
 			var parsed = JSON.parse(data);
 			console.log(parsed);
 			for (var i = 0; i < parsed.length; i++) {
 				page_numbers_only[i] = parsed[i].page_number;
 				console.log(page_numbers_only[i]);
+
+				var elems = document.getElementsByClassName('jump');
+				var counter = 2;
+				var page = 2;
+				for (var i = 0; i < elems.length; i++) {
+					page += 1;
+					counter += 1;
+					elems[i].id = counter
+					elems[i].setAttribute("font-size", page);
+
+					console.log('#' + elems[i].id);
+					console.log(parsed[i].page_number);
+					var x = i;
+					$('#' + elems[i].id).click(function() {
+						console.log(this.id);
+							$(".flipbook").turn("page", this.id);
+
+
+						//$(".flipbook").turn("page", 1);
+						// $(".flipbook").turn("removePage", 1);
+					});
+				}
+
 			}
-			//var page = parsed[0].page_number;
-			//console.log(page);
+
 		});
 
-		console.log(page_numbers_only[0]);
-
-
-
-		$('#jump').click(function() {
-			$(".flipbook").turn("page", $('#val').val());
-			alert("hi");
-			// $(".flipbook").turn("removePage", 1);
+		$('.toc').click(function() {
+			$(".flipbook").turn("page", 2);
 		});
 
 		var meal_id = $('#meal_id').val();
@@ -189,7 +203,6 @@
 							<div style="background-image: url(<?= BASE_URL ?>/public/img/book_cover.jpg)"></div>
 							<div style="background-color: white">
 								Table of Contents
-								<button id="toc">click me</button>
 								<?php
 								$page_count = 2;
 								$id = 0;
@@ -207,17 +220,31 @@
 										$cookbook_id = $cookbook->get('id') + 2;
 								?>
 								<br />
-								<span><?= $meal->get('title') ?></span><input id="val" type="hidden" value="5"><button id="jump"><?= $page_count ?></button><br />
+								<table class="table_of_contents">
+									<tbody>
+										<tr>
+											<td class="title">
+												<span><?= $meal->get('title') ?></span><input id="val" type="hidden" value="5">
+											</td>
+											<td class="page_number">
+												<button class="jump"><?= $page_count ?></button><br />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
 								<?php }
 
 								} ?>
 							</div>
+
 								<?php
 								$meals = meal::load_by_user($user->get('id'));
 								if ($meals != null) {
 									foreach($meals as $meal) {
 								?>
 								<div id="curr_page" style="background-color: white">
+									<button class="btn btn-secondary toc">Table of Contents</button>
 								<span class="usermeals">
 								<span class="meal_info">
 
@@ -269,7 +296,6 @@
 											<button id="meal_destroy" type="submit button" class="btn btn-primary btn-lg">Delete</button>
 										</form>
 
-											<button id="meal_delete" value="<?= $meal->get('id') ?>" type="submit button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#delete_modal">Delete 2</button>
 										<?php }
 										} ?>
 									</span>
