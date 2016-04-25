@@ -119,7 +119,7 @@
 				<h2>Fill out the following fields to be fed!</h2>
 			</div>
 
-			<form method="POST" action="<?= BASE_URL ?>/meals/search">
+			<form id="search_form" method="POST" action="<?= BASE_URL ?>/meals/search">
 				<div id="main_content">
 					<div id="meal_content">
 						<table id="meal_options">
@@ -163,7 +163,7 @@
 									<h3>Food Allergies:</h3>
 									<div>
 										<div id="new_allergies">
-											<input id="new_allergy" type="text" value="enter a food allergy" />
+											<input id="new_allergy" type="text" placeholder="enter a food allergy" />
 											<button id="submit_allergy" type="button">+</button>
 										</div>
 
@@ -186,7 +186,7 @@
 								<td class="advanced_options">
 									<h4>Enter Ingredients:</h4>
 									<div id="new_ingredients">
-										<input id="new_ingredient" type="text" value="enter an ingredient" />
+										<input id="new_ingredient" type="text" placeholder="enter an ingredient" />
 										<button id="submit_ingredient" type="button">+</button>
 									</div>
 
@@ -210,7 +210,7 @@
 						<br>
 
 						<div id="main_submission">
-							<button type="button submit" class="btn btn-success btn-lg">Feed Me</button>
+							<button id="feed_me" type="button" class="btn btn-success btn-lg">Feed Me</button>
 						</div>
 					</div>
 				</div>

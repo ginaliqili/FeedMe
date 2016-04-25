@@ -11,6 +11,11 @@ $(document).ready(function(){
 		});
 	}, 5000);
 
+	// Show advanced meal settings
+	$('#display_advanced').click(function() {
+		$('.advanced_options').toggle();
+	});
+
 	// Store the allergies and ingredients for this search session
 	var allergies = [];
 	var ingredients = [];
@@ -21,7 +26,8 @@ $(document).ready(function(){
 		var allergy = $('#new_allergy').val();
 
 		// Clear the field for a new allergy
-		$('#new_allergy').val("enter another allergy");
+		$('#new_allergy').val("");
+		$('#new_allergy').attr("placeholder", "enter another allergy");
 
 		// Validate the submission
 		if (allergy != "" && allergy != null) {
@@ -42,7 +48,8 @@ $(document).ready(function(){
 		var ingredient = $('#new_ingredient').val();
 
 		// Clear the field for a new ingredient
-		$('#new_ingredient').val("enter another ingredient");
+		$('#new_ingredient').val("");
+		$('#new_ingredient').attr("placeholder", "enter another ingredient");
 
 		// Validate the submission
 		if (ingredient != "" && ingredient != null) {
@@ -57,8 +64,28 @@ $(document).ready(function(){
 		}
 	});
 
-	// Show advanced meal settings
-	$('#display_advanced').click(function() {
-		$('.advanced_options').toggle();
+	// Execute a search
+	$('#feed_me').click(function() {
+		// Get the form element
+		var form = $('#search_form');
+
+		// Append the allergies & ingredients to the form
+		$.each(allergies, function(i, allergy) {
+			alert(allergy);
+			form.append($('<input type="hidden">').attr({
+				name: "allergies[]",
+				value: allergy
+			}));
+		});
+		$.each(ingredients, function(i, ingredient) {
+			alert(ingredient);
+			form.append($('<input type="hidden">').attr({
+				name: "ingredients[]",
+				value: ingredient
+			}));
+		});
+
+		// Submit the form
+		form.submit();
 	});
 });
