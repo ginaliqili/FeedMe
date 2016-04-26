@@ -22,10 +22,13 @@
 	<script type="text/javascript">
 	$(document).ready(function(){
 
+		$('.submit_changes').hide();
 
+		$('.meal_edit').click(function(){
 			$('.edit').show();
 			$('.set').hide();
 			$(this).hide();
+			$('.submit_changes').show();
 
 		});
 
@@ -38,8 +41,8 @@
 			var parsed = JSON.parse(data);
 			for (var i = 0; i < parsed.length; i++) {
 				var elems = document.getElementsByClassName('jump');
-				var counter = 2;
-				var page = 2;
+				var counter = 3;
+				var page = 3;
 				for (var i = 0; i < elems.length; i++) {
 					page += 1;
 					counter += 1;
@@ -198,7 +201,7 @@
 							<div style="background-color: white">
 								Table of Contents
 								<?php
-								$page_count = 2;
+								$page_count = 3;
 								$id = 0;
 								$meals = meal::load_by_user($user->get('id'));
 								if ($meals != null) {
@@ -230,6 +233,57 @@
 								<?php }
 
 								} ?>
+							</div>
+
+							<div style="bakcground-color: white">
+								Add a New Meal
+								<form method="POST" action="<?= BASE_URL ?>/meals/create">
+									<div class="meal_content">
+										<div class="input-group title">
+											<span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+											<input class="form-control" type="text" name="title" placeholder="Title">
+										</div>
+
+										<br>
+
+										<div class="input-group description">
+											<span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+											<textarea class="form-control" name="description" placeholder="Description"></textarea>
+										</div>
+
+										<br>
+
+										<div class="input-group meal_type">
+											<span class="input-group-addon"><i class="fa fa-cutlery"></i></span>
+											<input class="form-control" type="text" name="meal_type" placeholder="Meal Type">
+										</div>
+
+										<br>
+
+										<div class="input-group food_type">
+											<span class="input-group-addon"><i class="fa fa-globe"></i></span>
+											<input class="form-control" type="text" name="food_type" placeholder="Food Type">
+										</div>
+
+										<br>
+
+										<div class="input-group time_to_prepare">
+											<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+											<input class="form-control" type="text" name="time_to_prepare" placeholder="Time to Prepare">
+										</div>
+
+										<br>
+
+										<div class="input-group instructions">
+											<span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+											<textarea class="form-control" name="instructions" placeholder="Instructions"></textarea>
+										</div>
+
+										<br>
+
+										<button type="button submit" class="btn btn-success btn-lg">Create Meal</button>
+									</div>
+								</form>
 							</div>
 
 								<?php
@@ -286,6 +340,7 @@
 									</span>
 
 									<span class="meal_decision">
+
 										<?php
 										if (isset($_SESSION['username'])) {
 										?>
@@ -297,20 +352,22 @@
 											if ($user->get('username') == $_SESSION['username'] ||
 												(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {
 										?>
-
-										<div>
-											<form method="GET" action="<?= BASE_URL ?>/cookbooks/<?= $meal->get('id') ?>/destroy">
-												<button id="meal_destroy" type="submit button" class="btn btn-primary btn-lg">Delete</button>
-											</form>
-											<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/">
-												<button id="eat_now" type="submit button" class="btn btn-primary btn-lg btn-success">Eat Now</button>
-											</form>
-										</div>
-
+											<button type="button" class="meal_edit btn btn-primary btn-lg">Edit</button>
+											<button type="submit button" class="submit_changes btn btn-primary btn-lg">Submit Changes</button>
 										<?php }
 										} ?>
 									</span>
 								</form>
+
+								<form method="GET" action="<?= BASE_URL ?>/cookbooks/<?= $meal->get('id') ?>/destroy">
+									<button id="eat_now" type="submit button" class="btn btn-primary btn-lg">Delete</button>
+								</form>
+
+								<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>">
+									<button id="eat_now" type="submit button" class="btn btn-primary btn-lg btn-success">Eat Now</button>
+								</form>
+
+
 								</span>
 							</span>
 						</div>
