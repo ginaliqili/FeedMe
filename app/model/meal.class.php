@@ -8,14 +8,14 @@ class meal extends db_object {
   protected $id;
   protected $title;
   protected $description;
+  protected $meal_type;
+  protected $food_type;
   protected $time_to_prepare;
   protected $instructions;
   protected $creator_id;
   protected $image_url;
   protected $date_created;
   // Advanced attributes (can have multiple values: need relational tables)
-  protected $meal_type;
-  protected $food_type;
   protected $ingredients;
 
   // Constructor
@@ -24,14 +24,14 @@ class meal extends db_object {
       'id' => null,
       'title' => '',
       'description' => '',
+      'meal_type' => '',
+      'food_type' => '',
       'time_to_prepare' => '',
       'instructions' => '',
       'creator_id' => 0,
       'image_url' => '',
       'date_created' => null,
-      'meal_type' => '',
-      'food_type' => '',
-      'ingredients' => '');
+      'ingredients' => null);
 
     $args += $default_args;
 
@@ -39,14 +39,14 @@ class meal extends db_object {
     $this->id = $args['id'];
     $this->title = $args['title'];
     $this->description = $args['description'];
+    $this->meal_type = $args['meal_type'];
+    $this->food_type = $args['food_type'];
     $this->time_to_prepare = $args['time_to_prepare'];
     $this->instructions = $args['instructions'];
     $this->creator_id = $args['creator_id'];
     $this->image_url = $args['image_url'];
     $this->date_created = $args['date_created'];
     // Set advanced attributes
-    $this->meal_type = $args['meal_type'];
-    $this->food_type = $args['food_type'];
     $this->ingredients = $args['ingredients'];
   }
 
@@ -54,7 +54,30 @@ class meal extends db_object {
   public function save() {
     $db = db::instance();
 
-    // Omit id and any timestamps
+    // Update the meal's ingredients
+    // TODO: Update load_by_id to include ingredients
+    $meal = meal::load_by_id($this->id);
+    // Remove ingredients that are no longer associated with this meal
+    foreach ($meal->ingredients as $ingredient) {
+      if (!in_array($ingredient, $this->ingredients)) {
+        // TODO: Delete associated meal_ingredient
+      }
+    }
+    // Attach ingredients that weren't previously associated with this meal
+    foreach($this->ingredients as $ingredient) {
+      if (!in_array($ingredient, $meal->ingredients)) {
+        // Check if the ingredient exists
+        // TODO: Create ingredient::exists function
+        if (!ingredient::exists($ingredient)) {
+          // Create the new ingredient
+          // TODO: Create ingredient::create function
+          ingredient::create($ingredient);
+        }
+        // TODO: Create associated meal_ingredient
+      }
+    }
+
+    // Create an array of properties to store in the database
     $db_properties = array(
         'title' => $this->title,
         'description' => $this->description,
