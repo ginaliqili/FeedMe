@@ -99,7 +99,7 @@ class meal_controller {
 		// Get the creator of this meal
 		$creator = user::load_by_id($meal->get('creator_id'));
 
-		// Get the ingredients for this meal
+		// TODO: Get the ingredients for this meal
 
 		include_once SYSTEM_PATH.'/view/meals_show.tpl';
   }
@@ -117,6 +117,9 @@ class meal_controller {
 	}
 
 	public function create() {
+		// Retrieve the meal's creator
+		$creator = user::load_by_username($_SESSION['username']);
+
 		// Create array of attributes
 		$attributes = array(
 			'title' => $_POST['title'],
@@ -125,14 +128,12 @@ class meal_controller {
 			'food_type' => $_POST['food_type'],
 			'time_to_prepare' => $_POST['time_to_prepare'],
 			'instructions' => $_POST['instructions'],
-			'image_url' => self::generate_image_url($_POST['title']));
+			'creator_id' => $creator->get('id'),
+			'image_url' => self::generate_image_url($_POST['title']),
+			'ingredients' => array_key_exists('ingredients', $_POST) ? $_POST['ingredients'] : null);
 
 		// Create a new meal with the appropriate attributes
 		$meal = new meal($attributes);
-
-		// Set the creator_id
-		$creator = user::load_by_username($_SESSION['username']);
-		$meal->set('creator_id', $creator->get('id'));
 
 		// Save the new meal and create an associated event
 		if ($meal->save()) {
@@ -144,7 +145,7 @@ class meal_controller {
 			$event->save();
 		}
 
-		// Redirect to show page
+		// Redirect to the meal's show page
 		header('Location: ' . BASE_URL . '/meals/' . $meal->get('id'));
 	}
 
