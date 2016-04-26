@@ -35,15 +35,16 @@
 		loadTurnJS();
 
 		var get_page_numbers = "<?= BASE_URL ?>/cookbooks/get_page_numbers";
-		$.get(get_page_numbers, function(data) {
-			console.log(data);
-
-			var parsed = JSON.parse(data);
-			for (var i = 0; i < parsed.length; i++) {
+		//$.get(get_page_numbers, function(data) {
+			//console.log(data);
+			var num_meals = $('#num_meals').val();
+			console.log(num_meals);
+			//var parsed = JSON.parse(data);
+			for (var i = 0; i < num_meals; i++) {
 				var elems = document.getElementsByClassName('jump');
 				var counter = 3;
 				var page = 3;
-				for (var i = 0; i < elems.length; i++) {
+				for (var i = 0; i < num_meals; i++) {
 					page += 1;
 					counter += 1;
 					elems[i].id = counter
@@ -56,7 +57,7 @@
 
 			}
 
-		});
+		//});
 
 		$('.toc').click(function() {
 			$(".flipbook").turn("page", 2);
@@ -197,13 +198,18 @@
 				<div class="flipbook-viewport">
 					<div class="container">
 						<div class="flipbook">
-							<div style="background-image: url(<?= BASE_URL ?>/public/img/book_cover.jpg)"></div>
+							<div style="background-image: url(<?= BASE_URL ?>/public/img/book_cover.jpg)">
+								<div style="width: 100px; margin: 0 auto; position: relative; top: 33%;" id="cookbook_title">
+									<h3><?= $_SESSION['username']?>'s Cookbook</h3>
+								</div>
+							</div>
 							<div style="background-color: white">
-								Table of Contents
+								<h3>Table of Contents</h3>
 								<?php
 								$page_count = 3;
 								$id = 0;
 								$meals = meal::load_by_user($user->get('id'));
+								$num_meals = sizeof($meals);
 								if ($meals != null) {
 									foreach($meals as $meal) {
 										$meal_id = $meal->get('id');
@@ -221,10 +227,11 @@
 									<tbody>
 										<tr>
 											<td class="title">
-												<span><?= $meal->get('title') ?></span><input id="val" type="hidden" value="5">
+												<span><?= $meal->get('title') ?></span>
 											</td>
 											<td class="page_number">
-												<button class="jump"><?= $page_count ?></button><br />
+												<button class="jump btn">page <?= $page_count ?></button><br />
+												<input id="num_meals" type="hidden" value="<?= $num_meals ?>">
 											</td>
 										</tr>
 									</tbody>
@@ -236,7 +243,7 @@
 							</div>
 
 							<div style="bakcground-color: white">
-								Add a New Meal
+								<h3>Add a New Meal</h3>
 								<form method="POST" action="<?= BASE_URL ?>/meals/create">
 									<div class="meal_content">
 										<div class="input-group title">
