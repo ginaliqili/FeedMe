@@ -1,25 +1,8 @@
+// Store the allergies and ingredients for this session
+var allergies = [];
+var ingredients = [];
+
 $(document).ready(function(){
-	// Get the BASE_URL
-	var BASE_URL = $("input[name='BASE_URL']").val();
-
-	// Start the activity feed AJAX refresh
-	var timer = setInterval(function() {
-		// AJAX GET request to retrieve the events
-		$.get(BASE_URL + '/events').done(function(data) {
-			// Work with the response
-			$('#activity_feed').html(data);
-		});
-	}, 5000);
-
-	// Show advanced meal settings
-	$('#display_advanced').click(function() {
-		$('.advanced_options').toggle();
-	});
-
-	// Store the allergies and ingredients for this feed me session
-	var allergies = [];
-	var ingredients = [];
-
 	// Add a new allergy
 	$('#submit_allergy').click(function() {
 		// Get the submitted allergy
@@ -29,7 +12,7 @@ $(document).ready(function(){
 		if (allergy != "" && allergy != null) {
 			// Clear the field for a new allergy
 			$('#new_allergy').val("");
-			$('#new_allergy').attr("placeholder", "enter another allergy");
+			$('#new_allergy').attr("placeholder", "Enter another allergy");
 
 			// Add to the list of allergies
 			allergies.push(allergy);
@@ -42,6 +25,22 @@ $(document).ready(function(){
 		}
 	});
 
+	// Remove allergies
+	$('#remove_allergy').click(function() {
+		// Remove each selected allergy
+		$('#allergies_listbox option:selected').each(function() {
+			// Get the allergy
+			var allergy = $(this).val();
+
+			// Remove the allergy from the allergies array
+			var index = allergies.indexOf(allergy);
+			allergies.splice(index, 1);
+
+			// Remove the option for this allergy
+			$(this).remove();
+		});
+	});
+
 	// Add a new ingredient
 	$('#submit_ingredient').click(function() {
 		// Get the submitted ingredient
@@ -51,7 +50,7 @@ $(document).ready(function(){
 		if (ingredient != "" && ingredient != null) {
 			// Clear the field for a new ingredient
 			$('#new_ingredient').val("");
-			$('#new_ingredient').attr("placeholder", "enter another ingredient");
+			$('#new_ingredient').attr("placeholder", "Enter another ingredient");
 
 			// Add to the list of ingredients
 			ingredients.push(ingredient);
@@ -64,10 +63,26 @@ $(document).ready(function(){
 		}
 	});
 
-	// Execute a search
-	$('#feed_me').click(function() {
+	// Remove ingredients
+	$('#remove_ingredient').click(function() {
+		// Remove each selected ingredient
+		$('#ingredients_listbox option:selected').each(function() {
+			// Get the ingredient
+			var ingredient = $(this).val();
+
+			// Remove the ingredient from the ingredients array
+			var index = ingredients.indexOf(ingredient);
+			ingredients.splice(index, 1);
+
+			// Remove the option for this ingredient
+			$(this).remove();
+		});
+	});
+
+	// Submit the form
+	$('#submit_form').click(function() {
 		// Get the form element
-		var form = $('#search_form');
+		var form = $('#meal_form');
 
 		// Append the allergies & ingredients to the form
 		$.each(allergies, function(i, allergy) {

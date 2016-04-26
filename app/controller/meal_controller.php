@@ -96,8 +96,10 @@ class meal_controller {
 		// Get data for this meal
 		$meal = meal::load_by_id($id);
 
-		// Get data for creator of meal
+		// Get the creator of this meal
 		$creator = user::load_by_id($meal->get('creator_id'));
+
+		// Get the ingredients for this meal
 
 		include_once SYSTEM_PATH.'/view/meals_show.tpl';
   }
@@ -220,7 +222,9 @@ class meal_controller {
 		$parameters = array(
 			'meal_type' => array_key_exists('meal_type', $_POST) ? $_POST['meal_type'] : null,
 			'food_type' => $_POST['food_type'],
-			'time_to_prepare' => $_POST['time_to_prepare']);
+			'time_to_prepare' => $_POST['time_to_prepare'],
+			'allergies' => array_key_exists('allergies', $_POST) ? $_POST['allergies'] : null,
+			'ingredients' => array_key_exists('ingredients', $_POST) ? $_POST['ingredients'] : null);
 
 		// Execute the search
 		$meals = meal::search($parameters);

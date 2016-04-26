@@ -37,6 +37,46 @@ td {
 	width: 25%;
 }
 
+td h3 {
+	width: 90%;
+}
+
+td h4 {
+	width: 90%;
+}
+
+td#food_type > select {
+	width: 70%;
+}
+
+td#time_to_prepare > select {
+	width: 70%;
+}
+
+td#allergies > div#new_allergies > input {
+	width: 70%;
+	margin-bottom: 5px;
+}
+
+td#allergies > div#select_allergies > select {
+	width: 70%;
+	margin-top: 5px;
+}
+
+td#ingredients > div#new_ingredients > input {
+	width: 70%;
+	margin-bottom: 5px;
+}
+
+td#ingredients > div#select_ingredients > select {
+	width: 70%;
+	margin-top: 5px;
+}
+
+td.advanced_options {
+	display: none;
+}
+
 div#main_submission {
 	height: 50px;
 	text-align: center;
@@ -45,8 +85,4 @@ div#main_submission {
 
 div#main_submission button {
 	width: 100px;
-}
-
-.advanced_options {
-	display: none;
 }

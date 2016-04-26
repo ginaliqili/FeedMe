@@ -15,7 +15,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
-	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/index_scripts.js"></script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/ingredients.js"></script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/index.js"></script>
 	<input type="hidden" name="BASE_URL" value="<?= BASE_URL ?>" />
 </head>
 
@@ -119,12 +120,12 @@
 				<h2>Fill out the following fields to be fed!</h2>
 			</div>
 
-			<form id="search_form" method="POST" action="<?= BASE_URL ?>/meals/search">
+			<form id="meal_form" method="POST" action="<?= BASE_URL ?>/meals/search">
 				<div id="main_content">
 					<div id="meal_content">
 						<table id="meal_options">
 							<tr>
-								<td>
+								<td id="meal_type">
 									<h3>Meal Type:</h3>
 									<div>
 										<?php
@@ -135,7 +136,7 @@
 									</div>
 								</td>
 
-								<td>
+								<td id="food_type">
 									<h3>Food Type:</h3>
 									<select name='food_type'>
 										<option selected="selected"></option>
@@ -147,7 +148,7 @@
 									</select>
 								</td>
 
-								<td>
+								<td id="time_to_prepare">
 									<h3>Time to Prepare:</h3>
 									<select name='time_to_prepare'>
 										<option selected="selected"></option>
@@ -159,19 +160,20 @@
 									</select>
 								</td>
 
-								<td>
+								<td id="allergies">
 									<h3>Food Allergies:</h3>
-									<div>
-										<div id="new_allergies">
-											<input id="new_allergy" type="text" placeholder="enter a food allergy" />
-											<button id="submit_allergy" class="btn btn-success" type="button">+</button>
-										</div>
+									<div id="new_allergies">
+										<input id="new_allergy" type="text" placeholder="Enter a food allergy" />
+									</div>
 
-										<div id="select_allergies">
-											<select id="allergies_listbox" multiple="multiple">
-											</select>
-											<button id="remove_allergy" class="btn btn-danger" type="button">Remove</button>
-										</div>
+									<div id="allergy_decision">
+										<button id="submit_allergy" class="btn btn-success" type="button">Add</button>
+										<button id="remove_allergy" class="btn btn-danger" type="button">Remove</button>
+									</div>
+
+									<div id="select_allergies">
+										<select id="allergies_listbox" multiple="multiple">
+										</select>
 									</div>
 								</td>
 							</tr>
@@ -184,11 +186,15 @@
 									</div>
 								</td>
 
-								<td class="advanced_options">
+								<td id="ingredients" class="advanced_options">
 									<h4>Enter Ingredients:</h4>
 									<div id="new_ingredients">
-										<input id="new_ingredient" type="text" placeholder="enter an ingredient" />
-										<button id="submit_ingredient" class="btn btn-success" type="button">+</button>
+										<input id="new_ingredient" type="text" placeholder="Enter an ingredient" />
+									</div>
+
+									<div id="ingredient_decision">
+										<button id="submit_ingredient" class="btn btn-success" type="button">Add</button>
+										<button id="remove_ingredient" class="btn btn-danger" type="button">Remove</button>
 									</div>
 
 									<div id="select_ingredients">
@@ -196,22 +202,13 @@
 										</select>
 									</div>
 								</td>
-
-								<td class="advanced_options">
-									<h4>Rating:</h4>
-									<?php
-									foreach(MEAL_RATINGS as $rating) {
-									?>
-									<input type="radio" name="meal_rating" value="<?= $rating ?>">&nbsp;<?= $rating ?><br>
-									<?php } ?>
-								</td>
 							</tr>
 						</table>
 
 						<br>
 
 						<div id="main_submission">
-							<button id="feed_me" type="button" class="btn btn-success btn-lg">Feed Me</button>
+							<button id="submit_form" type="button" class="btn btn-success btn-lg">Feed Me</button>
 						</div>
 					</div>
 				</div>

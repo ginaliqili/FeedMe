@@ -148,31 +148,101 @@ class meal extends db_object {
 
     // Search by meal type
     if ($parameters['meal_type'] != null) {
-      $meal_type_query = $base_query . sprintf(" WHERE meal_type = '%s'",
+      // Build the query to filter for meals with the associated meal type
+      $meal_type_query = $base_query . sprintf(
+        " WHERE meal_type = '%s'",
         $parameters['meal_type']);
+
+      // Add this query to the search queries
       $search_queries[] = $meal_type_query;
     }
 
     // Search by food type
     if ($parameters['food_type'] != null) {
-      $food_type_query = $base_query . sprintf(" WHERE food_type = '%s'",
+      // Build the query to filter for meals with the associated food type
+      $food_type_query = $base_query . sprintf(
+        " WHERE food_type = '%s'",
         $parameters['food_type']);
+
+      // Add this query to the search queries
       $search_queries[] = $food_type_query;
     }
 
     // Search by time to prepare
     if ($parameters['time_to_prepare'] != null) {
-      $time_to_prepare_query = $base_query . sprintf(" WHERE time_to_prepare = '%s'",
+      // Build the query to filter for meals with the associated time to prepare
+      $time_to_prepare_query = $base_query . sprintf(
+        " WHERE time_to_prepare = '%s'",
         $parameters['time_to_prepare']);
+
+      // Add this query to the search queries
       $search_queries[] = $time_to_prepare_query;
+    }
+
+    // Search by allergies
+    if ($parameters['allergies'] != null) {
+      // Sanitize the allergies array
+      for ($i = 0; $i < count($parameters['allergies']); $i++) {
+        $parameters['allergies'][$i] = "'" . $parameters['allergies'][$i] . "'";
+      }
+
+      // Serialize the allergies array
+      $allergies_str = implode(",", $parameters['allergies']);
+
+      // Build the query to retrieve the associated allergy IDs
+      $allergy_ids = sprintf(
+        "SELECT id FROM ingredient WHERE title IN (%s)",
+        $allergies_str);
+
+      // Build the query to retrieve the associated meal IDs
+      $meal_ids = sprintf(
+        "SELECT meal_ingredient.meal_id FROM (%s) AS allergies INNER JOIN meal_ingredient ON allergies.id = meal_ingredient.ingredient_id",
+        $allergy_ids);
+
+      // Build the query to filter for meals without the associated allergies
+      $allergies_query = $base_query . sprintf(
+        " WHERE id NOT IN (%s);",
+        $meal_ids);
+
+      // Add this query to the search queries
+      $search_queries[] = $allergies_query;
+    }
+
+    // Search by ingredients
+    if ($parameters['ingredients'] != null) {
+      // Sanitize the ingredients array
+      for ($i = 0; $i < count($parameters['ingredients']); $i++) {
+        $parameters['ingredients'][$i] = "'" . $parameters['ingredients'][$i] . "'";
+      }
+
+      // Serialize the ingredients array
+      $ingredients_str = implode(",", $parameters['ingredients']);
+
+      // Build the query to retrieve the associated ingredient IDs
+      $ingredient_ids = sprintf(
+        "SELECT id FROM ingredient WHERE title IN (%s)",
+        $ingredients_str);
+
+      // Build the query to retrieve the associated meal IDs
+      $meal_ids = sprintf(
+        "SELECT meal_ingredient.meal_id FROM (%s) AS ingredients INNER JOIN meal_ingredient ON ingredients.id = meal_ingredient.ingredient_id",
+        $ingredient_ids);
+
+      // Build the query to filter for meals with the associated ingredients
+      $ingredients_query = $base_query . sprintf(
+        " WHERE id IN (%s);",
+        $meal_ids);
+
+      // Add this query to the search queries
+      $search_queries[] = $ingredients_query;
     }
 
     // Store the retrieved meals
     $meals = array();
 
-    // Check if any custom search queries were generated
+    // Check if any search queries were generated
     if (!empty($search_queries)) {
-      // Execute the custom search queries
+      // Execute the search queries and intersect the results
       for ($index = 0; $index < count($search_queries); $index++) {
         // Get the next query
         $query = $search_queries[$index];
