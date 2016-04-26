@@ -22,6 +22,13 @@
 	<script type="text/javascript">
 	$(document).ready(function(){
 
+
+			$('.edit').show();
+			$('.set').hide();
+			$(this).hide();
+
+		});
+
 		loadTurnJS();
 
 		var get_page_numbers = "<?= BASE_URL ?>/cookbooks/get_page_numbers";
@@ -234,8 +241,13 @@
 									<button class="btn btn-secondary toc">Table of Contents</button>
 								<span class="usermeals">
 								<span class="meal_info">
-
-									<h3><?= $meal->get('title') ?></h3>
+									<form method="POST" action="<?= BASE_URL ?>/cookbooks/<?= $meal->get('id') ?>/update">
+									<h3>
+										<span class="set"><?= $meal->get('title') ?></span>
+										<span class="edit2">
+											<input class="edit" type="text" name = "title" value="<?= $meal->get('title') ?>">
+										</span>
+									</h3>
 									<span class="meal_image">
 										<img id="meal_image" src="<?= $meal->get('image_url') ?>" alt="<?= $meal->get('title') ?>"/>
 									</span>
@@ -243,22 +255,34 @@
 									<span class="meal_description">
 
 										<h4>Description:</h4>
-										<p><?= $meal->get('description') ?></p>
+										<span class="set"><p><?= $meal->get('description') ?></p></span>
+										<span class="edit2">
+											<input class="edit" type="text" name = "description" value="<?= $meal->get('description') ?>">
+										</span>
 									</span>
 
 									<span class="meal_type">
 										<h4>Meal Type:</h4>
-										<p><?= $meal->get('meal_type') ?></p>
+										<span class="set"><p><?= $meal->get('meal_type') ?></p></span>
+										<span class="edit2">
+											<input class="edit" type="text" name = "meal_type" value="<?= $meal->get('meal_type') ?>">
+										</span>
 									</span>
 
 									<span class="food_type">
 										<h4>Food Type:</h4>
-										<p><?= $meal->get('food_type') ?></p>
+										<span class="set"><p><?= $meal->get('food_type') ?></p></span>
+										<span class="edit2">
+											<input class="edit" type="text" name = "food_type" value="<?= $meal->get('food_type') ?>">
+										</span>
 									</span>
 
 									<span class="prepare_time">
 										<h4>Time to Prepare:</h4>
-										<p><?= $meal->get('time_to_prepare') ?></p>
+										<span class="set"><p><?= $meal->get('time_to_prepare') ?></p></span>
+										<span class="edit2">
+											<input class="edit" type="text" name = "time_to_prepare" value="<?= $meal->get('time_to_prepare') ?>">
+										</span>
 									</span>
 
 									<span class="meal_decision">
@@ -268,24 +292,25 @@
 										<input type="hidden" id="meal_id" name="meal_id" value="<?= $meal->get('id') ?>">
 										<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
 
-										<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/">
-											<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg btn-success">Eat Now</button>
-										</form>
+
 										<?php
 											if ($user->get('username') == $_SESSION['username'] ||
 												(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {
 										?>
-										<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/edit">
-											<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
-										</form>
 
-										<form method="GET" action="<?= BASE_URL ?>/cookbooks/<?= $meal->get('id') ?>/destroy">
-											<button id="meal_destroy" type="submit button" class="btn btn-primary btn-lg">Delete</button>
-										</form>
+										<div>
+											<form method="GET" action="<?= BASE_URL ?>/cookbooks/<?= $meal->get('id') ?>/destroy">
+												<button id="meal_destroy" type="submit button" class="btn btn-primary btn-lg">Delete</button>
+											</form>
+											<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/">
+												<button id="eat_now" type="submit button" class="btn btn-primary btn-lg btn-success">Eat Now</button>
+											</form>
+										</div>
 
 										<?php }
 										} ?>
 									</span>
+								</form>
 								</span>
 							</span>
 						</div>
@@ -306,24 +331,6 @@
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" >
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Delete</h4>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete meal this meal?</p?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="delete_confirm" type="button" class="btn btn-primary btn-danger" data-dismiss="modal">Delete</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 </body>
 
 </html>

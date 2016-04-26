@@ -26,10 +26,9 @@ class cookbook_controller {
 				$this->get_page_numbers();
 				break;
 
-			case 'add_to_cookbook':
+			case 'update':
 				$meal_id = $_GET['meal_id'];
-				$cookbook_id = $_GET['cookbook_id'];
-				$this->add_to_cookbook($meal_id, $cookbook_id);
+				$this->update($meal_id);
 				break;
 
 		}
@@ -74,10 +73,40 @@ class cookbook_controller {
 		echo json_encode($page_numbers);
 	}
 
-	public function add_to_cookbook($meal_id, $cookbook_id) {
-		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
-	}
+	public function update($id) {
+		// Create array of attributes
+		$attributes = array(
+			'title' => $_POST['title'],
+			'description' => $_POST['description'],
+			'meal_type' => $_POST['meal_type'],
+			'food_type' => $_POST['food_type'],
+			'time_to_prepare' => $_POST['time_to_prepare'],
+			'instructions' => $_POST['instructions']);
 
+		// Get data for this meal
+		$meal = meal::load_by_id($id);
+
+		// Update meal data
+		$meal->set('title', $attributes['title']);
+		$meal->set('description', $attributes['description']);
+		$meal->set('meal_type', $attributes['meal_type']);
+		$meal->set('food_type', $attributes['food_type']);
+		$meal->set('time_to_prepare', $attributes['time_to_prepare']);
+		$meal->set('instructions', $attributes['instructions']);
+
+		// Save the meal and create an associated event
+		if ($meal->save()) {
+			$event = new event(array(
+					'creator_id' => $meal->get('creator_id'),
+					'type' => 'meal',
+					'action' => 'edited',
+					'reference_id' => $meal->get('id')));
+			$event->save();
+		}
+
+		// Redirect to show page
+		header('Location: ' . BASE_URL . '/cookbooks/');
+	}
 
 
 }
