@@ -218,6 +218,47 @@ INSERT INTO `user` (`id`, `username`, `password`, `first_name`, `last_name`, `em
 (4, 'jd', 'pw', 'john', 'doe', 'jd@vt.edu', 0, 0);
 
 --
+-- Table structure for table `ingredient`
+--
+
+CREATE TABLE `ingredient` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `title` (`title`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ingredient`
+--
+
+INSERT INTO `ingredient` (`id`, `title`) VALUES
+(1, 'cheese'),
+(2, 'peanuts');
+
+--
+-- Table structure for table `meal_ingredient`
+--
+
+CREATE TABLE `meal_ingredient` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `meal_id` int(11) UNSIGNED NOT NULL,
+  `ingredient_id` int(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `meal_id` (`meal_id`),
+  KEY `ingredient_id` (`ingredient_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `meal_ingredient`
+--
+
+INSERT INTO `meal_ingredient` (`id`, `meal_id`, `ingredient_id`) VALUES
+(1, 3, 1),
+(2, 2, 2);
+
+
+--
 -- Constraints for dumped tables
 --
 
@@ -255,7 +296,14 @@ ALTER TABLE `follow`
 -- Constraints for table `meal`
 --
 ALTER TABLE `meal`
-  ADD CONSTRAINT `meal_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `meal_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `meal_ingredient`
+--
+ALTER TABLE `meal_ingredient`
+  ADD CONSTRAINT `meal_ingredient_ibfk_1` FOREIGN KEY (`meal_id`) REFERENCES `meal` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `meal_ingredient_ibfk_2` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
