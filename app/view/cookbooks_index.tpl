@@ -33,13 +33,7 @@
 		});
 
 		loadTurnJS();
-
-		var get_page_numbers = "<?= BASE_URL ?>/cookbooks/get_page_numbers";
-		//$.get(get_page_numbers, function(data) {
-			//console.log(data);
 			var num_meals = $('#num_meals').val();
-			console.log(num_meals);
-			//var parsed = JSON.parse(data);
 			for (var i = 0; i < num_meals; i++) {
 				var elems = document.getElementsByClassName('jump');
 				var counter = 3;
@@ -56,8 +50,6 @@
 				}
 
 			}
-
-		//});
 
 		$('.toc').click(function() {
 			$(".flipbook").turn("page", 2);

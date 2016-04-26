@@ -22,10 +22,6 @@ class cookbook_controller {
 				$this->destroy($meal_id);
 				break;
 
-			case 'get_page_numbers':
-				$this->get_page_numbers();
-				break;
-
 			case 'update':
 				$meal_id = $_GET['meal_id'];
 				$this->update($meal_id);
@@ -52,6 +48,7 @@ class cookbook_controller {
 
   }
 
+	// same as destroy in meal controller, but redirects to cookbook
 	public function destroy($id) {
 		// Get data for this meal
 		$meal = meal::load_by_id($id);
@@ -64,15 +61,7 @@ class cookbook_controller {
 
 	}
 
-	public function get_page_numbers() {
-		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
-
-		$page_numbers = cookbook::get_page_numbers();
-		//$page_numbers = "aloha";
-		// echo JSON array with page numbers in order
-		echo json_encode($page_numbers);
-	}
-
+	// same as update in the meal controller, but redirects to cookbook
 	public function update($id) {
 		// Create array of attributes
 		$attributes = array(
