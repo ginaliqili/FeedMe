@@ -206,13 +206,6 @@
 									foreach($meals as $meal) {
 										$meal_id = $meal->get('id');
 										$page_count += 1;
-										$cookbook = new cookbook();
-										$cookbook->set('meal_id', $meal_id);
-										$cookbook->set('page_number', $page_count);
-										$cookbook->save();
-										$id += 1;
-										$cookbook_item = cookbook::load_by_id($id);
-										$cookbook_id = $cookbook->get('id') + 2;
 								?>
 								<br />
 								<table class="table_of_contents">

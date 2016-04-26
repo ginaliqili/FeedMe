@@ -42,8 +42,6 @@ class cookbook_controller {
 		// Get data for the user being viewed
 		$user = user::load_by_username($_SESSION['username']);
 
-		cookbook::truncate();
-
 		include_once SYSTEM_PATH.'/view/cookbooks_index.tpl';
 
   }
