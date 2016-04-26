@@ -144,7 +144,7 @@
 								<?php
 								foreach(MEAL_TYPES as $meal_type) {
 								?>
-								<option value="<?= $food_type ?>"><?= $meal_type ?></option>
+								<option value="<?= $meal_type ?>"><?= $meal_type ?></option>
 								<?php } ?>
 							</select>
 						</div>
