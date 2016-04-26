@@ -10,11 +10,6 @@ $(document).ready(function(){
 		$('#main_decision').hide();
 	});
 
-	// Displays advanced meal settings
-	$('#display_adv').click(function() {
-		$('.advanced').show();
-	});
-
 	// Shows Favorites bar
 	$('#favorites').click(function() {
 		$('#favorites_bar').toggle();

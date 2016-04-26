@@ -134,3 +134,8 @@ div.meal_info > div.meal_decision {
 div.meal_info > div.meal_decision * {
 	display: inline;
 }
+
+div#select_ingredients > select {
+	width: 100%;
+	margin-top: 5px;
+}

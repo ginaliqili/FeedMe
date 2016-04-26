@@ -220,3 +220,7 @@ footer > * {
 a {
 	text-decoration: none;
 }
+
+select:invalid {
+	color: #989898;
+}
