@@ -177,7 +177,7 @@ div#content table.table_of_contents {
 }
 
 div#content > div#menu_bar {
-	position: fixed; float: left; padding: 10px; width: auto;
+	position: fixed; float: left; padding: 10px; width: auto; z-index: 2;
 }
 
 div#content > div#menu_bar > div#favorites_bar {
