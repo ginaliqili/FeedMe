@@ -33,27 +33,31 @@
 		});
 
 		loadTurnJS();
+		$('.toc').click(function() {
+			$(".flipbook").turn("page", 2);
+		});
 			var num_meals = $('#num_meals').val();
 			for (var i = 0; i < num_meals; i++) {
 				var elems = document.getElementsByClassName('jump');
 				var counter = 3;
 				var page = 3;
+				alert(num_meals);
 				for (var i = 0; i < num_meals; i++) {
 					page += 1;
 					counter += 1;
-					elems[i].id = counter
-					elems[i].setAttribute("font-size", page);
-					$('#' + elems[i].id).click(function() {
-						console.log(this.id);
-							$(".flipbook").turn("page", this.id);
-					});
+					elems[i].id = page;
+
 				}
 
 			}
 
-		$('.toc').click(function() {
-			$(".flipbook").turn("page", 2);
-		});
+			$('.jump').click(function() {
+				alert("hey");
+				console.log(this.id);
+					$(".flipbook").turn("page", this.id);
+			});
+
+
 
 		var meal_id = $('#meal_id').val();
 		var meal_title = $('#meal_title').val();
@@ -227,7 +231,7 @@
 								} ?>
 							</div>
 
-							<div style="bakcground-color: white">
+							<div style="background-color: white">
 								<h3>Add a New Meal</h3>
 								<form method="POST" action="<?= BASE_URL ?>/meals/create">
 									<div class="meal_content">
