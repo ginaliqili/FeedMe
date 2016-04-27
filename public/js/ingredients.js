@@ -3,6 +3,15 @@ var allergies = [];
 var ingredients = [];
 
 $(document).ready(function(){
+	// Add existing ingredients from a meal's edit page to the ingredients array
+	$('#ingredients_listbox option').each(function() {
+		// Get the ingredient
+		var ingredient = $(this).val();
+
+		// Add to the list of ingredients
+		ingredients.push(ingredient);
+	});
+
 	// Add a new allergy
 	$('#submit_allergy').click(function() {
 		// Get the submitted allergy

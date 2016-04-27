@@ -15,6 +15,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/ingredients.js"></script>
 </head>
 
 <body>
@@ -126,7 +127,7 @@
 			</div>
 
 			<div id="main_content">
-				<form method="POST" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/update">
+				<form id="meal_form" method="POST" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/update">
 					<div class="meal_content">
 						<div class="input-group title">
 							<span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
@@ -144,21 +145,45 @@
 
 						<div class="input-group meal_type">
 							<span class="input-group-addon"><i class="fa fa-cutlery"></i></span>
-							<input class="form-control" type="text" name="meal_type" value="<?= $meal->get('meal_type') ?>" placeholder="Meal Type">
+							<select required class="form-control" type="text" name="meal_type">
+								<option selected value="<?= $meal->get('meal_type') ?>"><?= $meal->get('meal_type') ?></option>
+								<?php
+								foreach(MEAL_TYPES as $meal_type) {
+									if ($meal_type != $meal->get('meal_type')) {
+								?>
+								<option value="<?= $meal_type ?>"><?= $meal_type ?></option>
+								<?php }} ?>
+							</select>
 						</div>
 
 						<br>
 
 						<div class="input-group food_type">
 							<span class="input-group-addon"><i class="fa fa-globe"></i></span>
-							<input class="form-control" type="text" name="food_type" value="<?= $meal->get('food_type') ?>" placeholder="Food Type">
+							<select required class="form-control" type="text" name="food_type">
+								<option selected value="<?= $meal->get('food_type') ?>"><?= $meal->get('food_type') ?></option>
+								<?php
+								foreach(FOOD_TYPES as $food_type) {
+									if ($food_type != $meal->get('food_type')) {
+								?>
+								<option value="<?= $food_type ?>"><?= $food_type ?></option>
+								<?php }} ?>
+							</select>
 						</div>
 
 						<br>
 
 						<div class="input-group time_to_prepare">
 							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-							<input class="form-control" type="text" name="time_to_prepare" value="<?= $meal->get('time_to_prepare') ?>" placeholder="Time to Prepare">
+							<select required class="form-control" type="text" name="time_to_prepare">
+								<option selected value="<?= $meal->get('time_to_prepare') ?>"><?= $meal->get('time_to_prepare') ?></option>
+								<?php
+								foreach(TIMES_TO_PREPARE as $time_to_prepare) {
+									if ($time_to_prepare != $meal->get('time_to_prepare')) {
+								?>
+								<option value="<?= $time_to_prepare ?>"><?= $time_to_prepare ?></option>
+								<?php }} ?>
+							</select>
 						</div>
 
 						<br>
@@ -170,7 +195,31 @@
 
 						<br>
 
-						<button type="button submit" class="btn btn-success btn-lg">Update Meal</button>
+						<div>
+							<div id="new_ingredients" class="input-group ingredients">
+								<span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+								<input id="new_ingredient" class="form-control" type="text" name="ingredient" placeholder="Ingredient" />
+							</div>
+
+							<div id="ingredient_decision">
+								<button id="submit_ingredient" class="btn btn-success" type="button">Add</button>
+								<button id="remove_ingredient" class="btn btn-danger" type="button">Remove</button>
+							</div>
+
+							<div id="select_ingredients">
+								<select id="ingredients_listbox" multiple="multiple">
+									<?php
+									foreach($meal->get('ingredients') as $ingredient) {
+									?>
+									<option value="<?= $ingredient->get('title') ?>"><?= $ingredient->get('title') ?></option>
+									<?php } ?>
+								</select>
+							</div>
+						</div>
+
+						<br>
+
+						<button id="submit_form" type="button submit" class="btn btn-success btn-lg">Update Meal</button>
 					</div>
 				</form>
 			</div>

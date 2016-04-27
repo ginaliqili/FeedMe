@@ -169,6 +169,19 @@
 							<h4>Time to Prepare:</h4>
 							<p><?= $meal->get('time_to_prepare') ?></p>
 						</div>
+
+						<?php
+						if ($meal->get('ingredients') != null) {
+						?>
+						<div class="ingredients">
+							<h4>Ingredients:</h4>
+							<?php
+							foreach($meal->get('ingredients') as $ingredient) {
+							?>
+							<p><?= $ingredient->get('title') ?></p>
+							<?php } ?>
+						</div>
+						<?php } ?>
 					</div>
 
 						<div class="meal_decision">
