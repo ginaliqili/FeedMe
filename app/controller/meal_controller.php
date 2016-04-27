@@ -99,8 +99,6 @@ class meal_controller {
 		// Get the creator of this meal
 		$creator = user::load_by_id($meal->get('creator_id'));
 
-		// TODO: Get the ingredients for this meal
-
 		include_once SYSTEM_PATH.'/view/meals_show.tpl';
   }
 
@@ -120,6 +118,30 @@ class meal_controller {
 		// Retrieve the meal's creator
 		$creator = user::load_by_username($_SESSION['username']);
 
+		// Convert ingredient titles to ingredients
+		$ingredient_titles = array_key_exists('ingredients', $_POST) ? $_POST['ingredients'] : null;
+		if ($ingredient_titles != null) {
+			// Initialize an array of ingredients
+			$ingredients = array();
+
+			// Loop through the ingredient titles
+			foreach($ingredient_titles as $title) {
+				// Fetch the ingredient
+				$ingredient = ingredient::load_by_title($title);
+
+				// Check if the ingredient exists
+				if ($ingredient == null) {
+					// Create ingredient if it doesn't exist
+					$ingredient = new ingredient(array(
+						'title' => $title));
+					$ingredient->save();
+				}
+
+				// Add the ingredient to this meal's ingredients
+				$ingredients[] = $ingredient;
+			}
+		}
+
 		// Create array of attributes
 		$attributes = array(
 			'title' => $_POST['title'],
@@ -130,7 +152,7 @@ class meal_controller {
 			'instructions' => $_POST['instructions'],
 			'creator_id' => $creator->get('id'),
 			'image_url' => self::generate_image_url($_POST['title']),
-			'ingredients' => array_key_exists('ingredients', $_POST) ? $_POST['ingredients'] : null);
+			'ingredients' => $ingredients);
 
 		// Create a new meal with the appropriate attributes
 		$meal = new meal($attributes);
