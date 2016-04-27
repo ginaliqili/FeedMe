@@ -31,6 +31,9 @@ class cookbook_controller {
 	}
 
   public function index() {
+		if (!isset($_SESSION['username'])) {
+			exit();
+		}
 		// Get all favorites
 		if (isset($_SESSION['username'])) {
 			$favorites = favorite::load_all();

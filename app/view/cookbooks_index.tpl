@@ -24,16 +24,28 @@
 
 		$('.submit_changes').hide();
 
-		$('.meal_edit').click(function(){
-			$('.edit').show();
-			$('.set').hide();
-			$(this).hide();
-			$('.submit_changes').show();
+		$('body').on('click', '.meal_edit', function(e){
+			//$('.edit').show();
+			var parent = $(e.target).parent().parent();
+			var set_fields = [parent.find('.meal_title_set'), parent.find('.meal_description_set'), parent.find('.meal_type_set'), parent.find('.food_type_set'), parent.find('.time_to_prepare_set')];
+			//$(set_fields).hide();
+			$(set_fields).each(function(index) {
+				$(this).hide();
+			});
+			// hide current page's edit button
+			$(parent.find('.meal_edit')).hide();
+			// show current page's submit changes button
+			$(parent.find('.submit_changes')).show();
+			var edit_fields = [parent.find('.meal_title_edit'), parent.find('.meal_description_edit'), parent.find('.food_type_edit'), parent.find('.time_to_prepare_edit')];
+			//$(edit_fields).show();
+			$(edit_fields).each(function(index) {
+				$(this).show();
+			});
 
 		});
 
 		loadTurnJS();
-		$('.toc').click(function() {
+		$('body').on('click', '.toc', function() {
 			$(".flipbook").turn("page", 2);
 		});
 			var num_meals = $('#num_meals').val();
@@ -41,7 +53,6 @@
 				var elems = document.getElementsByClassName('jump');
 				var counter = 3;
 				var page = 3;
-				alert(num_meals);
 				for (var i = 0; i < num_meals; i++) {
 					page += 1;
 					counter += 1;
@@ -51,12 +62,9 @@
 
 			}
 
-			$('.jump').click(function() {
-				alert(this.id);
-				console.log(this.id);
+			$('body').on('click', '.jump', function() {
 					$(".flipbook").turn("page", this.id);
 			});
-
 
 
 		var meal_id = $('#meal_id').val();
@@ -66,7 +74,6 @@
 		var destroy_action = "<?= BASE_URL ?>/cookbooks/" + meal_id + "/destroy";
 		// event handler for meal id for favorite
 		$('.favorite').click(function(){
-			alert(meal_title);
 			// AJAX GET request to insert favorite into user's favorite list
 			$.get(favorite_action, { "meal_id": meal_id, "meal_title": meal_title } );
 		});
@@ -84,7 +91,6 @@
 			});
 		});
 	});
-
 
 	</script>
 </head>
@@ -152,7 +158,7 @@
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/cookbooks">
-						<button type="submit button" class="btn btn-default"><i class="fa fa-book"></i>&nbsp;Cookbooks&nbsp;&nbsp;&nbsp;</button>
+						<button type="submit button" class="btn btn-default"><i class="fa fa-book"></i>&nbsp;Cookbook&nbsp;&nbsp;&nbsp;&nbsp;</button>
 					</form>
 
 					<form method="GET" action="<?= BASE_URL ?>/users/<?= $current_user->get('id') ?>/following">
@@ -206,7 +212,10 @@
 								$id = 0;
 								$meals = meal::load_by_user($user->get('id'));
 								$num_meals = sizeof($meals);
-								if ($meals != null) {
+								if ($meals == null) {
+									echo 'You currently have no meals in your cookbook. Create one on the next page!';
+								}
+								else {
 									foreach($meals as $meal) {
 										$meal_id = $meal->get('id');
 										$page_count += 1;
@@ -293,9 +302,9 @@
 								<span class="meal_info">
 									<form method="POST" action="<?= BASE_URL ?>/cookbooks/<?= $meal->get('id') ?>/update">
 									<h3>
-										<span class="set"><?= $meal->get('title') ?></span>
+										<span class="meal_title_set"><?= $meal->get('title') ?></span>
 										<span class="edit2">
-											<input class="edit" type="text" name = "title" value="<?= $meal->get('title') ?>">
+											<input class="meal_title_edit" type="text" name = "title" value="<?= $meal->get('title') ?>">
 										</span>
 									</h3>
 									<span class="meal_image">
@@ -305,33 +314,33 @@
 									<span class="meal_description">
 
 										<h4>Description:</h4>
-										<span class="set"><p><?= $meal->get('description') ?></p></span>
+										<span class="meal_description_set"><p><?= $meal->get('description') ?></p></span>
 										<span class="edit2">
-											<input class="edit" type="text" name = "description" value="<?= $meal->get('description') ?>">
+											<input class="meal_description_edit" type="text" name = "description" value="<?= $meal->get('description') ?>">
 										</span>
 									</span>
 
 									<span class="meal_type">
 										<h4>Meal Type:</h4>
-										<span class="set"><p><?= $meal->get('meal_type') ?></p></span>
+										<span class="meal_type_set"><p><?= $meal->get('meal_type') ?></p></span>
 										<span class="edit2">
-											<input class="edit" type="text" name = "meal_type" value="<?= $meal->get('meal_type') ?>">
+											<input class="meal_type_edit" type="text" name = "meal_type" value="<?= $meal->get('meal_type') ?>">
 										</span>
 									</span>
 
 									<span class="food_type">
 										<h4>Food Type:</h4>
-										<span class="set"><p><?= $meal->get('food_type') ?></p></span>
+										<span class="food_type_set"><p><?= $meal->get('food_type') ?></p></span>
 										<span class="edit2">
-											<input class="edit" type="text" name = "food_type" value="<?= $meal->get('food_type') ?>">
+											<input class="food_type_edit" type="text" name = "food_type" value="<?= $meal->get('food_type') ?>">
 										</span>
 									</span>
 
 									<span class="prepare_time">
 										<h4>Time to Prepare:</h4>
-										<span class="set"><p><?= $meal->get('time_to_prepare') ?></p></span>
+										<span class="time_to_prepare_set"><p><?= $meal->get('time_to_prepare') ?></p></span>
 										<span class="edit2">
-											<input class="edit" type="text" name = "time_to_prepare" value="<?= $meal->get('time_to_prepare') ?>">
+											<input class="time_to_prepare_edit" type="text" name = "time_to_prepare" value="<?= $meal->get('time_to_prepare') ?>">
 										</span>
 									</span>
 
@@ -368,9 +377,7 @@
 							</span>
 						</div>
 								<?php }}
-								else {
-									echo 'This user does not have any recipes yet';
-								} ?>
+								?>
 
 							<div style="background-color: white"></div>
 						</div>
