@@ -54,38 +54,6 @@ class meal extends db_object {
   public function save() {
     $db = db::instance();
 
-    $meal_ingredients = meal_ingredient::load_by_meal_id($this->id);
-
-    // Update the meal's ingredients
-    if ($meal_ingredients != null) {
-      // Delete removed meal_ingredients
-      foreach ($meal_ingredients as $meal_ingredient) {
-        // Retrieve the old ingredient
-        $old_ingredient = ingredient::load_by_id($meal_ingredient->get('ingredient_id'));
-
-        // Check if this old ingredient is no longer associated with this meal
-        if (!in_array($old_ingredient, $this->ingredients)) {
-          // Delete associated meal_ingredient
-          $meal_ingredient->delete();
-        }
-      }
-
-      // Attach ingredients that weren't previously associated with this meal
-      foreach($this->ingredients as $ingredient) {
-        if (!meal_ingredient::exists($this->id, $ingredient->get('id'))) {
-          // Check if the ingredient exists
-          // TODO: Create ingredient::exists function
-          if (!ingredient::exists($ingredient)) {
-            // Create the new ingredient
-            // TODO: Create ingredient::create function
-            ingredient::create($ingredient);
-          }
-          // TODO: Create associated meal_ingredient
-          
-        }
-      }
-    }
-
     // Create an array of properties to store in the database
     $db_properties = array(
         'title' => $this->title,
@@ -97,6 +65,35 @@ class meal extends db_object {
         'creator_id' => $this->creator_id,
         'image_url' => $this->image_url);
     $db->store($this, __CLASS__, self::DB_TABLE, $db_properties);
+
+    // Fetch this meal's old meal_ingredients
+    $meal_ingredients = meal_ingredient::load_by_meal_id($this->id);
+
+    // Delete the old ingredients that are no longer associated with this meal
+    if ($meal_ingredients != null) {
+      // Iterate through this meal's old ingredients
+      foreach ($meal_ingredients as $meal_ingredient) {
+        // Retrieve the old ingredient
+        $ingredient = ingredient::load_by_id($meal_ingredient->get('ingredient_id'));
+
+        // Check if this old ingredient is no longer associated with this meal
+        if (!in_array($ingredient, $this->ingredients)) {
+          // Delete associated meal_ingredient
+          $meal_ingredient->delete();
+        }
+      }
+    }
+
+    // Attach the new ingredients that are associated with this meal
+    foreach($this->ingredients as $ingredient) {
+      if (!meal_ingredient::exists($this->id, $ingredient->get('id'))) {
+        // Create and save the associated meal_ingredient
+        $meal_ingredient = new meal_ingredient(array(
+          'meal_id' => $this->id,
+          'ingredient_id' => $ingredient->get('id')));
+        $meal_ingredient->save();
+      }
+    }
 
     // Return successful save
     return true;
@@ -127,11 +124,13 @@ class meal extends db_object {
 
     // Load and set this meal's ingredients
     $meal_ingredients = meal_ingredient::load_by_meal_id($id);
-    $ingredients = array();
-    foreach($meals_ingredients as $meal_ingredient) {
-      $ingredients[] = ingredient::load_by_id($meal_ingredient->get('ingredient_id'));
+    if ($meal_ingredients != null) {
+      $ingredients = array();
+      foreach($meal_ingredients as $meal_ingredient) {
+        $ingredients[] = ingredient::load_by_id($meal_ingredient->get('ingredient_id'));
+      }
+      $meal->set('ingredients', $ingredients);
     }
-    $meal->set('ingredients', $ingredients);
 
     // Return the meal
     return $meal;

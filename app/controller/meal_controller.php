@@ -131,7 +131,7 @@ class meal_controller {
 
 				// Check if the ingredient exists
 				if ($ingredient == null) {
-					// Create ingredient if it doesn't exist
+					// Create and save the ingredient if it doesn't exist
 					$ingredient = new ingredient(array(
 						'title' => $title));
 					$ingredient->save();
@@ -187,6 +187,30 @@ class meal_controller {
 	}
 
 	public function update($id) {
+		// Convert ingredient titles to ingredients
+		$ingredient_titles = array_key_exists('ingredients', $_POST) ? $_POST['ingredients'] : null;
+		if ($ingredient_titles != null) {
+			// Initialize an array of ingredients
+			$ingredients = array();
+
+			// Loop through the ingredient titles
+			foreach($ingredient_titles as $title) {
+				// Fetch the ingredient
+				$ingredient = ingredient::load_by_title($title);
+
+				// Check if the ingredient exists
+				if ($ingredient == null) {
+					// Create and save the ingredient if it doesn't exist
+					$ingredient = new ingredient(array(
+						'title' => $title));
+					$ingredient->save();
+				}
+
+				// Add the ingredient to this meal's ingredients
+				$ingredients[] = $ingredient;
+			}
+		}
+
 		// Create array of attributes
 		$attributes = array(
 			'title' => $_POST['title'],
@@ -194,7 +218,8 @@ class meal_controller {
 			'meal_type' => $_POST['meal_type'],
 			'food_type' => $_POST['food_type'],
 			'time_to_prepare' => $_POST['time_to_prepare'],
-			'instructions' => $_POST['instructions']);
+			'instructions' => $_POST['instructions'],
+			'ingredients' => $ingredients);
 
 		// Get data for this meal
 		$meal = meal::load_by_id($id);
@@ -206,6 +231,7 @@ class meal_controller {
 		$meal->set('food_type', $attributes['food_type']);
 		$meal->set('time_to_prepare', $attributes['time_to_prepare']);
 		$meal->set('instructions', $attributes['instructions']);
+		$meal->set('ingredients', $attributes['ingredients']);
 
 		// Save the meal and create an associated event
 		if ($meal->save()) {

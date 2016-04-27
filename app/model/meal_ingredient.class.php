@@ -65,6 +65,20 @@ class meal_ingredient extends db_object {
     return $meal_ingredient;
   }
 
+  // Load meal_ingredients by meal_id
+  public static function load_by_meal_id($id) {
+    $db = db::instance();
+    $meal_ingredients = $db->fetchByAttribute('meal_id', $id, __CLASS__, self::DB_TABLE);
+    return $meal_ingredients;
+  }
+
+  // Load meal_ingredients by ingredient_id
+  public static function load_by_ingredient_id($id) {
+    $db = db::instance();
+    $meal_ingredients = $db->fetchByAttribute('ingredient_id', $id, __CLASS__, self::DB_TABLE);
+    return $meal_ingredients;
+  }
+
   // Load meal_ingredient by $meal_id and $ingredient_id
   public static function load_by_relationship($meal_id, $ingredient_id) {
     $db = db::instance();
@@ -87,20 +101,6 @@ class meal_ingredient extends db_object {
     }
   }
 
-  // Load meal_ingredients by meal_id
-  public static function load_by_meal_id($id) {
-    $db = db::instance();
-    $meal_ingredients = $db->fetchByAttribute('meal_id', $id, __CLASS__, self::DB_TABLE);
-    return $meal_ingredients;
-  }
-
-  // Load meal_ingredients by ingredient_id
-  public static function load_by_ingredient_id($id) {
-    $db = db::instance();
-    $meal_ingredients = $db->fetchByAttribute('ingredient_id', $id, __CLASS__, self::DB_TABLE);
-    return $meal_ingredients;
-  }
-
   // Check if a meal_ingredient relationship exists between $meal_id and $ingredient_id
   public static function exists($meal_id, $ingredient_id) {
     $db = db::instance();
@@ -108,7 +108,7 @@ class meal_ingredient extends db_object {
     // Generate search query
     $query = sprintf("SELECT * FROM %s WHERE meal_id = '%s' AND ingredient_id = '%s';",
       self::DB_TABLE,
-      $follower_id,
+      $meal_id,
       $ingredient_id);
 
     // Execute the search

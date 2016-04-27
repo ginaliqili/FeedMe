@@ -61,25 +61,7 @@ class ingredient extends db_object {
     return $ingredient;
   }
 
-  // Load all ingredients
-  public static function load_all($limit=null) {
-    $query = sprintf(" SELECT id FROM %s ",
-      self::DB_TABLE);
-    $db = db::instance();
-    $result = $db->lookup($query);
-    if(!mysqli_num_rows($result)) {
-      return null;
-    }
-    else {
-      $objects = array();
-      while ($row = mysqli_fetch_assoc($result)) {
-        $objects[] = self::load_by_id($row['id']);
-      }
-      return ($objects);
-    }
-  }
-
-  // Check if an ingredient exists with $title
+  // Load ingredient by title
   public static function load_by_title($title) {
     $db = db::instance();
 
@@ -97,6 +79,24 @@ class ingredient extends db_object {
     }
     else {
       return self::load_by_id(mysqli_fetch_assoc($result)['id']);
+    }
+  }
+
+  // Load all ingredients
+  public static function load_all($limit=null) {
+    $query = sprintf(" SELECT id FROM %s ",
+      self::DB_TABLE);
+    $db = db::instance();
+    $result = $db->lookup($query);
+    if(!mysqli_num_rows($result)) {
+      return null;
+    }
+    else {
+      $objects = array();
+      while ($row = mysqli_fetch_assoc($result)) {
+        $objects[] = self::load_by_id($row['id']);
+      }
+      return ($objects);
     }
   }
 }
