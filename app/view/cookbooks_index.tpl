@@ -36,7 +36,7 @@
 			$(parent.find('.meal_edit')).hide();
 			// show current page's submit changes button
 			$(parent.find('.submit_changes')).show();
-			var edit_fields = [parent.find('.meal_title_edit'), parent.find('.meal_description_edit'), parent.find('.food_type_edit'), parent.find('.time_to_prepare_edit')];
+			var edit_fields = [parent.find('.meal_title_edit'), parent.find('.meal_description_edit'), parent.find('.meal_type_edit'), parent.find('.food_type_edit'), parent.find('.time_to_prepare_edit')];
 			//$(edit_fields).show();
 			$(edit_fields).each(function(index) {
 				$(this).show();

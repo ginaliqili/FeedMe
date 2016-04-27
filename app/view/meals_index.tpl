@@ -193,9 +193,6 @@
 			</div>
 
 			<div id="main_decision">
-				<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal_id ?>">
-					<button type="submit button" class="btn btn-success btn-primary btn-lg">Eat Now</button>
-				</form>
 				<button id="something_else" type="button submit" class="btn btn-primary btn-lg">Feed me something else</button>
 				<button id="matching_food" type="button submit" class="btn btn-primary btn-lg">Show me all matching food</button>
 			</div>
