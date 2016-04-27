@@ -34,11 +34,10 @@
 
 		loadTurnJS();
 		$('.toc').click(function() {
-			alert("hey");
 			$(".flipbook").turn("page", 2);
 		});
 			var num_meals = $('#num_meals').val();
-			//for (var i = 0; i < num_meals; i++) {
+			for (var i = 0; i < num_meals; i++) {
 				var elems = document.getElementsByClassName('jump');
 				var counter = 3;
 				var page = 3;
@@ -50,9 +49,10 @@
 
 				}
 
-			//}
+			}
 
 			$('.jump').click(function() {
+				alert(this.id);
 				console.log(this.id);
 					$(".flipbook").turn("page", this.id);
 			});
