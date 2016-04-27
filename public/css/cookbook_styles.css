@@ -16,8 +16,8 @@ td.page_number {
 
 .flipbook-viewport{
 	overflow:hidden;
-	width:auto;
-	height:auto;
+	width:100%;
+	height:100%;
 }
 
 .flipbook-viewport .container{
