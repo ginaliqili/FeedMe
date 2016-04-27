@@ -24,7 +24,7 @@
     var defaultViewBoxSize = settings.size;
     var defaultInnerRadius = settings.size / 3;
     var defaultOuterRadius = settings.size / 2;
-    var defaultRadiusMin = settings.size / 10;
+    var defaultRadiusMin = settings.size / 8;
     self.options = {};
     $.extend(self.options, {
       plugins: [],
@@ -131,15 +131,37 @@
       var node = self.svg.selectAll(".node")
         .data(self.circlePositions)
         .enter().append("g")
-        .attr("class", function (d) {return ["node", options.data.classed(d.item)].join(" ");});
+        .attr("class", function (d) {return ["node", options.data.classed(d.item)].join(" ");})
+        .attr("data-title", function (d) {return [options.data.title(d.item)]; } )
+        .attr("data-time", function (d) {return [options.data.eval(d.item)]; } )
+        .attr("data-id", function (d) {return [options.data.func_id(d.item)]; } )
+        .attr("data-meal_type", function (d) {return [options.data.func_meal_type(d.item)]; } )
+        .attr("data-food_type", function (d) {return [options.data.func_food_type(d.item)]; } )
+        .attr("data-image", function (d) {return [options.data.func_image(d.item)]; } );
 
       var fnColor = d3.scale.category20();
+
+      //var patternID = "pattID";
+      node.append("defs")
+        .append("pattern")
+        .attr("id", function(d) {return ["id_" + options.data.func_id(d.item)]; })
+        .append("image")
+        .attr("xlink:href", function (d) {return [options.data.func_image(d.item)]; })
+        .attr("width", "100%")
+        .attr("height", "100%");
+
       node.append("circle")
         .attr({r: function (d) {return d.r;}, cx: function (d) {return d.cx;}, cy: function (d) {return d.cy;}})
-        .style("fill", function (d) {
+        .attr('fill',
+         function (d) {
           return options.data.color !== undefined ? options.data.color(d.item) : fnColor(d.item.text);
-        })
-        .attr("opacity", "0.8");
+           });
+         //function (d) 
+         // {
+         //  return ["url(#id_" + options.data.func_id(d.item) + ")"];
+         // }
+         //);
+        //.attr("opacity", "0.8");
       node.sort(function (a, b) {return options.data.eval(b.item) - options.data.eval(a.item);});
 
       self.transition = {};

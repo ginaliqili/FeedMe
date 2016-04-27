@@ -30,17 +30,32 @@ d3.svg.BubbleChart.define("lines", function (options) {
 
   var self = this;
 
-  self.setup = (function () {
+   self.setup = (function () {
     var original = self.setup;
     return function () {
       var fn = original.apply(this, arguments);
       var node = self.getNodes();
+
       $.each(options.format, function (i, f) {
         node.append("text")
+          .attr(f.attr)
           .classed(f.classed)
           .style(f.style)
-          .attr(f.attr)
-          .text(function (d) {return d.item[f.textField];} );
+          .attr("width", "500px")
+          .attr("height", "300px")
+          .text(function (d) {
+            var str = d.item[f.textField];
+            if (f.textField == "count")
+            {
+               str += " min";
+             }  
+            //str += f.textField;          
+            if (str.length > 20) 
+            {
+              str = str.substring(0, 20) + "...";
+            }
+            return str; 
+          });
       });
       return fn;
     };
@@ -52,7 +67,18 @@ d3.svg.BubbleChart.define("lines", function (options) {
       var fn = original.apply(this, arguments);
       $.each(options.format, function (i, f) {
         var tNode = d3.select(node.selectAll("text")[0][i]);
-        tNode.classed(f.classed).text(function (d) {return d.item[f.textField];})
+        tNode.classed(f.classed).text(function (d) {
+           var str = d.item[f.textField];
+           if (f.textField == "count")
+            {
+               str += " min";
+             }  
+            if (str.length > 20) 
+            {
+              str = str.substring(0, 20) + "...";
+            }
+            return str; 
+        })
           .transition().duration(self.getOptions().transitDuration)
           .style(f.style)
           .attr(f.attr);

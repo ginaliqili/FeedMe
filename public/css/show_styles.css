@@ -134,3 +134,7 @@ div.meal_info > div.meal_decision {
 div.meal_info > div.meal_decision * {
 	display: inline;
 }
+
+div.meal_info > div#not_a_decision * {
+	max-width: 100%;
+}

@@ -6,25 +6,15 @@
 
 	<title>FeedMe</title>
 
+	<!--Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
-	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/index_styles.css">
+	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$("#description a").click(function(e){
-				e.preventDefault();
-				var a_href = $(this).attr('href');
-				location.href = 'http://spoonacular.com' + a_href;
-			})
-		});
-	</script>
-
 </head>
 
 <body>
@@ -54,7 +44,11 @@
 			</nav>
 
 			<nav id="breadcrumb">
-				<span>Home</span>
+				<a href="<?= BASE_URL ?>">Home</a>
+				<i class="fa fa-caret-right"></i>
+				<a href="<?= BASE_URL ?>/meals">Meals</a>
+				<i class="fa fa-caret-right"></i>
+				<span>Favorites</span>
 			</nav>
 
 			<div id="search">
@@ -128,95 +122,86 @@
 								$meal_title = $favorite->get('meal_title');
 						?>
 						<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
-						<?php }}} ?>
+						<?php } ?>
+						<a href="<?= BASE_URL ?>/meals/favorites"><li class="list-group-item">Edit Favorites</li></a>
+						<?php }} ?>
 					</ul>
-				</div>
 			</div>
-			<div id="main_heading">
-				<h1>This should fill you up</h1>
-			</div>
+		</div>
 
-		<div id="main_content">
-			<?php
+			<div id="main_content">
+				<?php
+				if ($favorites != null && $meals != null) {
+					$index = 0;
+					foreach($meals as $meal) {
+						$meal_id = $meal->get('id');
+						$meal_title = $meal->get('title');
+						$meal_creator = user::load_by_id($meal->get('creator_id'));
+						$meal_description = $meal->get('description');
+						$meal_meal_type = $meal->get('meal_type');
+						$meal_food_type = $meal->get('food_type');
+						$meal_time_to_prepare = $meal->get('time_to_prepare');
+						$meal_image_url = $meal->get('image_url');
+				?>
+				<div class="meal_content">
+					<div class="meal_title">
+						<h2><?= $meal_title ?></h2>
+					</div>
 
-			if ($_SESSION['error'] != null)
-			{
-			    if ($_SESSION['error'] != '')
-				{
-					echo $_SESSION['error'];
-				}
-			}
+					<div class="meal_creator">
+						<h3>Submitted by:&nbsp;</h3>
+						<a href="<?= BASE_URL ?>/users/<?= $meal_creator->get('id') ?>"><?= $meal_creator->get('username') ?></a>
+					</div>
 
-			else if ($meals != null)
-			{
-				foreach($meals as $meal)
-				{
-
-					$meal_title = $meal['title'];
-					$meal_description = $meal['description'];
-					$meal_meal_type = $meal['meal_type'];
-					$meal_food_type = $meal['food_type'];
-					$meal_time_to_prepare = $meal['time_to_prepare'];
-					$meal_image_url = $meal['image_url'];
-					$instructions = "no instructions yet";
-
-					echo '
-					<form method="POST" action="'.BASE_URL.'/meals/create_import" >
-						<div id="meal_1" class="meal_content">
-							<div class="meal_title">
-								<h2>'.$meal_title.'</h2>
-							</div>
-							<div class="meal_creator">
-							<h3>Uploaded from:&nbsp;</h3>
-							<p>Spoonacular API</p>
-							</div>
-						<div class="meal_info">
-								<input type = "hidden" name = "title" value = "'.$title.'">
-								<input type = "hidden" name = "instructions" value = "'.$instructions.'">
-								<input type="hidden" name="image_url" value="'.$meal_image_url.'">
-								<div class="meal_image">
-									<img id="meal_image" src="'.$meal_image_url.'" alt = "meal image" />
-								</div>
-								<div id="description" class="meal_description">
-									<h4>Description:</h4>
-
-									<input type = "hidden" id="description" name = "description" value = "The recipes description">
-
-									'.$meal_description.'
-								</div>
-								<div class="meal_type">
-									<h4>Meal Type:</h4>
-									<input type = "hidden" name = "meal_type" value = "'.$meal_meal_type.'">
-									'.$meal_meal_type.'
-								</div>
-								<div class="food_type">
-									<h4>Food Type:</h4>
-									<input type = "hidden" name = "food_type" value = "'.$meal_food_type.'">'.$meal_food_type.'
-								</div>
-								<div class="prepare_time">
-									<h4>Time to Prepare:</h4>
-									<input type = "hidden" name = "time_to_prepare" value = "'.$meal_time_to_prepare.'">
-									'.$meal_time_to_prepare.'
-								</div>
-								';
-							if (isset($_SESSION['username']))
-							{
-							echo '
-							<button id="meal_edit" class="btn btn-success btn-lg" type="submit">Upload</button>
-							';}'
-							</div>
+					<div class="meal_info">
+						<div class="meal_image">
+							<img id="meal_image" src="<?= $meal_image_url ?>" alt="<?= $meal_title ?>"/>
 						</div>
-					</form>
-					 ';
-				}//end foreach
-			}//end else if
-		?>
-			</div> <!-- end main content -->
-		</div> <!-- end content -->
-	</div> <!-- end wrapper -->
-	<footer>
-		<p>Copyright 2016: All Rights Reserved</p>
-	</footer>
-</body>
 
+						<div class="meal_description">
+							<h4>Description:</h4>
+							<p><?= $meal_description ?></p>
+						</div>
+
+						<div class="meal_type">
+							<h4>Meal Type:</h4>
+							<p><?= $meal_meal_type ?></p>
+						</div>
+
+						<div class="food_type">
+							<h4>Food Type:</h4>
+							<p><?= $meal_food_type ?></p>
+						</div>
+
+						<div class="prepare_time">
+							<h4>Time to Prepare:</h4>
+							<p><?= $meal_time_to_prepare ?></p>
+						</div>
+
+						<div class="meal_decision">
+							
+							<?php
+							if (isset($_SESSION['username']) &&
+								($meal_creator->get('username') == $_SESSION['username'] ||
+								(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1)))) {
+							?>
+							<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal_id ?>/edit">
+								<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
+							</form>
+
+							<?php } ?>
+
+							<form method="POST" action="<?= BASE_URL ?>/meals/<?= $favs[$index] ?>/unfavorite">
+								<button id="meal_delete" type="submit button" class="btn btn-primary btn-lg">Unfavorite</button>
+							</form>
+							
+						</div>
+					</div>
+				</div>
+				<?php $index++; }} ?>
+			</div>
+
+	</div>
+</div>
+</body>
 </html>

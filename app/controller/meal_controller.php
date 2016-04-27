@@ -55,6 +55,16 @@ class meal_controller {
 				$this->favorite($meal_id, $meal_title);
 				break;
 
+
+			case 'show_favs':
+				$this->show_favs();
+				break;
+
+			case 'unfavorite':
+				$fav_id = $_GET['fav_id'];
+				$this->unfavorite($fav_id);
+				break;
+
 			case 'search_API':
 				$this->search_API();
 				break;
@@ -64,7 +74,13 @@ class meal_controller {
 	 			break;
 
 	 		case 'create_import':
-	 			$this->create_import();
+	 			$meal_id = $_GET['meal_id'];
+	 			$meal_type = $_GET['meal_type'];
+	 			$food_type = $_GET['food_type'];
+	 			$title = $_GET['title'];
+	 			$time_to_prepare = $_GET['time'];
+	 			$image = $_GET['image'];
+	 			$this->create_import($meal_id, $meal_type, $food_type, $title, $image, $time_to_prepare);
 	 			break;
 		}
 	}
@@ -229,6 +245,43 @@ class meal_controller {
 		include_once SYSTEM_PATH.'/view/meals_index.tpl';
 	}
 
+	public function show_favs()
+	{
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+			$meals = array();
+			$favs = array();
+
+			if ($favorites != NULL)
+			{
+				foreach( $favorites as $fav)
+				{
+					$meal_id = $fav->get('meal_id');
+					$favs[] = $fav->get('id');
+					$meals[] = meal::load_by_id($meal_id);
+				}
+			}			
+		}
+		else {
+			$favorites = null;
+			$meals = null;
+			$favs = null;
+		}
+		include_once SYSTEM_PATH.'/view/meals_favorites.tpl';
+	}
+
+	public function unfavorite($fav_id)
+	{
+
+		$meal = favorite::load_by_id($fav_id);
+
+		// Delete the meal
+		$meal->delete();
+
+		// Redirect to index page
+		header('Location: ' . BASE_URL . '/meals/favorites');
+	}
+
 	public function favorite($meal_id, $meal_title) {
 		header('Content-Type: application/json'); // set the header to hint the response type (JSON) for JQuery's Ajax method
 		// Get the user id
@@ -361,43 +414,18 @@ class meal_controller {
 			{
 				foreach ($meals as $meal)
 				{
-						$time_to_prepare = $meal['readyInMinutes'];
-						$mealid = $meal['id'];
+					$time_to_prepare = $meal['readyInMinutes'];
+					$mealid = $meal['id'];
+					$image = $baseUri.$meal['image'];
 
-						$image = $baseUri.$meal['image'];
+					$title = $meal['title'];
 
-						$title = $meal['title'];
+					$readyInMinutes = $meal['readyInMinutes'];
 
-						$readyInMinutes = $meal['readyInMinutes'];
-
-
-					 // 	$endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
-						// $therest = $mealid."/summary";
-					 // 		// These code snippets use an open-source library.
-					 // 	$response = Unirest\Request::get($endpoint.$therest,
-					 // 		  array(
-					 // 		    "X-Mashape-Key" => "cBEkw8VH7smshkE2V2900492f46Lp1G5mvWjsnj5VsCoxCsRpr"
-					 // 	  )
-					 // 	);
-
-					 // 	$arr_summ = json_decode($response->raw_body, true);
-
-					 // 	$description = $arr_summ['summary'];
-
-						// $meal = array( 'title' => $title, 'description' => $description,
-						// 					'meal_type' => $meal_type, 'food_type' => $food_type,
-						// 					'time_to_prepare' => $readyInMinutes,
-						// 					'image_url' => $image);
-
-						$json = array('text' => $title, 'count' => $readyInMinutes);
-						//$j[] =  json_encode($json);
-						$j[] = $json; 
-						//$meals[] = $meal;
+						$json = array('text' => $title, 'count' => $readyInMinutes, 'id' => $mealid, 'meal_type' => $meal_type, 'food_type' => $food_type, 'image_url' => $image);
+						$j[] = $json;
 				}
 				$json_meals = json_encode($j);
-				// foreach ($b as $x)
-				// 	echo $x;
-				//echo $b;
 			}
 			else
 			{
@@ -411,47 +439,78 @@ class meal_controller {
 		}
 
 
- 		include_once SYSTEM_PATH.'/view/import_show.tpl';
-		//header('Location: ' . BASE_URL . '/view/' . $meal->get('id'));
+ 		include_once SYSTEM_PATH.'/view/meals_uploaded.tpl';
 	}
 
 	public function import() {
 
+		if (isset($_SESSION['username'])) {
+			$favorites = favorite::load_all();
+		}
+		else {
+			$favorites = null;
+		}
 		$_SESSION['error'] = '';
 
  		include_once SYSTEM_PATH.'/view/meals_import.tpl';
 
  	}
 
- 	public function create_import() {
- 		// Create array of attributes
-		$attributes = array(
-			'title' => $_POST['title'],
-			'description' => $_POST['description'],
-			'meal_type' => $_POST['meal_type'],
-			'food_type' => $_POST['food_type'],
-			'time_to_prepare' => $_POST['time_to_prepare'],
-			'instructions' => $_POST['instructions'],
-			'image_url' => $_POST['image_url']);
+ 	
 
-		// Create a new meal with the appropriate attributes
+ 	public function create_import($meal_id, $meal_type, $food_type, $title, $image, $time_to_prepare) 
+ 	{
+ 		require_once SYSTEM_PATH.'/unirest-php-master/src/Unirest.php';
+ 		
+
+ 		$title = str_replace('_', ' ', $title);
+
+ 		$endpoint = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
+		$therest = $meal_id."/summary";
+						 		
+		$response = Unirest\Request::get($endpoint.$therest,
+		  array("X-Mashape-Key" => "cBEkw8VH7smshkE2V2900492f46Lp1G5mvWjsnj5VsCoxCsRpr"));
+		
+		$arr_summ = json_decode($response->raw_body, true);
+
+		$description = $arr_summ['summary'];
+
+		$description = str_replace('href', 'id', $description);
+
+		$instructions = "no instructions yet";
+
+		$attributes = array( 
+					'title' => $title, 
+					'description' => $description, 
+					'meal_type' => $meal_type, 
+					'food_type' => $food_type, 
+					'time_to_prepare' => $time_to_prepare, 
+					'instructions'=> $instructions,
+					'image_url' => $image
+					);
+
+		// // Create a new meal with the appropriate attributes
 		$meal = new meal($attributes);
 
-		// Set the creator_id
+		// // Set the creator_id
 		$creator = user::load_by_username($_SESSION['username']);
 		$meal->set('creator_id', $creator->get('id'));
 
-		// Save the new meal and create an associated event
-		if ($meal->save()) {
-			$event = new event(array(
-					'creator_id' => $meal->get('creator_id'),
-					'type' => 'meal',
-					'action' => 'imported',
-					'reference_id' => $meal->get('id')));
-			$event->save();
-		}
+		
 
-		// Redirect to show page
+		$meal->save();
+
+		// Save the new meal and create an associated event
+		// if ($meal->save()) {
+		// 	$event = new event(array(
+		// 			'creator_id' => $meal->get('creator_id'),
+		// 			'type' => 'meal',
+		// 			'action' => 'imported',
+		// 			'reference_id' => $meal->get('id')));
+		// 	$event->save();
+		// }
+
+		// // Redirect to show page
 		header('Location: ' . BASE_URL . '/meals/' . $meal->get('id'));
  	}
 }

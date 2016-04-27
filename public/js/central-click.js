@@ -10,7 +10,17 @@ d3.svg.BubbleChart.define("central-click", function (options) {
       var fn = original.apply(this, arguments);
       self.event.on("click", function(node) {
         if (node.selectAll("text.central-click")[0].length === 1) {
-          alert("Meow");
+          //alert("Meow");
+          //var favorite_check = "<?= BASE_URL ?>/";
+          var id = node.attr("data-id");
+          var meal_type = node.attr("data-meal_type");
+          var food_type = node.attr("data-food_type");
+          var img = node.attr("data-image");
+          var title = node.attr("data-title");
+          var time = node.attr("data-time");
+
+          window.location.href = "create_import/" + id + "/" + meal_type + "/" + food_type + "/" + title + "/" + time + "/" + img;
+          //alert(id);
         }
       });
       return fn;
