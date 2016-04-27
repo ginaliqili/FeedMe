@@ -46,11 +46,9 @@
 			<nav id="breadcrumb">
 				<a href="<?= BASE_URL ?>">Home</a>
 				<i class="fa fa-caret-right"></i>
-				<span>Users</span>
+				<a href="<?= BASE_URL ?>/meals">Meals</a>
 				<i class="fa fa-caret-right"></i>
-				<a href="<?= BASE_URL ?>/users/<?= $user->get('id') ?>"><?= $user->get('username') ?></a>
-				<i class="fa fa-caret-right"></i>
-				<span>Followers</span>
+				<span>Favorites</span>
 			</nav>
 
 			<div id="search">
@@ -125,42 +123,81 @@
 					</ul>
 				</div>
 			</div>
-
-			<div id="main_heading">
-				<h1><?= $user->get('username') ?>'s Following</h1>
-			</div>
+		</div>
 
 			<div id="main_content">
 				<?php
-				if ($followers != null) {
-					foreach($followers as $follower) {
-						$username = $follower->get('username');
-						$first_name = $follower->get('first_name');
-						$last_name = $follower->get('last_name');
+				if ($favorites != null && $meals != null) {
+					$index = 0;
+					foreach($meals as $meal) {
+						$meal_id = $meal->get('id');
+						$meal_title = $meal->get('title');
+						$meal_creator = user::load_by_id($meal->get('creator_id'));
+						$meal_description = $meal->get('description');
+						$meal_meal_type = $meal->get('meal_type');
+						$meal_food_type = $meal->get('food_type');
+						$meal_time_to_prepare = $meal->get('time_to_prepare');
+						$meal_image_url = $meal->get('image_url');
 				?>
-				<div class="user_content">
-					<div id="username">
-						<h2>Username: </h2>
-						<span><a href="<?= BASE_URL ?>/users/<?= $follower->get('id') ?>"><?= $username ?></a></span>					</div>
-
-					<div id="first_name">
-						<h2>First Name: </h2>
-						<span><?= $first_name ?></span>
+				<div class="meal_content">
+					<div class="meal_title">
+						<h2><?= $meal_title ?></h2>
 					</div>
 
-					<div id="last_name">
-						<h2>Last Name: </h2>
-						<span><?= $last_name ?></span>
+					<div class="meal_creator">
+						<h3>Submitted by:&nbsp;</h3>
+						<a href="<?= BASE_URL ?>/users/<?= $meal_creator->get('id') ?>"><?= $meal_creator->get('username') ?></a>
+					</div>
+
+					<div class="meal_info">
+						<div class="meal_image">
+							<img id="meal_image" src="<?= $meal_image_url ?>" alt="<?= $meal_title ?>"/>
+						</div>
+
+						<div class="meal_description">
+							<h4>Description:</h4>
+							<p><?= $meal_description ?></p>
+						</div>
+
+						<div class="meal_type">
+							<h4>Meal Type:</h4>
+							<p><?= $meal_meal_type ?></p>
+						</div>
+
+						<div class="food_type">
+							<h4>Food Type:</h4>
+							<p><?= $meal_food_type ?></p>
+						</div>
+
+						<div class="prepare_time">
+							<h4>Time to Prepare:</h4>
+							<p><?= $meal_time_to_prepare ?></p>
+						</div>
+
+						<div class="meal_decision">
+							
+							<?php
+							if (isset($_SESSION['username']) &&
+								($meal_creator->get('username') == $_SESSION['username'] ||
+								(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1)))) {
+							?>
+							<form method="GET" action="<?= BASE_URL ?>/meals/<?= $meal_id ?>/edit">
+								<button id="meal_edit" type="submit button" class="btn btn-primary btn-lg">Edit</button>
+							</form>
+
+							<?php } ?>
+
+							<form method="POST" action="<?= BASE_URL ?>/meals/<?= $favs[$index] ?>/unfavorite">
+								<button id="meal_delete" type="submit button" class="btn btn-primary btn-lg">Unfavorite</button>
+							</form>
+							
+						</div>
 					</div>
 				</div>
-				<?php }} ?>
+				<?php $index++; }} ?>
 			</div>
-		</div>
+
 	</div>
-
-	<footer>
-		<p>Copyright 2016: All Rights Reserved</p>
-	</footer>
+</div>
 </body>
-
 </html>

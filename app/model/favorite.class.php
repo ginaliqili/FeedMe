@@ -41,6 +41,20 @@ class favorite extends db_object {
       return true;
   }
 
+  public function delete() {
+    // Generate deletion query
+    $query = sprintf(" DELETE FROM %s WHERE id = '%s' ",
+    self::DB_TABLE,
+    $this->id);
+    $db = db::instance();
+
+    // Execute the deletion
+    $result = $db->lookup($query);
+
+    // Return deletion result
+    return $result;
+  }
+
   // Load all favorites
   public static function load_all($limit=null) {
       $user = user::load_by_username($_SESSION['username']);

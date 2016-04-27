@@ -43,3 +43,12 @@ RewriteRule ^meals/create_import/?$ app/controller/meal_controller.php?action=cr
 RewriteRule ^cookbooks/?$ app/controller/cookbook_controller.php?action=index [QSA,L]
 RewriteRule ^cookbooks/(\d+)/destroy/?$ app/controller/cookbook_controller.php?action=destroy&meal_id=$1 [QSA,L]
 RewriteRule ^cookbooks/(\d+)/update/?$ app/controller/cookbook_controller.php?action=update&meal_id=$1 [QSA,L]
+
+
+RewriteRule ^meals/create_import/(\d+)/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/(.[^/]*+)/(\d+)/(.*)/?$ app/controller/meal_controller.php?action=create_import&meal_id=$1&meal_type=$2&food_type=$3&title=$4&time=$5&image=$6 [QSA,L]
+
+RewriteRule ^meals/favorites/?$ app/controller/meal_controller.php?action=show_favs [QSA,L]
+
+RewriteRule ^meals/(\d+)/unfavorite/?$ app/controller/meal_controller.php?action=unfavorite&fav_id=$1 [QSA,L]
+
+

@@ -139,3 +139,7 @@ div#select_ingredients > select {
 	width: 100%;
 	margin-top: 5px;
 }
+
+div.meal_info > div#not_a_decision * {
+	max-width: 100%;
+}

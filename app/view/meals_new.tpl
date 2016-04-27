@@ -115,7 +115,12 @@
 								$meal_title = $favorite->get('meal_title');
 						?>
 						<a href="<?= BASE_URL ?>/meals/<?= $meal_id ?>"><li class="list-group-item"><?= $meal_title ?></li></a>
-						<?php }}} ?>
+						<?php }
+						?>
+
+						<a href="<?= BASE_URL ?>/meals/favorites"><li class="list-group-item">Edit Favorites</li></a>
+
+						<?php } } ?>
 					</ul>
 				</div>
 			</div>
