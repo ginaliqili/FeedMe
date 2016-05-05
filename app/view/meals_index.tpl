@@ -14,6 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/meals_index.js"></script>
 </head>
 
