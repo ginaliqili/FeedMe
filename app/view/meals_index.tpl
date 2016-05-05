@@ -14,7 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/meals_index.js"></script>
 </head>
 
 <body>
@@ -123,13 +123,23 @@
 			</div>
 
 			<div id="main_heading">
+				<?php
+				if ($meals != null) {
+				?>
 				<h1>This should fill you up</h1>
+				<?php
+				} else {
+				?>
+				<h1>No meals were found</h1>
+				<?php } ?>
 			</div>
 
 			<div id="main_content">
 				<?php
 				if ($meals != null) {
-					foreach($meals as $meal) {
+					$num_meals = count($meals);
+					for($i = 0; $i < $num_meals; $i++) {
+						$meal = $meals[$i];
 						$meal_id = $meal->get('id');
 						$meal_title = $meal->get('title');
 						$meal_creator = user::load_by_id($meal->get('creator_id'));
@@ -139,7 +149,9 @@
 						$meal_time_to_prepare = $meal->get('time_to_prepare');
 						$meal_image_url = $meal->get('image_url');
 				?>
-				<div class="meal_content">
+				<input type="hidden" name="num_meals" value="<?= $num_meals ?>" />
+
+				<div class="meal_content <?php echo ($i > 0 ? 'hidden_meal' : 'shown_meal'); ?>" id="meal_<?= $i ?>">
 					<div class="meal_title">
 						<h2><?= $meal_title ?></h2>
 					</div>
@@ -197,10 +209,14 @@
 				<?php }} ?>
 			</div>
 
+			<?php
+			if ($meals != null) {
+			?>
 			<div id="main_decision">
 				<button id="something_else" type="button submit" class="btn btn-primary btn-lg">Feed me something else</button>
 				<button id="matching_food" type="button submit" class="btn btn-primary btn-lg">Show me all matching food</button>
 			</div>
+			<?php } ?>
 		</div>
 	</div>
 

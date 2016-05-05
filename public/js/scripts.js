@@ -4,12 +4,6 @@ $(document).ready(function(){
 		$(this).val('');
 	});
 
-	// Displays additional found meals when clicked
-	$('button#matching_food').click(function(){
-		$('.hidden').show();
-		$('#main_decision').hide();
-	});
-
 	// Shows Favorites bar
 	$('#favorites').click(function() {
 		$('#favorites_bar').toggle();

@@ -64,6 +64,10 @@ div.meal_content {
 	border-radius: 8px;
 }
 
+div.hidden_meal {
+	display: none;
+}
+
 div.meal_content > div.meal_info {
 	height: auto;
 	overflow: auto;
