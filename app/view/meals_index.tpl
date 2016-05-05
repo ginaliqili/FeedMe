@@ -138,9 +138,8 @@
 			<div id="main_content">
 				<?php
 				if ($meals != null) {
-					$num_meals = count($meals);
-					for($i = 0; $i < $num_meals; $i++) {
-						$meal = $meals[$i];
+          $index = 0;
+          foreach($meals as $meal) {
 						$meal_id = $meal->get('id');
 						$meal_title = $meal->get('title');
 						$meal_creator = user::load_by_id($meal->get('creator_id'));
@@ -150,9 +149,9 @@
 						$meal_time_to_prepare = $meal->get('time_to_prepare');
 						$meal_image_url = $meal->get('image_url');
 				?>
-				<input type="hidden" name="num_meals" value="<?= $num_meals ?>" />
+				<input type="hidden" name="num_meals" value="<?= count($meals) ?>" />
 
-				<div class="meal_content <?php echo ($i > 0 ? 'hidden_meal' : 'shown_meal'); ?>" id="meal_<?= $i ?>">
+				<div class="meal_content <?php echo ($index > 0 ? 'hidden_meal' : 'shown_meal'); ?>" id="meal_<?= $index ?>">
 					<div class="meal_title">
 						<h2><?= $meal_title ?></h2>
 					</div>
@@ -207,11 +206,11 @@
 						</div>
 					</div>
 				</div>
-				<?php }} ?>
+				<?php $index++; }} ?>
 			</div>
 
 			<?php
-			if ($meals != null) {
+			if ($meals != null && count($meals) > 1) {
 			?>
 			<div id="main_decision">
 				<button id="something_else" type="button submit" class="btn btn-primary btn-lg">Feed me something else</button>

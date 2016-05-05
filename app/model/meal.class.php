@@ -172,6 +172,7 @@ class meal extends db_object {
     }
   }
 
+  // Perform a search on meals
   public static function search($parameters) {
     // Create a database instance
     $db = db::instance();
@@ -305,19 +306,16 @@ class meal extends db_object {
             // Intersect object arrays using inline comparator function
             /* It would be better to use a SQL Intersect statement, but it's
             not supported by MySQL */
-            $meals = array_uintersect($meals, $results, function($obj1, $obj2) {
-              if ($obj1 == $obj2) {
-                return 0;
-              }
-              if ($obj1 > $obj2) {
-                return 1;
-              }
-              return -1;
-            });
+            $meals = array_uintersect($meals, $results, "meal::compare");
           }
+        }
+        // If no results were found for this query no results were found for the entire search
+        else {
+          return array();
         }
       }
     }
+    // If no search queries were generated use the base query
     else {
       // Use the base query to get all meals
       $result = $db->lookup($base_query);
@@ -332,5 +330,19 @@ class meal extends db_object {
 
     // Return the retrieved meals
     return $meals;
+  }
+
+  // Compare two meals
+  public static function compare($meal_1, $meal_2) {
+    if (!($meal_1 instanceof meal) || !($meal_2 instanceof meal)) {
+      return null;
+    }
+    if ($meal_1 == $meal_2) {
+      return 0;
+    }
+    if ($meal_1 > $meal_2) {
+      return 1;
+    }
+    return -1;
   }
 }
