@@ -16,23 +16,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/ingredients.js"></script>
-	<script type="text/javascript">
-	function validateForm()
-			{
-			var a=document.forms["meal_form"]["title"].value;
-			var b=document.forms["meal_form"]["description"].value;
-			var c=document.forms["meal_form"]["meal_type"].value;
-			var d=document.forms["meal_form"]["food_type"].value;
-			var e=document.forms["meal_form"]["time_to_prepare"].value;
-			var f=document.forms["meal_form"]["instructions"].value;
-			var g=document.forms["meal_form"]["ingredient"].value;
-			if (a==null || a=="",b==null || b=="",c==null || c=="",d==null || d=="",e==null || e=="",f==null || f=="",g==null || g=="")
-				{
-				alert("Please Fill All Required Field");
-				return false;
-				}
-			}
-	</script>
+	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/meals_new.js"></script>
 </head>
 
 <body>
@@ -147,7 +131,7 @@
 			</div>
 
 			<div id="main_content">
-				<form id="meal_form" name="meal_form" method="POST" onsubmit="return validateForm()" action="<?= BASE_URL ?>/meals/create">
+				<form id="meal_form" name="meal_form" method="POST" action="<?= BASE_URL ?>/meals/create">
 					<div class="meal_content">
 						<div class="input-group title">
 							<span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
@@ -231,7 +215,7 @@
 
 						<br>
 
-						<button id="submit_form" type="button submit" class="btn btn-success btn-lg">Create Meal</button>
+						<button id="submit_form" type="button" class="btn btn-success btn-lg">Create Meal</button>
 					</div>
 				</form>
 			</div>
