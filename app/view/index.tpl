@@ -52,9 +52,9 @@
 
 			<div id="search">
 				<p>Know what you're looking for?</p>
-				<input type="text" value="Tasty meal.."/>
-				<form method="GET" action="<?= BASE_URL ?>/meals">
-					<button type="button submit" class="btn btn-primary btn-sm">Search</button>
+				<form method="GET" action="<?= BASE_URL ?>/meals/search">
+					<input type="text" name="title" placeholder="Tasty Meal.." />
+					<button type="submit" class="btn btn-primary btn-sm">Search</button>
 				</form>
 			</div>
 		</header>
@@ -129,7 +129,7 @@
 				<h2>Fill out the following fields to be fed!</h2>
 			</div>
 
-			<form id="meal_form" method="POST" action="<?= BASE_URL ?>/meals/search">
+			<form id="meal_form" method="GET" action="<?= BASE_URL ?>/meals/search">
 				<div id="main_content">
 					<div id="meal_content">
 						<table id="meal_options">

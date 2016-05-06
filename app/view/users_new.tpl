@@ -82,9 +82,9 @@
 
 			<div id="search">
 				<p>Know what you're looking for?</p>
-				<input type="text" value="Tasty meal.."/>
-				<form method="GET" action="<?= BASE_URL ?>/meals">
-					<button type="button submit" class="btn btn-primary btn-sm">Search</button>
+				<form method="GET" action="<?= BASE_URL ?>/meals/search">
+					<input type="text" name="title" placeholder="Tasty Meal.." />
+					<button type="submit" class="btn btn-primary btn-sm">Search</button>
 				</form>
 			</div>
 		</header>

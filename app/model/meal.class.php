@@ -184,6 +184,17 @@ class meal extends db_object {
     // Store the custom search queries
     $search_queries = array();
 
+    // Search by title
+    if ($parameters['title'] != null) {
+      // Build the query to find the meal with the associated title
+      $meal_title_query = $base_query . sprintf(
+        " WHERE title = '%s'",
+        $parameters['title']);
+
+      // Add this query to the search queries
+      $search_queries[] = $meal_title_query;
+    }
+
     // Search by meal type
     if ($parameters['meal_type'] != null) {
       // Build the query to filter for meals with the associated meal type

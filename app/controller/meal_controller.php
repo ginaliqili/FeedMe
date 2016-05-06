@@ -284,11 +284,12 @@ class meal_controller {
 
 		// Generate the search parameters
 		$parameters = array(
-			'meal_type' => array_key_exists('meal_type', $_POST) ? $_POST['meal_type'] : null,
-			'food_type' => $_POST['food_type'],
-			'time_to_prepare' => $_POST['time_to_prepare'],
-			'allergies' => array_key_exists('allergies', $_POST) ? $_POST['allergies'] : null,
-			'ingredients' => array_key_exists('ingredients', $_POST) ? $_POST['ingredients'] : null);
+			'title' => array_key_exists('title', $_GET) ? $_GET['title'] : null,
+			'meal_type' => array_key_exists('meal_type', $_GET) ? $_GET['meal_type'] : null,
+			'food_type' => array_key_exists('food_type', $_GET) ? $_GET['food_type'] : null,
+			'time_to_prepare' => array_key_exists('time_to_prepare', $_GET) ? $_GET['time_to_prepare'] : null,
+			'allergies' => array_key_exists('allergies', $_GET) ? $_GET['allergies'] : null,
+			'ingredients' => array_key_exists('ingredients', $_GET) ? $_GET['ingredients'] : null);
 
 		// Execute the search
 		$meals = meal::search($parameters);

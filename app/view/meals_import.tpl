@@ -14,8 +14,6 @@
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
-
-
 </head>
 
 <body>
@@ -52,13 +50,11 @@
 				<a href="<?= BASE_URL ?>/meals/import">import</a>
 			</nav>
 
-
-
 			<div id="search">
 				<p>Know what you're looking for?</p>
-				<input type="text" value="Tasty meal.."/>
-				<form method="GET" action="<?= BASE_URL ?>/meals">
-					<button type="button submit" class="btn btn-primary btn-sm">Search</button>
+				<form method="GET" action="<?= BASE_URL ?>/meals/search">
+					<input type="text" name="title" placeholder="Tasty Meal.." />
+					<button type="submit" class="btn btn-primary btn-sm">Search</button>
 				</form>
 			</div>
 		</header>

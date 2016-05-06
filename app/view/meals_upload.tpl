@@ -49,7 +49,6 @@
     });
   </script>
 
-
   <script src="http://phuonghuynh.github.io/js/bower_components/jquery/dist/jquery.min.js"></script>
   <script src="http://phuonghuynh.github.io/js/bower_components/d3/d3.min.js"></script>
   <script src="http://phuonghuynh.github.io/js/bower_components/d3-transform/src/d3-transform.js"></script>
@@ -59,7 +58,7 @@
   <script src="http://phuonghuynh.github.io/js/bower_components/microplugin/src/microplugin.js"></script>
   <!-- <script src="http://phuonghuynh.github.io/js/bower_components/bubble-chart/src/bubble-chart.js"></script> -->
   <!-- <script src="http://phuonghuynh.github.io/js/bower_components/bubble-chart/src/plugins/central-click/central-click.js"></script -->
-  
+
   <script type="text/javascript" src="<?= BASE_URL ?>/public/js/bubble-chart.js"></script>
 
   <script type="text/javascript" src="<?= BASE_URL ?>/public/js/central-click.js"></script>
@@ -82,7 +81,7 @@
     //intersectInc: use @default
     //circleColor: use @default
     data: {
-      items: 
+      items:
       //   {text: "Java", count: "382"},
       //   {text: ".Net", count: "382"},
       //   {text: "Php", count: "170"},
@@ -93,10 +92,10 @@
       //   {text: "Pascal", count: "10"},
       //   {text: "Something", count: "170"},
 
-      <?php 
+      <?php
         echo $json_meals;
       ?>,
-      
+
       eval: function (item) {return item.count;},
       classed: function (item) {return item.text.split(" ").join("");},
       title: function (item) {return item.text.split(" ").join("_")},
@@ -218,12 +217,12 @@
       </nav>
 
       <div id="search">
-        <p>Know what you're looking for?</p>
-        <input type="text" value="Tasty meal.."/>
-        <form method="GET" action="<?= BASE_URL ?>/meals">
-          <button type="button submit" class="btn btn-primary btn-sm">Search</button>
-        </form>
-      </div>
+				<p>Know what you're looking for?</p>
+				<form method="GET" action="<?= BASE_URL ?>/meals/search">
+					<input type="text" name="title" placeholder="Tasty Meal.." />
+					<button type="submit" class="btn btn-primary btn-sm">Search</button>
+				</form>
+			</div>
     </header>
 
     <div id="content">
