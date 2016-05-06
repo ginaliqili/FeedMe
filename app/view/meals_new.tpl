@@ -19,7 +19,6 @@
 	<script type="text/javascript">
 	function validateForm()
 			{
-				console.log("hi");
 			var a=document.forms["meal_form"]["title"].value;
 			var b=document.forms["meal_form"]["description"].value;
 			var c=document.forms["meal_form"]["meal_type"].value;
