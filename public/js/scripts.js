@@ -8,6 +8,19 @@ $(document).ready(function(){
 	$('#favorites').click(function() {
 		$('#favorites_bar').toggle();
 	});
+
+	$('#meal_form').on('submit', function(e){
+        e.preventDefault();
+				var a=document.getElementsByClassName('form-control').value();
+				if (a=="")
+					{
+					alert("Please Fill All Required Field");
+
+					}
+					else {
+						//this.submit();
+					}
+    });
 });
 
 function loadTurnJS() {
