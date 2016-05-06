@@ -219,10 +219,15 @@ class meal extends db_object {
 
     // Search by time to prepare
     if ($parameters['time_to_prepare'] != null) {
+
+      
       // Build the query to filter for meals with the associated time to prepare
-      $time_to_prepare_query = $base_query . sprintf(
-        " WHERE time_to_prepare = '%s'",
-        $parameters['time_to_prepare']);
+      $time_to_prepare_query = $base_query;
+      // . sprintf(
+      //   " WHERE time_to_prepare = '%s'",
+      //   $parameters['time_to_prepare']);
+
+
 
       // Add this query to the search queries
       $search_queries[] = $time_to_prepare_query;
@@ -306,13 +311,55 @@ class meal extends db_object {
 
           // Convert results into meals
           while ($row = mysqli_fetch_assoc($result)) {
+              if(mysqli_num_rows($result)) {
+
+                if ($parameters['time_to_prepare'] != NULL)
+                {
+                  if ($parameters['time_to_prepare'] != "More than 1 Hour")
+                  {
+                    $time_query_string = explode(" ", $parameters['time_to_prepare']);
+                    if ( $time_query_string[1] == 'Hour')
+                    {
+                      $minutes = 60; 
+                    }
+                    else if ($time_query_string[1] == "Minutes")
+                    {
+                      $minutes = intval($time_query_string[0]);
+                    }
+
+                    $time_query_string2 = explode(" ", $row['time_to_prepare']);
+
+                    if ($time_query_string2[1] == 'Hour')
+                    {
+                      $minutes2 = 60; 
+                    }
+                    else if ($time_query_string2[1] == "Minutes")
+                    {
+                      $minutes2 = intval($time_query_string[0]);
+                    }
+                    if ($row['time_to_prepare'] != "More than 1 Hour" && $minutes2 <= $minutes)
+                    {
+                      $results[] = new meal($row);
+                    }
+                  }
+               else
+               {
+                 $results[] = new meal($row);
+               }
+              }
+            }
+            else
+            {
               $results[] = new meal($row);
+            }
+            
           }
 
           // Merge the query results
           if ($index == 0) {
             $meals = $results;
           }
+
           else {
             // Intersect object arrays using inline comparator function
             /* It would be better to use a SQL Intersect statement, but it's
@@ -320,22 +367,25 @@ class meal extends db_object {
             $meals = array_uintersect($meals, $results, "meal::compare");
           }
         }
+
         // If no results were found for this query no results were found for the entire search
         else {
           return array();
         }
+        
       }
     }
     // If no search queries were generated use the base query
     else {
       // Use the base query to get all meals
-      $result = $db->lookup($base_query);
+       $result = $db->lookup($base_query);
 
       // Parse the results from the database
       if(mysqli_num_rows($result)) {
         while ($row = mysqli_fetch_assoc($result)) {
             $meals[] = new meal($row);
         }
+        
       }
     }
 

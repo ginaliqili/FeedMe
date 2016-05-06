@@ -245,6 +245,10 @@
 		</div>
 	</div>
 
+
+	<a href="<?= BASE_URL ?>/app/view/Redirecting.html?page=http://www.amazon.com/gp/offer-listing/059610197X?tag=asp-net-20&linkCode=sb1&camp=212353&creative=380553">
+    Redirect with multiple query string</a>
+    
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>

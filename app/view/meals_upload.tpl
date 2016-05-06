@@ -289,5 +289,8 @@
 				</div>
 			</div>
 <div class="bubbleChart"/>
+
+<image class="load_img" style= "visibility: hidden;"src="<?= BASE_URL ?>/public/img/loading.gif"/>
+
 </body>
 </html>

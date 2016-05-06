@@ -291,9 +291,13 @@ class meal_controller {
 			'allergies' => array_key_exists('allergies', $_GET) ? $_GET['allergies'] : null,
 			'ingredients' => array_key_exists('ingredients', $_GET) ? $_GET['ingredients'] : null);
 
+		//echo $parameters['time_to_prepare'];
+
+		$time_query_string2 = explode(" ", $parameters['time_to_prepare']);
+
 		// Execute the search
 		$meals = meal::search($parameters);
-
+		
 		// Render the search results
 		include_once SYSTEM_PATH.'/view/meals_index.tpl';
 	}
@@ -526,12 +530,16 @@ class meal_controller {
 		$instructions = "no instructions yet";
 
 
-		if ($time_to_prepare >= 60)
+		if ($time_to_prepare == 60)
 		{
 			$time_to_prepare = "1 Hour";
 		}
-		else
+		else if ($time_to_prepare < 60)
 			$time_to_prepare += " Minutes";
+		else
+		{
+			$time_to_prepare = "More than 1 Hour";
+		}
 
 		$attributes = array(
 					'title' => $title,
