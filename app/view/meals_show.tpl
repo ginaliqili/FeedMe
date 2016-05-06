@@ -206,8 +206,10 @@
 							</form>
 
 							<form method="POST" action="<?= BASE_URL ?>/meals/<?= $meal->get('id') ?>/destroy">
-								<button id="meal_delete" type="submit button" class="btn btn-primary btn-lg">Delete</button>
-							</form>
+								<button id="meal_delete" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Delete</button>
+
+
+
 							<?php }} ?>
 						</div>
 					</div>
@@ -219,6 +221,27 @@
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>
+	<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Delete Confirmation</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this item?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 
 </html>
