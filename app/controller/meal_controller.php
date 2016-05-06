@@ -103,9 +103,11 @@ class meal_controller {
 		// Get all favorites
 		if (isset($_SESSION['username'])) {
 			$favorites = favorite::load_all();
+			$cookbooks = cookbook::load_all();
 		}
 		else {
 			$favorites = null;
+			$cookbooks = null;
 		}
 
 		// Get data for this meal

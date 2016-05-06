@@ -197,6 +197,11 @@
 							<input type="hidden" id="meal_title" name="meal_title" value="<?= $meal->get('title') ?>">
 
 							<button id="favorite" type="submit button" class="btn btn-success btn-primary btn-lg">Favorite</button>
+
+							<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  							&plus; To Cookbook
+							</button>
+
 							<?php
 								if ($creator->get('username') == $_SESSION['username'] ||
 									(isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))) {
@@ -219,6 +224,33 @@
 	<footer>
 		<p>Copyright 2016: All Rights Reserved</p>
 	</footer>
+	<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Select Cookbook to Add To</h4>
+      </div>
+			<?php
+			if ($cookbooks != null) {
+				foreach($cookbooks as $cookbook) {
+					$cookbook_id = $cookbook->get('id');
+					$cookbook_title = $cookbook->get('title');
+			?>
+			<form method="POST" action="<?= BASE_URL ?>/cookbooks2/<?= $cookbook_id ?>/add/<?= $meal_id ?>">
+      <div class="modal-body">
+        <ul><a href="<?= BASE_URL ?>/cookbooks2/<?= $cookbook_id ?>"><?= $cookbook_title ?></a></ul>
+      </div>
+
+		</form>
+		<?php }}
+		?>
+    </div>
+  </div>
+</div>
 </body>
 
 </html>
