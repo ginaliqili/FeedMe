@@ -26,11 +26,15 @@ class follow extends db_object {
   // Save changes to object
   public function save() {
     $db = db::instance();
+
     // Omit id and any timestamps
     $db_properties = array(
       'user_id' => $this->user_id,
       'follower_id' => $this->follower_id);
     $db->store($this, __CLASS__, self::DB_TABLE, $db_properties);
+
+    // Return successful save
+    return true;
   }
 
   // Delete a meal

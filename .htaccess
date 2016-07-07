@@ -8,12 +8,16 @@ RewriteEngine on
 RewriteRule ^$ app/controller/site_controller.php?action=home [QSA,L]
 RewriteRule ^login/?$ app/controller/site_controller.php?action=login [QSA,L]
 RewriteRule ^logout/?$ app/controller/site_controller.php?action=logout [QSA,L]
+RewriteRule ^events/?$ app/controller/site_controller.php?action=events [QSA,L]
 
 # User
 RewriteRule ^signup/?$ app/controller/user_controller.php?action=new [QSA,L]
 RewriteRule ^users/create/?$ app/controller/user_controller.php?action=create [QSA,L]
 RewriteRule ^users/create/check/?$ app/controller/user_controller.php?action=create_check [QSA,L]
 RewriteRule ^users/(\d+)/?$ app/controller/user_controller.php?action=show&user_id=$1 [QSA,L]
+RewriteRule ^users/(\d+)/edit/?$ app/controller/user_controller.php?action=edit&user_id=$1 [QSA,L]
+RewriteRule ^users/?$ app/controller/user_controller.php?action=index [QSA,L]
+RewriteRule ^users/(\d+)/events/?$ app/controller/user_controller.php?action=events&user_id=$1 [QSA,L]
 
 # Follow
 RewriteRule ^users/(\d+)/follow/?$ app/controller/follow_controller.php?action=follow&user_id=$1 [QSA,L]
@@ -31,3 +35,20 @@ RewriteRule ^meals/(\d+)/update/?$ app/controller/meal_controller.php?action=upd
 RewriteRule ^meals/(\d+)/destroy/?$ app/controller/meal_controller.php?action=destroy&meal_id=$1 [QSA,L]
 RewriteRule ^meals/search/?$ app/controller/meal_controller.php?action=search [QSA,L]
 RewriteRule ^meals/(\d+)/favorite/?$ app/controller/meal_controller.php?action=favorite&meal_id=$1 [QSA,L]
+RewriteRule ^meals/searchapi/?$ app/controller/meal_controller.php?action=search_API [QSA,L]
+RewriteRule ^meals/import/?$ app/controller/meal_controller.php?action=import [QSA,L]
+RewriteRule ^meals/create_import/?$ app/controller/meal_controller.php?action=create_import [QSA,L]
+
+# Cookbook
+RewriteRule ^cookbooks/?$ app/controller/cookbook_controller.php?action=index [QSA,L]
+RewriteRule ^cookbooks/(\d+)/destroy/?$ app/controller/cookbook_controller.php?action=destroy&meal_id=$1 [QSA,L]
+RewriteRule ^cookbooks/(\d+)/update/?$ app/controller/cookbook_controller.php?action=update&meal_id=$1 [QSA,L]
+
+
+RewriteRule ^meals/create_import/(\d+)/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/(.[^/]*+)/(\d+)/(.*)/?$ app/controller/meal_controller.php?action=create_import&meal_id=$1&meal_type=$2&food_type=$3&title=$4&time=$5&image=$6 [QSA,L]
+
+RewriteRule ^meals/favorites/?$ app/controller/meal_controller.php?action=show_favs [QSA,L]
+
+RewriteRule ^meals/(\d+)/unfavorite/?$ app/controller/meal_controller.php?action=unfavorite&fav_id=$1 [QSA,L]
+
+

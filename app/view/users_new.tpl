@@ -7,13 +7,13 @@
 	<title>FeedMe</title>
 
 	<!--Font Awesome -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/styles.css">
 	<link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/public/css/show_styles.css">
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?= BASE_URL ?>/public/js/scripts.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -82,9 +82,9 @@
 
 			<div id="search">
 				<p>Know what you're looking for?</p>
-				<input type="text" value="Tasty meal.."/>
-				<form method="GET" action="<?= BASE_URL ?>/meals">
-					<button type="button submit" class="btn btn-primary btn-sm">Search</button>
+				<form method="GET" action="<?= BASE_URL ?>/meals/search">
+					<input type="text" name="title" placeholder="Tasty Meal.." />
+					<button type="submit" class="btn btn-primary btn-sm">Search</button>
 				</form>
 			</div>
 		</header>
@@ -138,11 +138,11 @@
 				</form>
 			</div>
 		</div>
-
-		<footer>
-			<p>Copyright 2016: All Rights Reserved</p>
-		</footer>
 	</div>
+
+	<footer>
+		<p>Copyright 2016: All Rights Reserved</p>
+	</footer>
 </body>
 
 </html>

@@ -89,6 +89,23 @@ class db {
 		$obj->setModified(false); // reset the flag
 	}
 
+  public function truncate(&$obj, $class_name, $db_table) {
+    $query = sprintf("TRUNCATE TABLE %s;",
+				$db_table);
+        $this->execute($query);
+  }
+
+  public function get_page_numbers(&$obj, $class_name, $db_table) {
+    $page_numbers = array();
+      $result = mysqli_query($this->conn, "SELECT page_number FROM cookbook");
+
+    while($row = mysqli_fetch_assoc($result))
+    {
+        $page_numbers[] = $row;
+    }
+    return json_encode($page_numbers);
+  }
+
 	// Formats a string for use in SQL queries.
 	// Use this on ANY string that comes from external sources (i.e. the user).
 	public function quoteString($s) {
@@ -116,6 +133,7 @@ class db {
 			die ('Query failed:' . mysqli_error($this->conn));
     }
 	}
+
 
 	//Build an INSERT query.  Mostly here to make things neater elsewhere.
 	//$table  -> Name of the table to insert into

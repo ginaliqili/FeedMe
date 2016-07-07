@@ -32,6 +32,25 @@ div.user_content {
 	border-radius: 8px;
 }
 
+div.user_field > * > span.edit {
+	display: none;
+}
+
+div.user_field > span.edit {
+	display: none;
+}
+
+div.user_field > span.usermeals {
+	display: none;
+}
+
+div.user_content > span.following_view {
+	display: none;
+}
+
+div.user_content > span.followers_view {
+	display: none;
+}
 /* Styles for meal show templates */
 
 div.meal_content {
@@ -43,6 +62,10 @@ div.meal_content {
 	background-color: rgba(56,56,56, 0.15);
 	border: 2px solid black;
 	border-radius: 8px;
+}
+
+div.hidden_meal {
+	display: none;
 }
 
 div.meal_content > div.meal_info {
@@ -114,4 +137,13 @@ div.meal_info > div.meal_decision {
 
 div.meal_info > div.meal_decision * {
 	display: inline;
+}
+
+div#select_ingredients > select {
+	width: 100%;
+	margin-top: 5px;
+}
+
+div.meal_info > div#not_a_decision * {
+	max-width: 100%;
 }
